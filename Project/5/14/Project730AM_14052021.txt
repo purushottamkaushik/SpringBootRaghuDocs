@@ -1,0 +1,619 @@
+                                Date: 14-May-21
+			       Project Batch 7:30AM
+			        Mr. RAGHU
+		-----------------------------------------
+			Module : Uom
+
+code files
+1. Model class
+2. Repository Interface
+3. Service Interface
+4. Service Impl
+5. Controller
+6. UI Files
+   ___Register.html
+   ___Data.html
+   ___Edit.html
+========================
+7. AJAX Validation
+8. Custom Exception
+9. View files(excel/PDF)
+
+Pattern Symbols:-
+https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
+
+========code===========================
+1. Model
+package in.nareshit.raghu.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name="uom_tab")
+public class Uom {
+	@Id
+	@GeneratedValue
+	@Column(name="uom_id_col")
+	private Integer id;
+	
+	@Column(name="uom_type_col")
+	private String uomType;
+	
+	@Column(name="uom_model_col")
+	private String uomModel;
+	
+	@Column(name="uom_desc_col")
+	private String uomDesc;
+}
+
+2. Repository
+package in.nareshit.raghu.repo;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import in.nareshit.raghu.model.Uom;
+
+public interface UomRepository extends JpaRepository<Uom, Integer>
+{
+
+}
+
+3. Service Interface
+package in.nareshit.raghu.service;
+
+import java.util.List;
+
+import in.nareshit.raghu.model.Uom;
+
+public interface IUomService {
+
+	Integer saveUom(Uom uom);
+	void updateUom(Uom uom);
+	void deleteUom(Integer id);
+	
+	Uom getOneUom(Integer id);
+	List<Uom> getAllUoms();
+}
+
+4. Service impl
+package in.nareshit.raghu.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import in.nareshit.raghu.exception.UomNotFoundException;
+import in.nareshit.raghu.model.Uom;
+import in.nareshit.raghu.repo.UomRepository;
+import in.nareshit.raghu.service.IUomService;
+
+@Service
+public class UomServiceImpl implements IUomService {
+
+	@Autowired
+	private UomRepository repo; //HAS-A
+
+	public Integer saveUom(Uom uom) {
+		uom = repo.save(uom);
+		return uom.getId();
+	}
+
+	public void updateUom(Uom uom) {
+		repo.save(uom);
+	}
+
+	public void deleteUom(Integer id) {
+		repo.delete(getOneUom(id));
+	}
+
+	public Uom getOneUom(Integer id) {
+		return repo.findById(id)
+				.orElseThrow(
+						()->new UomNotFoundException(
+								"Uom '"+id+"' Not exist")
+						);
+	}
+
+	public List<Uom> getAllUoms() {
+		return repo.findAll();
+	}
+	
+	
+}
+
+5. Controller
+package in.nareshit.raghu.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import in.nareshit.raghu.model.Uom;
+import in.nareshit.raghu.service.IUomService;
+
+
+@Controller
+@RequestMapping("/uom")
+public class UomController {
+
+	@Autowired
+	private IUomService service; //HAS-A
+
+	//1. show Register page
+	@GetMapping("/register")
+	public String showReg() {
+		return "UomRegister";
+	}
+
+	//2. on click submit
+	@PostMapping("/save")
+	public String saveUom(
+			@ModelAttribute Uom uom,
+			Model model
+			) 
+	{
+		Integer id = service.saveUom(uom);
+		model.addAttribute("message", "Uom '"+id+"' saved");
+		return "UomRegister";
+	}
+
+	//3. display data
+	@GetMapping("/all")
+	public String displayUoms(
+			Model model) 
+	{
+		List<Uom> list =  service.getAllUoms();
+		model.addAttribute("list",list);
+		return "UomData";
+	}
+
+	//4. delete by id
+	@GetMapping("/delete")
+	public String deleteUom(
+			@RequestParam Integer id,
+			Model model
+			) 
+	{
+
+		service.deleteUom(id);
+		model.addAttribute("message", "Uom '"+id+"' Deleted");
+		//get latest data and send to UI
+		List<Uom> list =  service.getAllUoms();
+		model.addAttribute("list",list);
+		return "UomData";
+	}
+
+	//5. show edit 
+	@GetMapping("/edit")
+	public String showEdit(
+			@RequestParam Integer id,
+			Model model
+			) 
+	{
+		Uom uom = service.getOneUom(id);
+		model.addAttribute("uom", uom);
+		return "UomEdit";
+	}
+
+	//6. update
+	@PostMapping("/update")
+	public String updateUom(
+			@ModelAttribute Uom uom,
+			Model model
+			) 
+	{
+		service.updateUom(uom);
+		model.addAttribute("message", "Uom '"+uom.getId()+"' Updated!");
+		//get latest data and send to UI
+		List<Uom> list =  service.getAllUoms();
+		model.addAttribute("list",list);
+		return "UomData";
+	}
+
+}
+
+6. UI Pages
+--------UomRegister.html------------
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary text-white text-center">
+                <h3>WELCOME TO UOM REGISTER PAGE</h3>
+            </div>
+            <div class="card-body">
+                <form id="myUomForm" th:action="@{/uom/save}" method="POST">
+                    <!-- Row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Uom Type</label>
+                        </div>
+                        <div class="col-4">
+                            <select name="uomType" id="uomType" class="form-control">
+                                <option value="">-SELECT-</option>
+                                <option value="PACKING">PACKING</option>
+                                <option value="NO PACKING">NO PACKING</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </div>
+                        <div class="col-5">
+                            <span id="uomTypeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Uom Model</label>
+                        </div>
+                        <div class="col-4">
+                            <input name="uomModel" id="uomModel" class="form-control" />
+                        </div>
+                        <div class="col-5">
+                            <span id="uomModelError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Description</label>
+                        </div>
+                        <div class="col-4">
+                            <textarea name="uomDesc" id="uomDesc" class="form-control"></textarea>
+                        </div>
+                        <div class="col-5">
+                            <span id="uomDescError"></span>
+                        </div>
+                    </div>
+                    <input type="submit" value="Add Uom" class="btn btn-success" />
+                </form>
+            </div>
+            <!-- card body end -->
+             <div class="card-footer text-center" th:if="${message!=null}">
+                <span class="text-success" th:text="${message}"></span>
+            </div> <!--  footer end -->
+        </div>
+        <!-- card end -->
+    </div>
+    <!-- container end -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //1. hide error sections
+            $("#uomTypeError").hide();
+            $("#uomModelError").hide();
+            $("#uomDescError").hide();
+
+            //2. define error variables
+            var uomTypeError = false;
+            var uomModelError = false;
+            var uomDescError = false;
+
+            //3. validate functions
+            function validate_uomType() {
+                var val = $("#uomType").val();
+                if (val == '') {
+                    $("#uomTypeError").show();
+                    $("#uomTypeError").html("Please select <b>Type</b>");
+                    $("#uomTypeError").css('color','red');
+                    uomTypeError = false;
+                } else {
+                    $("#uomTypeError").hide();
+                    uomTypeError = true;
+                }
+                return uomTypeError;
+            }
+
+            function validate_uomModel() {
+                var val = $("#uomModel").val();
+                var exp = /^[A-Z\-\s]{4,12}$/;
+                if (val == '') {
+                    $("#uomModelError").show();
+                    $("#uomModelError").html("Please Enter <b>Model</b>");
+                    $("#uomModelError").css('color','red');
+                    uomModelError = false;
+                } else if (!exp.test(val)) {
+                    $("#uomModelError").show();
+                    $("#uomModelError").html("Only 4-12 chars allowed");
+                    $("#uomModelError").css('color','red');
+                    uomModelError = false;
+                } else {
+                    $("#uomModelError").hide();
+                    uomModelError = true;
+                }
+                return uomModelError;
+            }
+
+            function validate_uomDesc() {
+                var val = $("#uomDesc").val();
+                var exp = /^[A-Za-z0-9\-\s\.\:\@\,]{10,100}$/;
+                if (val == '') {
+                    $("#uomDescError").show();
+                    $("#uomDescError").html("Please Enter <b>Description</b>");
+                    $("#uomDescError").css('color','red');
+                    uomDescError = false;
+                } else if (!exp.test(val)) {
+                    $("#uomDescError").show();
+                    $("#uomDescError").html("Only 10-100 chars allowed");
+                    $("#uomDescError").css('color','red');
+                    uomDescError = false;
+                } else {
+                    $("#uomDescError").hide();
+                    uomDescError = true;
+                }
+                return uomDescError;
+            }
+            //4. link action events
+            $("#uomType").change(function () {
+                validate_uomType();
+            });
+
+            $("#uomModel").keyup(function () {
+                $(this).val($(this).val().toUpperCase());
+                validate_uomModel();
+            });
+
+            $("#uomDesc").keyup(function () {
+                validate_uomDesc();
+            });
+            //5. on click submit
+            $("#myUomForm").submit(function () {
+                validate_uomType();
+                validate_uomModel();
+                validate_uomDesc();
+
+                if (uomTypeError && uomModelError && uomDescError)
+                    return true; //no error submit form
+                else
+                    return false; //errors exist
+            });
+        });
+    </script>
+
+</body>
+
+</html>
+---------------------UomData.html-----------------------
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+	<div class="container">
+		<div class="card-header bg-primary text-white text-center">
+			<h3>UOM DATA PAGE</h3>
+		</div>
+
+		<div class="card-body">
+			<table class="table table-hover">
+				<tr class="bg-info text-white">
+					<th>ID</th>
+					<th>TYPE</th>
+					<th>MODEL</th>
+					<th>DESCRIPTION</th>
+					<th>OPERATIONS</th>
+				</tr>
+				<tr th:each="ob:${list}">
+					<td th:text="${ob.id}"></td>
+					<td th:text="${ob.uomType}"></td>
+					<td th:text="${ob.uomModel}"></td>
+					<td th:text="${ob.uomDesc}"></td>
+					<td>
+						<a th:href="@{/uom/delete(id=${ob.id})}" class="btn btn-danger"> DELETE </a>|
+						<a th:href="@{/uom/edit(id=${ob.id})}" class="btn btn-warning">EDIT</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+			
+			<div class="card-footer bg-success text-white" th:if="${message!=null}">
+				<span th:text="${message}"></span>
+			</div>
+
+		</div> <!-- card end -->
+	</div>
+	<!-- container end -->
+</body>
+</html>
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary text-white text-center">
+                <h3>WELCOME TO UOM EDIT PAGE</h3>
+            </div>
+            <div class="card-body">
+                <form id="myUomForm" th:action="@{/uom/update}" method="POST" th:object="${uom}">
+                	<!-- Row#0 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Uom Id</label>
+                        </div>
+                        <div class="col-4">
+                           <input th:field="*{id}" class="form-control" readOnly/>
+                        </div>
+                    </div>
+                    <!-- Row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Uom Type</label>
+                        </div>
+                        <div class="col-4">
+                            <select th:field="*{uomType}" class="form-control">
+                                <option value="">-SELECT-</option>
+                                <option value="PACKING">PACKING</option>
+                                <option value="NO PACKING">NO PACKING</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </div>
+                        <div class="col-5">
+                            <span id="uomTypeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Uom Model</label>
+                        </div>
+                        <div class="col-4">
+                            <input th:field="*{uomModel}" class="form-control" />
+                        </div>
+                        <div class="col-5">
+                            <span id="uomModelError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Description</label>
+                        </div>
+                        <div class="col-4">
+                            <textarea th:field="*{uomDesc}" class="form-control"></textarea>
+                        </div>
+                        <div class="col-5">
+                            <span id="uomDescError"></span>
+                        </div>
+                    </div>
+                    <input type="submit" value="Update Uom" class="btn btn-success" />
+                </form>
+            </div>
+            <!-- card body end -->
+        </div>
+        <!-- card end -->
+    </div>
+    <!-- container end -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //1. hide error sections
+            $("#uomTypeError").hide();
+            $("#uomModelError").hide();
+            $("#uomDescError").hide();
+
+            //2. define error variables
+            var uomTypeError = false;
+            var uomModelError = false;
+            var uomDescError = false;
+
+            //3. validate functions
+            function validate_uomType() {
+                var val = $("#uomType").val();
+                if (val == '') {
+                    $("#uomTypeError").show();
+                    $("#uomTypeError").html("Please select <b>Type</b>");
+                    $("#uomTypeError").css('color','red');
+                    uomTypeError = false;
+                } else {
+                    $("#uomTypeError").hide();
+                    uomTypeError = true;
+                }
+                return uomTypeError;
+            }
+
+            function validate_uomModel() {
+                var val = $("#uomModel").val();
+                var exp = /^[A-Z\-\s]{4,12}$/;
+                if (val == '') {
+                    $("#uomModelError").show();
+                    $("#uomModelError").html("Please Enter <b>Model</b>");
+                    $("#uomModelError").css('color','red');
+                    uomModelError = false;
+                } else if (!exp.test(val)) {
+                    $("#uomModelError").show();
+                    $("#uomModelError").html("Only 4-12 chars allowed");
+                    $("#uomModelError").css('color','red');
+                    uomModelError = false;
+                } else {
+                    $("#uomModelError").hide();
+                    uomModelError = true;
+                }
+                return uomModelError;
+            }
+
+            function validate_uomDesc() {
+                var val = $("#uomDesc").val();
+                var exp = /^[A-Za-z0-9\-\s\.\:\@\,]{10,100}$/;
+                if (val == '') {
+                    $("#uomDescError").show();
+                    $("#uomDescError").html("Please Enter <b>Description</b>");
+                    $("#uomDescError").css('color','red');
+                    uomDescError = false;
+                } else if (!exp.test(val)) {
+                    $("#uomDescError").show();
+                    $("#uomDescError").html("Only 10-100 chars allowed");
+                    $("#uomDescError").css('color','red');
+                    uomDescError = false;
+                } else {
+                    $("#uomDescError").hide();
+                    uomDescError = true;
+                }
+                return uomDescError;
+            }
+            //4. link action events
+            $("#uomType").change(function () {
+                validate_uomType();
+            });
+
+            $("#uomModel").keyup(function () {
+                $(this).val($(this).val().toUpperCase());
+                validate_uomModel();
+            });
+
+            $("#uomDesc").keyup(function () {
+                validate_uomDesc();
+            });
+            //5. on click submit
+            $("#myUomForm").submit(function () {
+                validate_uomType();
+                validate_uomModel();
+                validate_uomDesc();
+
+                if (uomTypeError && uomModelError && uomDescError)
+                    return true; //no error submit form
+                else
+                    return false; //errors exist
+            });
+        });
+    </script>
+
+</body>
+
+</html>
+----------------------------------
+------------------------UomEdit.html--------------------

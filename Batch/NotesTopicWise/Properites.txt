@@ -1,0 +1,200 @@
+                     Date: 24/04/2021
+		     Spring Boot 6:30AM
+		      Mr. RAGHU
+	-----------------------------------------
+             email : javabyraghu@gmail.com
+         https://www.facebook.com/groups/thejavatemple
+ 
+         Admin: Srikanth : +91-630 296 8665 (whatsapp)
+
+*)Data to application
+a. Database
+b. HTML FORM(UI)
+c. MessageQueue
+d. XML/JSON File
+e. Properties File
+f. YAML File
+..etc
+
+*) Some time data is given after starting application 
+   at runtime(end user),
+   in few cases data is given before starting application
+   (Programmer/setup data).
+Ex:
+   Database connection -- driverclass,url,un,pwd
+     while coding/before starting application.
+
+  Register one User - emailId, pwd, gender, DOB, Image..etc
+   Data is given after starting application. While runtime.
+
+__________________________________________________________   
+Input Files in Spring Boot:-
+
+*) To pass setup data(Data given before starting application)
+  we can use Input files in Spring Boot:
+   a. Properties File      
+   b. YAML File
+
+=> Data is sent using key=val format. Key is alwasy string.
+   Value can be any type(int,String, double, boolean)
+
+=> Example:
+  Database Connection (driver,url,un,pwd)
+  Connection Pooling details(pool size, name,timeout..)
+  ORM/JPA (dialect, ddlauto,show_sql)
+  MVC (prefix, suffix, server port, project name, context path..)
+  ...
+
+=> keys are two types.
+  (a) Pre-defined keys (given by Spring Boot only)
+  https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html
+  (b) Programmer defined keys
+
+*)Spring (Manual coding) and Spring Boot (Autoconfigured)
+==============================================================
+         	Properties files in Spring Boot
+
+Properties file : 
+=> It stores data in key=val format
+    ex: title=NIT
+=> Keys are String type, value can be any type
+    eid=10
+    ename=A
+    esal=3.3
+=> If we define duplicate keys with different values, then
+   last combination is loaded into application
+
+   driver=Oracle
+   driver=MySQL
+   driver=Postgress (this is loaded)
+
+=> To define key symbols allowed are: 
+       dot(.) dash(-) and underscore(_)
+
+ex:
+    my.app.title-one=NIT
+    a_b_c=10
+
+=>*** In Spring Boot, file name is recomanded:
+        application.properties (Loaded by default)
+    exist in location (classpath)
+          /src/main/resources folder
+
+=>** keys are cas-sensitive. DRIVER, Driver, driver are different.
+=> use Symbol '#' to comment a line in properties file
+
+
+===========================================================
+@Value : This annotation we can use it for reading data
+        from input files
+
+ @Value("${key}") => It will even type-conversion
+
+=> @Value do not use set method to provide data.
+   (Reflection API)
+
+==code===============
+1. application.proeprties
+my.app.title=NIT
+my.app.version=3.2
+my.app.clientId=30
+my.app.clientId=40
+my.app.clientId=50
+my.app.clientId=60
+
+2. class
+package in.nareshit.raghu;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyDetails {
+	
+	@Value("${my.app.title}")
+	private String ttl;
+	
+	@Value("${my.app.version}")
+	private Double ver;
+	
+	@Value("${my.app.clientId}")
+	private Integer cid;
+
+	@Override
+	public String toString() {
+		return "MyDetails [ttl=" + ttl + ", ver=" + ver + ", cid=" + cid + "]";
+	}
+	
+	
+	
+}
+
+3. Moidified Starter class
+package in.nareshit.raghu;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+//ctrl+shift+O (imports)
+
+@SpringBootApplication
+public class SpringBoot2PropertiesTestApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext ac =  SpringApplication.run(SpringBoot2PropertiesTestApplication.class, args);
+		
+		Object ob = ac.getBean("myDetails");
+		System.out.println(ob);
+	}
+
+}
+
+----FAQs------------------------------------------
+Q) What is mean by classpath in Spring Boot?
+A) classpath indicates location of /src/main/resources folder
+
+Q) Can we define our own properties file with any name?
+A) YES. By default they are not loaded.
+   To load them use below code: (Spring code)
+   @PropertySource("classpath:abcd.properties")
+   at starter class/main class.
+
+=> ** For application.properties we need not write @PropertySource
+    Annotation. Spring Boot takes care.
+
+Q) Can we load multiple properties file?
+A) YES. AGAIN SAME, they are not loaded.
+    @PropertySource({ "","",""})
+
+=> *** Writing our own proeprties files not recomanded.
+  One properties file is enough to write all keys.
+
+Q)** How can we read data from properties file to our code?
+A) By using annotations
+   a. @Value
+   b. @ConfigurationProperties
+
+Q) When we print any reference variable what will happen?
+A) Java will try to call toString() method from your class
+    if not found then Object(C) toString()
+      which will print
+       fullclass name : getClass().getName()
+       and symbol     : @
+       HashCode converted into HexaDecimal Value:
+                        Integer.toHexString(hashCode())
+
+Q) if we do not provide data to variables using @Value
+  then what will happen?
+A) Default values are taken
+
+int = 0 / Integer = null
+
+Q) If a key is not present in properties but still trying to
+   read using @Value then  what will happen?
+A) @Value needs key for sure, if it is unable to find
+    Spring F/w will throw exception. Ex:
+   IllegalArgumentException: 
+   Could not resolve placeholder 'my.app.title'
+    in value "${my.app.title}"
+

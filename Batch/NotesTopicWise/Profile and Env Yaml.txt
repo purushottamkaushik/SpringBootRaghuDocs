@@ -1,0 +1,238 @@
+                            Date : 12-May-21
+			    Spring Boot 6:30AM
+			      Mr. RAGHU
+           -------------------------------------------
+Profiles:-
+ Properties/Code --> Environment
+
+=> YAML File also supports profile concept in 2 ways.
+ a. One YAML(.yml) For one Profile
+   Syntax: application-profilename.yml
+   ex:     application-dev.yml
+           application-qa.yml
+
+ b.*** One YAML(.yml) For all Profiles
+=> We can define one YAML File using 3 dash symbols 
+   that indicates multiple profiles   
+-----application.yml-------------
+  key:
+     val
+  ---
+  key:
+    val
+  spring:
+    profiles: <current profile name>
+  ---
+  key:
+    val
+  spring:
+    profiles: <current profile name>
+------------------------------------------  
+
+===Example=================================================
+Name : SpringBoot2ProfilesUsingYamlTest
+Dep  : Lombok
+
+1. application.yml
+my:
+  app:
+    title: NIT-DEFAULT
+
+2. application-qa.yml
+my:
+  app:
+    title: NIT-QA
+
+3. application-prod.yml
+my:
+  app:
+    title: NIT-PROD
+
+4. Runner class
+package in.nareshit.raghu.runner;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import lombok.Data;
+
+@Component
+@Data
+public class MyDataRunner implements CommandLineRunner {
+	
+	@Value("${my.app.title}")
+	private String title;
+	
+	public void run(String... args) throws Exception {
+		System.out.println(this);
+	}
+
+}
+
+==Ex#2 YAML using 3 dash symbols ======================================
+Name:SpringBoot2YamlWithDashesTest
+Dep : Lombok
+
+1. application.yml
+my:
+  app:
+    title: NIT-DEFAULT-ALL-IN-ONE
+    
+---    
+my:
+  app:
+    title: NIT-QA-ALL-IN-ONE
+spring:
+  profiles: qa   
+  
+---
+my:
+  app:
+    title: NIT-PROD-ALL-IN-ONE
+spring:
+  profiles: prod  
+
+2. Runner
+package in.nareshit.raghu.runner;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import lombok.Data;
+
+@Component
+@Data
+public class MyDataRunner implements CommandLineRunner {
+	
+	@Value("${my.app.title}")
+	private String title;
+	
+	public void run(String... args) throws Exception {
+		System.out.println(this);
+	}
+
+}
+==========================================================
+@Profile: This annotation is used to execute logic/code
+             based on environment provided.
+
+Ex: @Profile("profileName") over class
+    @Profile({"profileName1","profileName2"..}) over class
+
+And activate them using --spring.profiles.active=<profileName>
+
+--Example-------------------------
+Name : SpringBoot2ProfilesAnnoTest
+Dep  : Lombok
+
+1. Runner #1
+package in.nareshit.raghu.runner;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+
+@Component
+//@Profile("prod")
+@Profile({"qa","prod"})  // Env is QA (or) PROD
+public class EmailAlert implements CommandLineRunner {
+
+	public void run(String... args) throws Exception {
+		System.out.println("SENDING EMAIL...");
+	}
+
+}
+
+2.Runner#2
+package in.nareshit.raghu.runner;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+
+@Component
+@Profile("default")
+public class ExcelExport implements CommandLineRunner {
+
+	public void run(String... args) throws Exception {
+		System.out.println("IF NO PROFILE IS ACTIVE !...");
+	}
+
+}
+
+
+
+Q) What will happen if we do not create a properties/YAML File for a Profile?
+A) No Error/Exception. Always default properties/YAML is loaded in this case.
+   Still key is not found in default then for @Value --Exception,
+   @ConfigProps --- default value(null/0/0.0/false..etc)
+
+
+Q) Find out meaning? YES/NO
+@Component
+@Profile("default")
+class  A {}
+
+@Component
+class  B {}
+
+I.   A object is created when profile is default    ---    YES    
+II.  B object is created when profile is default    ---    YES
+III. A object is created in every environment       ---    NO
+IV.  B object is created in every environment       ---    YES
+V.   A,B are created in Production environment even ---    NO
+VI.  B is created in Production environment even    ---    YES
+
+---Client/Product requirement------------------------
+@Component
+@Profile("qa")
+public class PostgressSqlConnectionSetup {
+  //....
+}
+
+@Component
+@Profile("prod")
+public class ExecuteSetupSqlsForSeedData {
+  ///drop tables, create new tables,enter basic data..
+}
+===============================================================
+Q) What are the different ways of activating one profile?
+A)
+  I. By passing Command Line Args (recomanded)
+      --spring.profiles.active=<name>
+
+  II. By passing inside application.properties
+        spring.profiles.active=<name>
+
+  III. By passing inside application.yml
+        spring.profiles.active=<name>
+
+=================================================================
+*) Creating Project as JAR as execute using Profiles
+
+a. Create one Spring Boot application
+b. Define code and check locally
+c. Setup JDK in STS/Eclipse (one time for workspace)
+ > Window > Preferences > Search with 'installed'
+ > select 'Installed JRE' > Click on Existed Option
+ > Remove button
+
+ > Add button > Standard VM > Next > Directory
+ > Click on Location C:\Program Files\Java\jdk-11.0.11
+ > Next > Apply and Close
+
+d. Build path
+> Right click > build path > Configure Build path > Library tab
+> Click on JRE Option > Edit > Workspace Default > Apply and close
+
+e. ** Maven goals
+> Right click on Project > Run as > Maven Install
+
+> Refresh project and check in target folder
+
+f. Goto Cmd with target folder location
+> cmd D:\SpringBoot630AM_MAY2021\SpringBoot2ProfilesCheckJar
+> java -jar SpringBoot2ProfilesCheckJar-1.0.jar 
+> java -jar SpringBoot2ProfilesCheckJar-1.0.jar --spring.profiles.active=qa

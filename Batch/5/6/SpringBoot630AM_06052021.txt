@@ -1,0 +1,140 @@
+			   Date : 06-May-21
+			   Spring Boot 6:30AM
+			     Mr. Raghu
+  
+  +-------------------------------------------------------+                      
+  | 	                 YAML(.yml)                       |
+  +-------------------------------------------------------+
+Coding Part:-
+ In Spring Boot application, read data from YML file using
+ annotations : @Value / @ConfigurationProperties
+ [same like properties concept only]
+
+
+=> Duplicate keys are not allowed in YAMl File(.yml)
+   If given you may see : DuplicateKeyException
+
+=> Must provide one space before value, 
+   else ScannerException
+
+-------Syntaxes-------------------------------------
+1. For a simple/primitive types
+   prefix:
+       key:<space>value
+
+2. For List/Set/Array type use symbol -(dash) before value
+   which indicates index.
+
+   prefix:
+     key:
+     - value1
+     - value2
+     - value3
+
+3. For Map type 
+   prefix:
+       key:
+         mapKey:<space>mapValue
+
+4. For Association Mapping(HAS-A) 
+
+   prefix:
+      hasAvariable:
+           variable:<space>value
+
+===Example==========================
+1. Name: SpringBoot2YamlEx
+Dep : Lombok
+
+2. Model
+package in.nareshit.raghu.model;
+
+import lombok.Data;
+
+@Data
+public class Product {
+
+	private int pid;
+	private String model;
+	private String vendor;
+	
+}
+
+3. Runner class
+package in.nareshit.raghu.runner;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+import in.nareshit.raghu.model.Product;
+import lombok.Data;
+
+@Component
+@Data
+@ConfigurationProperties(prefix = "my.app")
+public class MyDataYmlTestRunner implements CommandLineRunner {
+
+	private String title;
+	private double version;
+	
+	private List<String> grades;
+	
+	private Map<String,String> info;
+	
+	private Product pob;//HAS-A
+
+	public void run(String... args) throws Exception {
+		System.out.println(this);
+	}
+
+}
+
+4. application.yml
+> Right click on 'src/main/resources' folder > new > file
+> Enter file name > application.yml > finish
+
+my:
+  app:
+    title: NIT
+    version: 3.3
+    grades:
+    - A
+    - B
+    - C
+    info:
+      C1: ORCL
+      C2: XYZ
+      C3: NIT-A
+    pob:
+      pid: 15
+      model: NEW-A
+      vendor: NIT
+
+===FAQs========================================================
+Q1) Can we use both properties and yml files in project?
+A) YES. We can but not recomanded.
+   If we define both files with key=val
+
+   Spring container will search for key
+      1st Inside Properties file , if not found then search
+      2nd inside yaml file. Still not found then
+         default value (if we load using @ConfigProps)
+	 Exception     (if we try to load using @Value)
+
+Q2) Can we delete properties file? Can we keep empty properties file?
+A) Yes. Not a issue. We can delete/keep empty.
+      @ConfigProps -- default value
+      @Value       -- Exception
+
+-----------------------------------------------------------------------
+Q3)*** Can we write application without using properties/yml but still want to
+     pass data? in key=val format!
+A) Yes. 2 more concepts exist in Applications
+
+     I. CLA (Command Line Args)  [--key=val]
+    II. VM/System Args           [-Dkey=val]
+-----------------------------------------------------------------------     

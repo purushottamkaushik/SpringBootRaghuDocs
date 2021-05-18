@@ -1,0 +1,96 @@
+		    Date : 15/04/2021
+		    Project Batch 7:30AM
+		       Mr. RAGHU
+	----------------------------------------
+IS-A  : extends/implements
+HAS-A : Using child as DataType and create variable
+         inside parent.
+
+	     Layers Design with Relations
+
+=> Within Layer use IS-A Relation
+=> Between Layers(2 layers connection) use HAS-A Relation
+
+S#1 Draw Design 
+   Module = T = Employee
+           ID = Integer
+
+S#2 Write equal java code
+
+a) Repository Interface
+package in.nit.repo;
+public interface EmployeeRepository 
+ extends JpaRepository<Employee,Integer>
+{
+
+}
+b) Service Interface
+package in.nit.service;
+public interface IEmployeeService { }
+
+c) Service Impl
+package in.nit.service.impl;
+public class EmployeeServiceImpl 
+  implements IEmployeeService
+{
+  private EmployeeRepository  repo;
+}  
+
+d) Controller
+package in.nit.controller;
+public class EmployeeController {
+
+   private IEmployeeService service;
+}
+=====================================================
+Ex#2 Student
+
+a) Repository Interface
+package in.nit.repo;
+public interface StudentRepository
+  extends JpaRepository<Student,Integer>
+{
+
+}
+b) Service Interface
+package in.nit.service;
+public interface IStudentService { }
+
+c) Service Impl
+package in.nit.service.impl;
+public class StudentServiceImpl
+   implements IStudentService {
+   
+   private StudentRepository repo;
+}
+
+d) Controller class
+package in.nit.controller;
+public class StudentController {
+  
+  private IStudentService service;
+}
+
+Q) For repository, do we need to write class in Spring Boot?
+A) No. You just provide interface with  T=Model class name
+   and ID = Primary Key DataType.
+  One class is generated with DB Operations code by Spring Boot.
+
+Q) Do we need to start always writing from repository
+   or we can also start from controller too?
+A) Start in any order, but finally all files must exist
+   before code.
+   But recomanded order -> REPO->SI->SImpl->Controller
+
+=task====================================================
+#1  T= Product, Id = Integer
+#2  Admin, Integer
+#3  Part
+#4  PurchaseOrder
+#5  Vendor
+#6  User
+
+send : javabyraghu@gmail.com
+
+Google Class Drive--> 
+      Admin Srikanth +91-630 296 8665

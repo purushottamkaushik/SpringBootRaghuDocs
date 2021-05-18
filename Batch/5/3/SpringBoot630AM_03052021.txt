@@ -1,0 +1,168 @@
+                           Date : 03-May-21
+			  Spring Boot 6:30AM
+			     Mr. RAGHU
+ ------------------------------------------------------------------------
+              javabyraghu@gmail.com
+
+*** @ConfigurationProperties (Annotation) :-
+
+=> To read one key-val into one variable, we use @Value Annotation.
+=> If we have multiple keys(ex: 20) then define euqal count and type
+   of variables (ex: 20 variables) and also write @Value (20 times).
+
+=> Insted of Writing @Value 20 times we can use Bulk Loading Properties
+   using '@ConfigurationProperties' Annotation.
+   ie Define Annotation only one time, need not to repeate for every variable.
+
+--Example using @Value---------------------------------------
+1.Name: SpringBoot2ValueEx
+  Dep : Lombok
+
+2. application.properties
+appid=10
+mycode=NIT
+appver=3.2
+
+3. Runner class
+package in.nareshit.raghu.runner;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import lombok.Data;
+
+@Component
+@Data
+public class MyDataReader implements CommandLineRunner {
+	
+	@Value("${appid}")
+	private Integer id;
+	
+	@Value("${mycode}")
+	private String code;
+	
+	@Value("${appver}")
+	private Double version;
+	
+	public void run(String... args) throws Exception {
+		System.out.println(this); //toString
+	}
+}
+
+=====Example using @ConfigurationProperties============================
+1 .
+Name : SpringBoot2ConfigPropsExOne
+Dep  : lombok
+
+2. application.properties
+my.app.id=10
+#my.app.id=20
+my.app.code=NIT
+my.app.version=3.3
+
+test.ab.grade=M
+test.ab.format=NEW
+test.ab.locale=ENG
+
+3. Runner class#1
+package in.nareshit.raghu.runner;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+import lombok.Data;
+
+@Component
+@Data
+@ConfigurationProperties(prefix = "my.app")
+public class MyDataReader implements CommandLineRunner {
+	
+	private Integer id;
+	
+	private String code;
+	
+	private Double version;
+	
+	public void run(String... args) throws Exception {
+		System.out.println(this); //toString
+	}
+}
+
+*) Runner class#2
+package in.nareshit.raghu.runner;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Component
+@ConfigurationProperties(prefix = "test.ab")
+@Getter
+@Setter
+@ToString
+public class TestDataReader implements CommandLineRunner {
+
+	private String grade;
+	private String format;
+	private String locale;
+	
+	public void run(String... args) throws Exception {
+		System.out.println("FROM TEST");
+		System.out.println(this);
+	}
+}
+
+=================================================================
+=> Prefix must be given while defining keys, based on same prefix
+   key-vals are loaded into variables data.
+
+=> If prefix, variable name is not matching (or) key not found
+   then no error, no exception, output with default vaues
+    int - 0, Integer - null.
+
+=> We can work with multiple prefixes but need to define one class
+    with one prfix, one class with all/mutiple prefixs not possible.
+
+=> @ConfigurationProperties needs set/get methods for our variables.
+   Else not data is provided.
+
+=> If any datatype mismatch is occured then application will not be started
+   you may see error like: APPLICATION FAILED TO START
+  
+Failed to bind properties under 'my.app.id' to java.lang.Integer:
+
+    Property: my.app.id
+    Value: ABCD
+    Origin: class path resource [application.properties]:1:11
+    Reason: failed to convert java.lang.String to java.lang.Integer
+
+
+=> You can define multiple properties file, even duplicate key=val.
+   Last loaded combiation is taken into code.
+
+=>*** Duplicate keys are not recomanded in Spring Boot.
+
+=> Supports (even) loading
+   Primitives/Wrapper with String
+   Array/List/Set
+   Map/Properties(C)
+   ClassType
+
+Spring Boot Pre-defined key
+https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html
+============================================================================
+*)In upcoming chapters 'code is given by Spring boot' (AutoConfiguration)
+   ex: Database Connection is given by Spring boot.
+     But inputs are given by Programmer using properties file
+   ex:
+      spring.datasource.driver-class-name=___
+      spring.datasource.url=__
+      spring.datasource.username=__
+      spring.datasource.password=__
+

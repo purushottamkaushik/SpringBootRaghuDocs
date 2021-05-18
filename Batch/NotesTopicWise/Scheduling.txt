@@ -1,0 +1,171 @@
+                               Date: 14-May-21
+			       Spring Boot 6:30AM
+			        Mr. RAGHU
+	--------------------------------------------------
+                       Spring Boot : Task Scheduler
+
+Scheduling:-
+   Executing a task in a loop based on Period of time or Point of time.
+
+Period of Time : Time gap
+4 hours,
+6 days,
+12 months...etc
+
+Point of Time : Exact Date and Time
+1st JAN 6PM
+8:00:00 AM
+..etc
+
+Examples:-
+1. Bank Statement  (Auto Generated Email.. on every month 1st)
+2. Reports Generation (for every friday)
+3. Payslip, Salary Credit scheduling
+4. Batch JOBs in DB 
+5. FB Birthday Notifications
+6. Scheduled Emails
+...etc
+
+--------------------------------------------------------------
+Scheduling(3)
+a. fixedDelay
+b. fixedRate
+c.** cron
+
+--Coding Steps---------
+1. At main class level ,add : @EnableScheduling
+2. Define one class with one method (any name)
+3. Method should return void and take zero params.
+   (Bcoz method is called by container. 
+   Container can not give any input/output,
+   use instance variables if you want)
+4. Provide annotation over method 
+   @Scheduled(_____)
+
+
+=> Object creation and method calling done by container.
+=> Scheduling started once app is started and executed in loop
+   (called multiple times) until application stop.
+=> Scheduling is executed as Deamon Thread.
+   It will not any problem to actual application flow.
+
+==================================================
+a. fixedDelay : This is used to execute given task in a loop based on
+   time input(period of time) in millsec (1000mill sec = 1 sec)
+
+--Example--
+package in.nareshit.raghu.gen;
+
+//ctrl+shift+O
+import java.util.Date;
+
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MessageGenerator {
+
+	@Scheduled(initialDelay = 3000,fixedDelay = 5000) //millsec
+	public void myGen() {
+		System.out.println("Hello " + new Date());
+	}
+}
+---------------------
+Meaning:
+Container will call myGen() method in loop with first call gap of 3 sec
+after app start and next call gap of 5 sec.
+
+ex
+  App started at  : 9:00:00 AM
+  1st call myGen(): 9:00:03 AM
+  2nd call myGen(): 9:00:08 AM
+  3rd call myGen(): 9:00:13 AM
+  ...etc
+  (until you stop application)
+
+*) initialDelay : Time gap between Application start and 1st call of Scheduling
+*) fixedDelay : Exact time gep between  2 method calls.
+
+*) We can define multiple schedulings too.. either in same class
+   or different class
+
+---example code---------------
+package in.nareshit.raghu.gen;
+
+//ctrl+shift+O
+import java.util.Date;
+
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MessageGenerator {
+
+	@Scheduled(initialDelay = 3000,fixedDelay = 5000) //millsec
+	public void myGen() {
+		System.out.println("Hello " + new Date());
+	}
+	
+	@Scheduled(initialDelay = 6000,fixedDelay = 4000) //millsec
+	public void myGen2() {
+		System.out.println("SAMPLE " + new Date());
+	}
+}
+==========================================================
+b. fixedRate : The max timegap between 2 methods calls including
+                 method execution time.
+
+package in.nareshit.raghu.gen;
+
+//ctrl+shift+O
+import java.util.Date;
+
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MessageGenerator {
+	
+	@Scheduled(initialDelay = 3000,fixedRate = 5000) //millsec
+	public void myGen() {
+		System.out.println("Hello " + new Date());
+	}
+	
+}
+
+*)fixedDelay, fixedRate -- both are period of time. 
+			   Not suppoint point of time.
+=================================================================
+c. cron | cron jobs  : By default they are point of time
+                       even supports period of time
+
+  "SEC  MIN   HRS   DAY  MONTH  WEEKDAY"
+  0-59  0-59  0-23 1-31   1-12  SUN-SAT
+
+=> No Year in cron expression, executed same for next year if we provide
+   upto month.
+
+--Symbols---------------
+*  = all/any
+-  = range
+/  = period
+?  = any (used for DAY and WEEK DAY )
+,  =  possible values
+--Example-------------------------
+a.  0  0  9  *  *  *
+=> Execute given task/method every day at 9:00:00 AM
+
+b.  0  0  18  *  *  *
+=> Execute given task/method every day 6:00:00 PM
+
+c.  0  0  9,11  *  *  *
+=> Execute given task/method every day 2 times
+   9:00:00 Am and 11:00:00 AM
+
+d.  0  0  8-11  *  *  *  
+=> Execute given task every day 4 times.
+   8:00:00 AM
+   9:00:00 AM
+   10:00:00 AM
+   11:00:00 AM
+=========================================================================  

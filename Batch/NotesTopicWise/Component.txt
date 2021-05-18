@@ -1,0 +1,214 @@
+	             Date : 22/04/2021
+		     Spring Boot 6:30AM
+		       Mr. RAGHU
+ ---------------------------------------------------------
+Spring Boot & MicroServices @ 6.30 AM | by Mr. Raghu
+Spring Boot Day-1: https://youtu.be/E3Ten5bOBcM
+Spring Boot Day-2: https://youtu.be/A8300iBA70k
+Spring Boot Day-3: https://youtu.be/iyylaEK79nE
+Spring Boot Day-4: https://youtu.be/qKJzxw1yYeA
+
+
+a. check JDK installer 
+b. check JDK path set or not?
+  cmd> java -version
+
+c. JDK setup in STS:-
+> Windown > Prefrences > Search with Installed 
+> selected Installed JRE
+> Click on Option Showing > click on Remove
+> Click on Add Button
+> Select Standard VM > Next > Click on Directory
+ Ex: C:\Program Files\Java\jdk-11.0.9
+> Click ok > Apply and Close.
+
+*) https://start.spring.io/ is a unique place to
+   generate our Spring Boot project.
+=======code========================================
+1. Create new Starter project
+> File > new > Spring Starter Project > Enter details
+Name: SpringBoot2FirstEx
+Package: in.nareshit.raghu
+
+> Next > Next > Finish
+
+2. Define few classes
+package in.nareshit.raghu;
+
+//ctrl+shift+O
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component("aob")
+public class Address {
+	
+	@Value("8-A/99")
+	private String hno;
+	
+	@Value("HYD")
+	private String loc;
+	
+	public Address() {
+		super();
+		System.out.println("OBJ IS CREATED!");
+	}
+
+	public String getHno() {
+		return hno;
+	}
+
+	public void setHno(String hno) {
+		this.hno = hno;
+	}
+
+	public String getLoc() {
+		return loc;
+	}
+
+	public void setLoc(String loc) {
+		this.loc = loc;
+	}
+
+	@Override
+	public String toString() {
+		return "Address [hno=" + hno + ", loc=" + loc + "]";
+	}
+	
+	
+}
+--
+package in.nareshit.raghu;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component("eob")
+public class Employee {
+	
+	@Value("550")
+	private Integer empId;
+	@Value("ABCD")
+	private String empName;
+	
+	@Autowired
+	private Address addr; //HAS-A
+
+	public Employee() {
+		super();
+	}
+
+	public Integer getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(Integer empId) {
+		this.empId = empId;
+	}
+
+	public String getEmpName() {
+		return empName;
+	}
+
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+
+	public Address getAddr() {
+		return addr;
+	}
+
+	public void setAddr(Address addr) {
+		this.addr = addr;
+	}
+
+	@Override
+	public String toString() {
+		return "Employee [empId=" + empId + ", empName=" + empName + ", addr=" + addr + "]";
+	}
+	
+	
+}
+----
+3. Modified Starter class
+package in.nareshit.raghu;
+
+//ctrl+shift+O
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class SpringBoot2FirstExampleApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext ac = SpringApplication.run(SpringBoot2FirstExampleApplication.class, args);
+		//read object from container
+		Object ob = ac.getBean("eob");
+		System.out.println(ob);
+	}
+
+}
+
+4. Run this application (ctrl+F11)
+> Run Menu > Run option
+
+
+
+
+
+--Generate Source code--
+a. For set/get methods
+> Source Menu > generate getter/setters
+> Click on Select All> Generate
+
+b. For toString methods
+> Source Menu > generate toString > Generate
+
+c. For constructor methods
+> Source Menu > generate constructor using Fields
+> Click on Deselect All> Generate
+
+----FAQs--------------------------------------
+1) How many types of container in Spring/Boot?
+A) 2 Types.
+   BeanFactory(old container) [XML]
+   ApplicationContext(new container)
+     [Annotation/Java/XML Config]
+
+2) How will provide default constrcutor if did not write?
+A) Java Compiler.
+   JVM will never provide any code. It will execute code.
+
+3) When we print any reference variable using println()
+   which method is called?
+A) toString() either from Object class or from your 
+   class if overriden.
+
+4) If we read an object from container which is not exist
+   then what will happen?
+A) NoSuchBeanDefinitionException:
+    No bean named 'address' available
+
+5) What is the work of Spring container?
+A)
+  I. Find/Scan class and create object
+  II......etc
+
+6) What is base-package rule in Spring/Spring boot?
+A)
+  Every class inside project must be under one common
+  package (or) sub package. Then only Container can
+  'SCAN/FIND' your classes then try to create object.
+
+  If unable to find/scan -' no obejct is created, even
+    if we provide all annotations'.
+
+Rule : Every class must be under main/starter class
+       package or its sub-package.
+
+Q) When objects are created in Spring/Boot Application?
+A) While Starting Project only.  On Container Setup.
+
+Q) Servlets ->  Lazy Loading, Eager Loading?
+A) ___________________

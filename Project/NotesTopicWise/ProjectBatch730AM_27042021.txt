@@ -1,0 +1,347 @@
+                      Date : 27/04/2021
+		    Project batch 7:30AM
+		         Mr. RAGHU
+  --------------------------------------------------------
+@Autowired
+https://www.youtube.com/watch?v=-FlszP92JVM&list=PLVlQHNRLflP9XSWeY4x4FLwnL3UOIxnTr&index=13
+
+		    
+		    Module Implementation
+  	           ModuleName : ShipmentType
+
+1. Model class (with Database table)
+
+package in.nareshit.raghu.model;
+
+//ctrl+shift+O
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name="shipment_type_tab")
+public class ShipmentType {
+	@Id
+	@GeneratedValue
+	@Column(name="ship_id_col")
+	private Integer id;
+	
+	@Column(name="ship_mode_col")
+	private String shipMode;
+	
+	@Column(name="ship_code_col")
+	private String shipCode;
+	
+	@Column(name="ship_enbl_col")
+	private String enbleShip;
+	
+	@Column(name="ship_grade_col")
+	private String shipGrade;
+	
+	@Column(name="ship_desc_col")
+	private String shipDesc;
+}
+
+----------------------------
+2. Repository interface
+
+package in.nareshit.raghu.repo;
+//ctrl+shift+O
+import org.springframework.data.jpa.repository.JpaRepository;
+import in.nareshit.raghu.model.ShipmentType;
+
+public interface ShipmentTypeRepository
+	extends JpaRepository<ShipmentType, Integer>
+{
+
+}
+
+*) In Spring Boot, a class generated for Reposirtory
+     with code and annotation @Repository.
+-------------------
+3. Service interface
+
+package in.nareshit.raghu.service;
+public interface IShipmentTypeService {
+
+}
+--------------------
+4. Service impl
+
+package in.nareshit.raghu.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import in.nareshit.raghu.repo.ShipmentTypeRepository;
+import in.nareshit.raghu.service.IShipmentTypeService;
+
+@Service
+public class ShipmentTypeServiceImpl 
+	implements IShipmentTypeService
+{
+
+	@Autowired
+	private ShipmentTypeRepository repo; //HAS-A
+}
+
+--------------------------------------------
+5. Controller
+package in.nareshit.raghu.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import in.nareshit.raghu.service.IShipmentTypeService;
+
+@Controller
+@RequestMapping("/st")
+public class ShipmentTypeController {
+	
+	@Autowired
+	private IShipmentTypeService service; //HAS-A
+	
+	//1. show Register page
+	@GetMapping("/register")
+	public String showRegister() {
+		return "ShipmentTypeRegister";
+	}
+}
+
+
+6. UI Pages
+   ShipmentTypeRegister.html
+   __Data.html
+   __Edit.html
+
+------ ShipmentTypeRegister.html-----------
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary text-white text-center">
+                <h3>SHIPMENT TYPE REGISTER PAGE!</h3>
+            </div>
+            <div class="card-body">
+                <form id="shipmentTypeRegister" action="#" method="POST">
+                    <!-- Row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Mode</label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control" name="shipMode" id="shipMode">
+                                <option value="">-SELECT-</option>
+                                <option value="Air">Air</option>
+                                <option value="Truck">Truck</option>
+                                <option value="Ship">Ship</option>
+                                <option value="Train">Train</option>
+                            </select>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipModeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#2 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Code</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="shipCode" id="shipCode" class="form-control"/>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipCodeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#3 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Enable Shipment</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" name="enbleShip" id="enbleShip1" value="Yes"/> Yes
+                            <input type="radio" name="enbleShip" id="enbleShip2" value="No"/> No
+                        </div>
+                        <div class="col-5">
+                            <span id="enbleShipError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#4 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Grade</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" name="shipGrade" id="shipGrade1" value="A"/> A
+                            <input type="radio" name="shipGrade" id="shipGrade2" value="B"/> B
+                            <input type="radio" name="shipGrade" id="shipGrade3" value="C"/> C
+                        </div>
+                        <div class="col-5">
+                            <span id="shipGradeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#5 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Description</label>
+                        </div>
+                        <div class="col-4">
+                            <textarea name="shipDesc" id="shipDesc" class="form-control"></textarea>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipDescError"></span>
+                        </div>
+                    </div>
+                    <input type="submit" value="Create" class="btn btn-success"/>
+                </form>
+            </div>
+            <!-- card body end -->
+            <div class="card-footer">
+                <span class="text-success">Shipment type Created!</span>
+            </div>
+            <!-- card footer end -->
+        </div>
+        <!-- card end -->
+    </div>
+    <!-- container end -->
+<script type="text/javascript">
+$(document).ready(function(){
+    //1. hide error sections
+    $("#shipModeError").hide();
+    $("#shipCodeError").hide();
+    $("#enbleShipError").hide();
+    $("#shipGradeError").hide();
+    $("#shipDescError").hide();
+
+    //2. define error variables
+    var shipModeError = false;
+    var shipCodeError = false;
+    var enbleShipError = false;
+    var shipGradeError = false;
+    var shipDescError = false;
+
+    //3. define validate function
+    function validate_shipMode(){
+        var val = $("#shipMode").val();
+        if(val==''){
+            $("#shipModeError").show();
+            $("#shipModeError").html("*Please select <b>Mode</b>");
+            $("#shipModeError").css('color','red');
+            shipModeError = false;
+        } else {
+            $("#shipModeError").hide();
+            shipModeError = true;
+        }
+        return shipModeError;
+    }
+    function validate_shipCode(){
+        var val = $("#shipCode").val();
+        if(val==''){
+            $("#shipCodeError").show();
+            $("#shipCodeError").html("*Please select <b>Code</b>");
+            $("#shipCodeError").css('color','red');
+            shipCodeError = false;
+        } else {
+            $("#shipCodeError").hide();
+            shipCodeError = true;
+        }
+        return shipCodeError;
+    }
+    function validate_enbleShip(){
+        var len = $('[name="enbleShip"]:checked').length;
+        if(len==0){
+            $("#enbleShipError").show();
+            $("#enbleShipError").html("*Select one<b>Enable Shipment</b>");
+            $("#enbleShipError").css('color','red');
+            enbleShipError = false;
+        } else {
+            $("#enbleShipError").hide();
+            enbleShipError = true;
+        }
+        return enbleShipError;
+    }
+    function validate_shipGrade(){
+        var len = $('[name="shipGrade"]:checked').length;
+        if(len==0){
+            $("#shipGradeError").show();
+            $("#shipGradeError").html("*Select one<b>Shipment Grade</b>");
+            $("#shipGradeError").css('color','red');
+            shipGradeError = false;
+        } else {
+            $("#shipGradeError").hide();
+            shipGradeError = true;
+        }
+        return shipGradeError;
+    }
+    function validate_shipDesc(){
+        var val = $("#shipDesc").val();
+        if(val==''){
+            $("#shipDescError").show();
+            $("#shipDescError").html("*Please Enter <b>Description</b>");
+            $("#shipDescError").css('color','red');
+            shipDescError = false;
+        } else {
+            $("#shipDescError").hide();
+            shipDescError = true;
+        }
+        return shipDescError;
+    }
+
+    //4. link with action event
+    $("#shipMode").change(function(){
+        validate_shipMode();
+    })
+    $("#shipCode").keyup(function(){
+        validate_shipCode();
+    })
+    $('[name="enbleShip"]').change(function(){
+        validate_enbleShip();
+    })
+    $('[name="shipGrade"]').change(function(){
+        validate_shipGrade();
+    })
+    $("#shipDesc").keyup(function(){
+        validate_shipDesc();
+    })
+
+    //5. on click form submit
+    $("#shipmentTypeRegister").submit(function(){
+        validate_shipMode();
+        validate_shipCode();
+        validate_enbleShip();
+        validate_shipGrade();
+        validate_shipDesc();
+
+        if(shipModeError && shipCodeError && enbleShipError
+            && shipGradeError && shipDescError)
+            return true;
+        else return false;
+    })
+});
+</script>    
+</body>
+
+</html>
+----------------------------------------------------------
+
+
+7. Run application and Enter URL
+http://localhost:9696/st/register

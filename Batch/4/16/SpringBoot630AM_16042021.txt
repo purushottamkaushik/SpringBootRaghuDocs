@@ -1,0 +1,49 @@
+		    Date : 16/04/2021
+		    Spring Boot 6:30AM
+		        Demo-2
+		       Mr. RAGHU
+	--------------------------------------
+	FB: https://www.facebook.com/groups/thejavatemple
+	email: javabyraghu@gmail.com
+        Admin : Srikanth +91 - 630 296 8665
+ Demo-1
+ https://www.youtube.com/watch?v=E3Ten5bOBcM
+------------------------------------------------------------
+Stand Alone Application :- Install and work at one Machine
+ex:  MS Office 
+Distributed Application :- Application that runs at multiple
+    devices.
+ex: Bank Application
+
+a. Manual Service (Goto Bank)
+b. Netbanking
+c. UPI (Google Pay, PhonePay..)
+d. Mobile Banking
+e. ATM
+..etc
+
+*) Application = FrontEnd Application + BackEnd Application
+
+=> BackEnd Application is implemented using Layers Design
+  a. DAL : Data Access Layer - TODO Database Operations
+  b. SL  : Service Layer     - Operations/calculations, Logics,
+                                Transaction Management..etc
+  c. IL  : Integration Layer - Link with FrontEnd Apps
+                                 (ReSTFul webservices)
+
+
+*) JSON : Java Script Object Notation  {key:val}
+ ex:  {  eid:10, ename:"A", esal:3.3 }
+    This is also called as Global Data Format.
+       Object <---> JSON
+===================================================
+POJI - Plane Old Java Interface
+POJO - Plane Old Java Object
+
+Java code
+.java --> .class  ---> .jar/.war/.ear
+    compile       build
+
+jar = java archive      
+war = web archive  
+ear = enterprise archive  (EJBs)

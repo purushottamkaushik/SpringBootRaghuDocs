@@ -1,0 +1,199 @@
+                      Date: 21/04/2021
+	           Project batch 7:30 AM
+		       Mr. RAGHU
+ --------------------------------------------------------------
+             email:  javabyraghu@gmail.com
+                      JQuery Basics
+
+> JQuery is Javascript based library. 
+> This is used to make HTML Dynamic and Responsive.
+> Used for mostly Form Validations.
+=========================================================
+a. Live Reload Server | Live Server
+   This is used to update all code changes output at client
+   device(browser) on click save option.
+
+   No need of refresh/reload current page on modifications.
+
+=> Angular/ReactJS F/w are using Live Server option.
+
+1. Open Visual Studio code
+2. click on Extensions symbol 
+3. Search with Live Server
+4. Click on Install 
+5. Once done, close VS code and open again
+===========================================================
+CDN: Internet File
+content delivery network, or content distribution network,
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
+
+--abc.js---
+f1()
+{
+  console.log('hello');
+}
+--abc.min.js---
+f1(){console.log('hello');}
+---------------
+===========Examples=================================
+1. Setup Testing:
+ Here when page is loaded then  'document-ready function()'
+ is executed.
+
+$(document) -- Current web page
+function() {  }  - Like Java Method , TODO task
+ready() - On Loading/on Started
+
+=> On Loading current webpage execute one task.
+=> We can compare with Java class Main method.
+
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>WELCOME TO jquery</h1>
+    <script type="text/javascript">
+      $(document).ready(function(){
+          alert("Welcome to JQuery");
+      });
+    </script>
+</body>
+</html>
+------------------------------------------------------
+2. Selectors:-
+   Todo any operation over any HTML element(<a>,<p>,<h1>, <input>
+   <img>..etc) first that must be selected then we can do
+   operations/task like Hide, color change, add border..etc
+
+=> selector can be compared with java 'Reference variable'
+
+a. ID Based selector *****
+      $("#idValueOfTag")
+
+b. Attribute based selector **
+      $("[attribute=value]")
+
+c. Class based selector 
+      $(".className")
+
+--Ex:Jquery2.html---------
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style type="text/css">
+        .three{
+            color :red;
+        }
+    </style>
+</head>
+
+<body>
+    <p id="one">Hello ID Example</p>
+    <p title='two'>Hello Attribute Example</p>
+    <p class="three">Hello class Example</p>
+
+    <script type="text/javascript">
+        $(document).ready(function () { 
+            alert($("#one").text());
+            alert($("[title='two']").text());
+            //alert($('[title="two"]').text());
+            alert($(".three").text());
+        });
+    </script>
+</body>
+
+</html>
+=============================================
+3. text() and html() functions
+
+text() : This function is used to read/write
+             data to any HTML element
+         [but not Form Input]
+
+ => text('data') --adding data to TAG
+ => text()  -- reading data from TAG
+
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1 id='one'></h1>
+    <h2 id='two'>Hi Data</h2>
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+         $("#one").text('Hello Title welcome');
+         alert($("#two").text());
+      });
+    </script>
+</body>
+</html>
+
+--ex#2--
+html() : it will check for any HTML tags exist
+           if yes then they are executed and output printed
+
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <p id="a"></p>
+    <p id="b"></p>
+    
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $("#a").text('Hello <u>OK</u> <b>Welcome to All</b>');
+        $("#b").html('Hello <b>Welcome to All</b> <u>Hello</u>');
+       
+      });
+    </script>
+</body>
+</html>
+===================================================
+4. MOUSE EVENTS-Case#1
+
+$("#____").click(function(){   });
+
+$("#____").dblclick(function(){   });
+
+$("#____").mouseenter(function(){   });
+
+$("#____").mouseleave(function(){   });
+
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1 id="sample">WELCOME TO JQUERY</h1>
+    <h1 id="test">WELCOME TO JQUERY#2</h1>
+    <h1 id="a">WELCOME TO JQUERY#3</h1>
+    <h1 id="b">WELCOME TO JQUERY#4</h1>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#test").dblclick(function () {
+                alert("Mouse clicked twice!");
+            });
+            $("#sample").click(function () {
+                alert("Mouse clicked!");
+            });
+            $("#a").mouseenter(function () {
+                alert("Mouse Cursor placed on top!");
+            });
+            $("#b").mouseleave(function () {
+                alert("Mouse Cursor Left from Element!");
+            });
+        });
+    </script>
+</body>
+
+</html>
+========================================================

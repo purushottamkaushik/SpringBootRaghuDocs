@@ -1,0 +1,48 @@
+			Date : 07/04/2021
+			Project Batch 7AM 
+			    Demo - 3
+			   Mr. RAGHU
+	------------------------------------------------
+		Admin : Srikanth , +91-630 296 8665(whatsapp)
+		         Fee: 5000/- INR
+
+  	           javabyraghu@gmail.com
+	    https://www.facebook.com/groups/thejavatemple
+		Project -> Modules -> Layers(4)
+
+PL    : HTML,CSS,JS, JQuery, Theymeleaf ..etc
+SL    : POJI-POJO Design pattern/logics, calculation,operations
+DAL   : ORM/Data JPA/Hibernate / Crud Operations  --DB Operations
+IL    : Webservices Coding (Producer/Consumer)
+
+POJI-POJO : Plane Old Java Interface - Plane Old Java Object.
+JPA       : Java Persistency API
+
+--code----------
+1. Model
+2. Repository
+3. Service Interface
+4. ServiceImpl
+5. Controller
+6. Validator
+7. Util
+8. View
+9. Rest Provider/Consumer
+-------------------
+
+D : Domain (Theory)      <------ BA(Business Analyst)
+D : Design [DFD/ER/UML]
+D : Development
+=========================================================
+	UML : Unified Modeling Language (OOPs)
+
+=> It is design given for OOPs based Programming Languages
+  ex: Java, .net, PHP..etc
+
+*) Inheritance (IS-A) :
+   extends         implements    (NA)
+    C   I              I           C
+    |   |              |           |
+    C   I              C           I
+
+

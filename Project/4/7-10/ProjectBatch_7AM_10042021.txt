@@ -1,0 +1,140 @@
+			Date : 10/04/2021
+			Project Batch 7AM
+			  Mr. RAGHU
+	------------------------------------------------
+		email : javabyraghu@gmail.com
+		FB: https://www.facebook.com/groups/thejavatemple
+  	    Admin : Srikanth , +91-630 296 8665(whatsapp)
+
+Videos Links:
+https://www.youtube.com/watch?v=EA43S5R8LSc&list=PLVlQHNRLflP9XSWeY4x4FLwnL3UOIxnTr
+
+    Input : Checkboxes, Multi-select DropDown
+Variable  :  Collection Type (List/Set)
+  Database:  Child table is created with 2 columns 
+              (FK Column, Data/Element Column)
+=====Ex#1=======================================================================
+1. Model class
+
+package in.nit.model;
+//ctrl+shift+O (imports)
+@Data
+@Entity
+@Table(name="emptab")
+public class Employee {
+   @Id
+   @Column(name="eid")
+   @GeneratedValue
+   private Integer id;
+   
+   @Column(name="ename")
+   private String empName;
+
+   @Column(name="epwd")
+   private String empPwd;
+
+   @Column(name="egen")
+   private String empGen;
+
+   @Column(name="edept")
+   private String empDept;
+
+   @Column(name="eaddr")
+   private String empAddr;
+
+   @ElementCollection
+   @CollectionTable(
+	name="empprjstab",
+	joinColumns = @JoinColumn(name="eid")
+   )
+   @Column(name="eprj")
+   private Set<String> empPrjs;
+
+   @ElementCollection
+   @CollectionTable(
+       name="empclientstab",
+       joinColumns = @JoinColumn(name="eid")
+   )
+   @Column(name="client")
+   private Set<String> empClients;
+}
+2. HTML FORM
+<html>
+<head> </head>
+<body>
+<form action="#" method="POST">
+<pre>
+NAME    : <input type="text" name="empName"/>
+PASSWORD: <input type="password" name="empPwd"/>
+GENDER  : 
+   <input type="radio" name="empGen" value="Male" /> Male 
+   <input type="radio" name="empGen" value="Female" /> Female
+
+DEPARTMENT: <select name="empDept">
+		<option value="">-SELECT-</option>
+		<option value="DEV">DEV</option>
+		<option value="QA">QA</option>
+		<option value="BA">BA</option>
+	    </select>
+
+ADDRESS : <textarea  name="empAddr"></textarea>
+
+PROJECT:
+   <input type="checkbox" name="empPrjs" value="HTC"/> HTC
+   <input type="checkbox" name="empPrjs" value="NIT"/> NIT
+   <input type="checkbox" name="empPrjs" value="MNO"/> MNO
+   <input type="checkbox" name="empPrjs" value="ORCL"/> ORCL
+
+CLIENTS: <slect name="empClients">
+ 	   <option value="DEV">GT-NT</option>
+	   <option value="QA">SEGATE</option>
+	   <option value="BA">QALCOM</option>
+         </select>
+  <input type="submit" value="CREATE"/>
+</pre>
+</form>
+</body>
+</html>
+----------------------------------------------------------------
+*) Valid variable names:
+  -> all lower case: empname
+  -> first 3(atleast) letter lower, next word first letter
+     : empName,  empDeptName
+
+*) Invalid  variable name:
+   -> starting with upper: EmpName
+   -> All Uppercase  : EMPNAME (final variables)
+
+=> Entity, Id, ElementCollection (required)
+=> Table, Column, CollectionTable (optional)
+
+=> GeneratedValue (optional) but need it.
+
+=> @Data : From Lombok, to generate set/get
+         toString... 
+=========================================================
+Task:
+
+#1. Student 
+  id : Auto-generated
+
+  name : text
+  sfee : text
+  email: text
+  pwd  : password
+  addr : TextArea
+  gen  : Radio Button
+
+course : Multi-select DropDown [Java, .net, PHP, ...]
+slots  : Checkboxes [7AM, 9AM, 11AM, 4PM, 6PM, 8PM]
+----------------------------------------------------------
+#2.
+   Product
+     pid : auto-generated
+     code: text
+     cost: text
+     discount: text
+     model  : Multi-select DropDown [M1, M2, M3]
+     colors : Multi-select DropDown [RED, BLUE, GREEN]
+     grades : Checkbox [A,B,C,D]
+==========================================================

@@ -1,0 +1,156 @@
+		   Date : 17/04/2021
+		     Project Batch 7:30AM
+		   Mr. RAGHU
+	--------------------------------------------
+RefLink: (Bootstrap 4.x)
+https://www.w3schools.com/bootstrap4/bootstrap_forms.asp
+
+CSS: Cascading Style Sheet
+  To make Design of HTML File. Adding Colors, Font, Border..etc
+
+1. create a class with attribute
+<style>
+.className {
+   attribute : value;
+   attribute : value;
+   attribute : value;
+}
+</style>
+
+2. use class at tag
+<_____   class="className"> ___ </____>
+*) we can add multiple classes to one tag also
+
+---Example: Test.html------------
+<html>
+ <head> 
+  <style>
+   .mydsg1 {
+      color : red;
+   }
+  </style>
+ </head>
+ <body>
+   <h1 class="mydsg1">Welcome to Sample </h1>
+ </body>
+</html>
+----------------------------------------------------------
+		Bootstrap 4.x CSS API
+
+*) It is a collection of CSS classes (which are readmade)
+   given by Twitter company.
+   
+*) By using CSS we can directly apply classes for our tags.
+  No need of creating new classes.
+
+*)Goto Location
+  https://getbootstrap.com/docs/4.0/getting-started/introduction/
+
+*) Copy to HTML Head Section
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+
+---Examples---------------------------
+1. button : (btn btn-<name>)
+  This is used to design a button effect used for
+  <input> submit, <a>/HyperLink ..etc
+
+possible names: primary, info, success, warning, danger
+    light, dark and secondary.
+
+--Test.html---
+<html>
+ <head> 
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+ </head>
+ <body>
+
+        <input type="submit" value="Add"/>
+        <input type="submit" value="Add" class="btn btn-success"/>
+	<input type="submit" value="Add" class="btn btn-warning"/>
+	<input type="submit" value="Add" class="btn btn-danger"/>
+	<input type="submit" value="Add" class="btn btn-primary"/>
+	<input type="submit" value="Add" class="btn btn-secondary"/>
+	<input type="submit" value="Add" class="btn btn-info"/>
+	<input type="submit" value="Add" class="btn btn-light"/>
+	<input type="submit" value="Add" class="btn btn-dark"/>
+    <br/>
+	<a href="#">DELETE</a>
+	<a href="#" class="btn btn-danger">DELETE</a>
+	<a href="#" class="btn btn-primary">CREATE</a>
+	<a href="#" class="btn btn-success">EDIT</a>
+ </body>
+</html>
+--------------------------------------------------
+2. Tables:
+ classes commonly used:
+     table 
+     table-bordered 
+     table-hover
+
+--Test.html-----------------
+<html>
+ <head> 
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+ </head>
+ <body>
+    <table class="table table-bordered table-hover">
+       <tr class="bg-primary text-white">
+             <th>SlNo</th>
+             <th>NAME</th>
+             <th>FEE</th>
+	     <th>OPERATION</th>
+	  </tr>
+	  <tr>
+			<td>1</td>
+			<td>SAM</td>
+			<td>200.0</td>
+			<td>
+			<a href="#" class="btn btn-danger">DELETE</a> |
+		       <a href="#" class="btn btn-success">EDIT</a> 
+			</td>
+	   </tr>
+	   <tr>
+			<td>2</td>
+			<td>AJAY</td>
+			<td>300.0</td>
+			<td>
+			<a href="#" class="btn btn-danger">DELETE</a> |
+		       <a href="#" class="btn btn-success">EDIT</a> 
+			</td>
+	   </tr>
+	   <tr>
+            <td>3</td>
+			<td>SYED</td>
+			<td>400.0</td>
+			<td>
+			 <a href="#" class="btn btn-danger">DELETE</a> |
+			<a href="#" class="btn btn-success">EDIT</a> 
+			</td>
+	   </tr>
+	</table>
+
+    <br/>
+    
+ </body>
+</html>
+
+
+3) background color : we can use same names those are
+   used for buttons
+
+  <   class="bg-<name>" > _______</___>
+
+possible names: primary, info, success, warning, danger
+    light, dark and secondary.
+
+--Test.html---
+<p class="bg-primary text-white">Hello</p>
+<p class="bg-info text-white">Hello</p>
+<p class="bg-success text-white">Hello</p>
+<p class="bg-warning text-white">Hello</p>
+<p class="bg-danger text-white">Hello</p>
+<p class="bg-light text-white">Hello</p>
+<p class="bg-dark text-white">Hello</p>
+<p class="bg-secondary text-white">Hello</p>
+--------------------
+

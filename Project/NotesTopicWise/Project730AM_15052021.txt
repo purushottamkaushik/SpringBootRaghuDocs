@@ -1,0 +1,103 @@
+                               Date : 15-May-21
+			       Project Batch 7:30AM
+			         Mr. RAGHU
+			--------------------------------------
+Code:
+https://www.mediafire.com/file/l6x9co10j85xiym/Warehouse15052021_RAGHU.zip/file
+			 
+			 Task Module : Uom
+
+deleteUom:
+  List<Uom> list =  service.getAllUoms();
+  model.addAttribute("list",list);
+
+displayUoms:
+  List<Uom> list =  service.getAllUoms();
+   model.addAttribute("list",list);
+
+showEdit:
+  List<Uom> list =  service.getAllUoms();
+  model.addAttribute("list",list);
+
+*) DRY - Do not Repeate Yourself (Do not write duplicate code)
+
+Solution: write common code in another method, just call method.
+
+--old--
+class A{
+  m1() {
+    1...
+    2...
+    3...
+  }
+  m2() {
+    4...
+    5...
+    2...
+    3...
+  }
+  m3() {
+    6...
+    7...
+    2...
+    3...
+  }
+ 
+}
+
+--new--
+class A{
+  m1() {
+    1...
+    m4();
+  }
+  m2() {
+    4...
+    5...
+    m4();
+  }
+  m3() {
+    6...
+    7...
+    m4();
+  }
+  m4() {
+    2...
+    3...
+  }
+ 
+}
+
+--Old code-----------
+	//3. display data
+	@GetMapping("/all")
+	public String displayUoms(
+			Model model) 
+	{
+		List<Uom> list =  service.getAllUoms();
+		model.addAttribute("list",list);
+		return "UomData";
+	}
+--------new code-----------
+	@GetMapping("/all")
+	public String displayUoms(
+			Model model) 
+	{
+		commonFetchAll(model);
+		return "UomData";
+	}
+	/**
+	 * This method is used to fetch data from DB
+	 *  This logic is required before going to __DataPage
+	 *  after delete,if edit not exist and for all request.
+	 *  Multiple times repeated. So, we created one private method.
+	 */
+	private void commonFetchAll(Model model) {
+		List<Uom> list =  service.getAllUoms();
+		model.addAttribute("list",list);
+	}
+
+
+**) select method: ctrl+alt+H to find where current method is called.
+
+=======================================================================

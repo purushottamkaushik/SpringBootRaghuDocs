@@ -1,0 +1,154 @@
+                      Date: 26/04/2021
+		      Spring Boot 6:30PM
+		        Mr. RAGHU
+	-------------------------------------------
+               Properties file : Spring Boot
+
+*) Loading Programmer defined proeprties file:
+=> When we define our own properties file with any name,
+   Spring Container will not detect that file.
+   Only application.proeprties loaded.
+
+=> We need to load manually, using code at main/starter class
+   @PropertySource("classpath:abcd.properties")
+
+=> ** create file:
+ > Right click on src/main/resources folder > new > File
+ > Enter name abcd.properties 
+
+=> At Starter class/main class:
+    @PropertySource("classpath:abcd.properties")
+=============Example======================================
+1. create proeprties files under src/main/resources folder
+
+--mydata.properties---
+my.app.title=NareshIT FROM MYDATA.PROPS
+
+--abcd.proeprties--
+my.app.version=3.2
+
+
+> at starter class
+@PropertySource({
+	"classpath:mydata.properties",
+	"classpath:abcd.properties"
+})
+
+--class-
+package in.nareshit.raghu;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ProjectSetup {
+
+	@Value("${my.app.title}")
+	private String title;
+	@Value("${my.app.version}")
+	private String ver;
+
+	public String toString() {
+		return "ProjectSetup [title=" + title + ", ver=" + ver + "]";
+	}
+	
+	
+}
+
+--Modified main class--
+package in.nareshit.raghu;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.PropertySource;
+
+@SpringBootApplication
+@PropertySource({
+	"classpath:mydata.properties",
+	"classpath:abcd.properties"
+})
+public class SpringBoot2PropertiesCustomApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext	ac = SpringApplication.run(SpringBoot2PropertiesCustomApplication.class, args);
+		Object ob = ac.getBean("projectSetup");
+		System.out.println(ob);
+		//ctrl + Fn + F11
+	}
+
+}
+
+-FAQs--------------------------------------------------   
+Q) If a key is present at both application.properties and
+   custom proeprties file also loaded ? Then which one is
+   taken by container?
+A) Alwasy key is selected from 'application.properties'
+  If not exist then our own properties file which is loaded.
+
+Ex:
+application.properties
+eid=10
+
+abcd.properties
+eid=20
+
+And loaded
+@PropertySource("classpath:abcd.properties")
+
+@Value("${eid}") ===> 10 only.
+=====================================================
+*) If mutiple proeprties exist with same inside project
+   
+   a. Check inside application.properties (if exist read same)
+   b. If not present inside 'application.properties '
+       then last loaded proeprties file is 1st priority
+       ex:
+            mno.properties  #a=10
+	    xyz.properties  #a=20
+            jkl.properties  #a=30
+
+   then if above files are loaded using 
+      @PropertySource({
+          "classpath:mno.properties",
+	  "classpath:jkl.proeprties",
+	  "classpath:xyz.proeprties"
+      })
+
+Q) If application.properties file is deleted (or) not exist
+   then what will hanppen?
+A) Spring Container will try to load 'application.properties'
+   file if exist, else do nothing.
+
+   But if we try to load our own files using @PropertySource
+   annotation and file not exist (or) deleted,then
+    FileNotFoundException
+----------------------------------------------------
+
+Task :   
+
+
+Q)  Can we load application.properties file manually
+    using @PropertySource? Then what will hanppen?
+
+@PropertySource({
+	"classpath:mydata.properties",
+        "classpath:application.properties",
+	"classpath:testmn.properties"
+})
+
+Also provide same key at every place eid=<value>.
+
+A) Output:
+
+========================================================
+hr@nareshit.com
+javabyraghu@gmail.com
+Name
+Batch 
+Timing
+Faculty
+PaymentSlip
+Req: _______________
+
+Email > Click > Class Drive Invi. > https://classroom.google.com/u

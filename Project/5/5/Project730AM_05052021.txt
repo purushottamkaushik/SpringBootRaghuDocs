@@ -1,0 +1,192 @@
+                                Date : 05-May-21
+			     Project Batch 7:30AM
+			         Mr. RAGHU
+   -------------------------------------------------------------------
+                           Lombok activation process
+
+#1. Create Project with Lombok Dependency 
+#2. Write one model class using any one lombok annotation
+   @Data
+#3. Close your IDE (STS/Eclipse)
+#4. Goto Lombok location
+Ex:
+C:\Users\Raghu\.m2\repository\org\projectlombok\lombok\1.18.20
+
+#5. Double click on JAR: lombok-1.18.20
+      (or)
+  cmd > cd C:\Users\Raghu\.m2\repository\org\projectlombok\lombok\1.18.20
+  cmd > java -jar lombok-1.18.20.jar
+
+#6. Specify your STS location properly
+   (Ex: D:\sts-4.10.0.RELEASE)
+
+#7. Click on Install/Update 
+#8. Quit Installer
+======================================================================
+                         Pattern Validations
+
+=> Pattern means 'Format of input'.
+Email Id : ____ @ ___ . __
+PanCard  : AAAA9999A
+Password : Aa9.___{6,8}
+
+*) Data is given by programmer using Form Inputs{Text,TextArea, Password..etc}.
+  Before reading this data into application we do vaidate using JQuery.
+
+=> Sofar empty check is done using JQuery.
+=> This time we want to implement patterns.
+
+-----Symbols used in pattern creation-----------------------
+[ ]             - allowed chars
+
+[^ ]            - not allowed chars
+
+ +  = min 1, max-n (unlimited)
+ *  = min 0, max-n
+ ?  = min 0, max-1
+{n} = min n, max-n
+{n,m} = min n, max-m
+
+ \.  = dot(.) allowed
+ \,  = comma(,) allowed
+ \<symbol> = <symbol> allowed
+
+====Examples======================================================
+1.  [A-Z]{4,6}
+
+=> Allowed chars are A to Z. Min char 4 max char 6.
+
+Inputs:
+AJAY     -- valid
+Sample   -- Invalid
+TEN      -- Invalid
+5002     -- Invalid
+AB.CD    -- Invalid
+
+2.  [a-z]{3,6} 
+=> Allowed chars are a-z. Min - 3 and Max-6.
+
+Input:
+process -- Invalid
+test    -- valid
+
+3. [A-Z]+   Min=1,Max=unlimited
+
+Input:
+PRODUCTONE  -- Valid
+GREATINDIA  -- valid
+Y           -- Valid
+<no data>   -- Invaid
+
+4. [a-z]?  Min=0, Max=1
+
+Input:
+m    -- Valid
+N    -- Invalid
+test -- Invalid
+<no data> -- valid
+
+5. [A-Z]*  Min=0, Max=unlimited
+
+Inputs:
+<no data>   -- Valid
+TESTONE     -- Valid
+
+6. [A-Z]{2}[a-z0-9]+[a-z]{2,4}
+
+Starting must be 2 Uppercase letters
+Ending must be 2 to 4 lowercase letters
+in Middle at least 1 and most n letters/digits in any order.
+
+Inputs:
+RAm005te  -- Valid
+GRade99sample50common -- Valid
+
+7. [a-zA-Z]?[0-9]{2,3}[A-Z]+
+=> Starting must be at max one lower/uppercase char
+=> In Middle 2-3 digits only
+=> Ending can be min-1,max-n uppercase chars
+
+Input:
+99880ALPHA -- Invalid
+20TEST     -- Valid    ( we can choose zero chars from [a-zA-Z]? )
+
+8. [a-zA-Z0-9]+ \@ [a-z]+  \. [a-z]{2,4}
+
+Inputs:
+ajay@gmail.com       -- Valid
+sam125Abc@yahoo.com  -- Valid
+
+
+JQuery Expression starting : /^
+                  Ending   : $/
+
+expression = /^ -------- $/;
+
+For multiple symbols
+https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
+
+_________JQuery______________
+Converting given input to all uppercase 
+  $(this).val(
+     $(this).val().toUpperCase()
+  );
+               
+
+====PatternTest.html===================
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h2>Validation Pattern</h2>
+        <div class="row">
+            <div class="col-3">
+                <label>Shipment Code</label>
+            </div>
+            <div class="col-4">
+                <input type="text" name="shipCode" id="shipCode" class="form-control" />
+            </div>
+            <div class="col-5">
+                <span id="shipCodeError"></span>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#shipCodeError").hide();
+            var shipCodeError = false;
+            function validate_shipCode() {
+                var val = $("#shipCode").val();
+                var exp = /^[A-Z\-\s]{4,8}$/;
+                if (val == '') {
+                    $("#shipCodeError").show();
+                    $("#shipCodeError").html("*Please enter <b>Code</b>");
+                    $("#shipCodeError").css('color', 'red');
+                    shipCodeError = false;
+                } else if (!exp.test(val)) {
+                    $("#shipCodeError").show();
+                    $("#shipCodeError").html("*<b>Code</b> must be 2-4 uppercase letters");
+                    $("#shipCodeError").css('color', 'red');
+                    shipCodeError = false;
+                } else {
+                    $("#shipCodeError").hide();
+                    shipCodeError = true;
+                }
+                return shipCodeError;
+            }
+            $("#shipCode").keyup(function () {
+                //to uppercase
+                $(this).val($(this).val().toUpperCase());
+                validate_shipCode();
+            })
+
+        });
+    </script>
+</body>
+
+</html>

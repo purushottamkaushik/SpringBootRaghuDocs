@@ -1,0 +1,150 @@
+                               Date : 16-May-21
+			     Project Batch 7:30 AM
+			       Mr. RAGHU
+	---------------------------------------------------------
+			  Excel Export in Our Project
+
+*) Apache POI is a open source java API given by Apache Company.
+*) By using this API we can work with Microsoft Files
+    Word, Excel, ...etc
+
+*) We need to add two dependenies poi, poi-ooxml
+
+<dependency>
+	<groupId>org.apache.poi</groupId>
+	<artifactId>poi</artifactId>
+	<version>3.17</version>
+</dependency>
+
+<dependency>
+	<groupId>org.apache.poi</groupId>
+	<artifactId>poi-ooxml</artifactId>
+	<version>3.17</version>
+</dependency>
+
+*) Excel File Extension is '.xlsx'.
+
+*) If our controller method return type is String that indicates
+   UI page is HTML type like Thymeleaf, JSP, JSF..etc
+
+*) If our controller method return type View/class type
+  that indicates Excel/PDF Output types.
+
+  ModelAndView  =  View Class object + Model memory
+
+*) Model : to send data from Controller to View class/page.
+
+==============================================================
+Q) How can set file names for attachments using Headers?
+A) By using HttpServletResponse Header
+
+response.addHeader(
+  "Content-Disposition", 
+  "attachment;filename=__");
+
+----coding steps-----------------------------------------------------
+1. pom.xml
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.17</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.17</version>
+		</dependency>
+		
+
+2. At ShipmentTypeData.html
+<a th:href="@{/st/excel}" class="btn btn-info">Excel Export</a>
+
+3. View class
+package in.nareshit.raghu.view;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.web.servlet.view.document.AbstractXlsxView;
+
+import in.nareshit.raghu.model.ShipmentType;
+
+public class ShipmentTypeExcelView extends AbstractXlsxView {
+
+	@Override
+	protected void buildExcelDocument(
+			Map<String, Object> model, 
+			Workbook workbook, 
+			HttpServletRequest request,
+			HttpServletResponse response) 
+					throws Exception
+	{
+		
+		response.addHeader("Content-Disposition", "attachment;filename=SHIPMENTS.xlsx");
+		
+		//1. read data from model memory (given by controller)
+		@SuppressWarnings("unchecked")
+		List<ShipmentType> list  = (List<ShipmentType>)model.get("list");
+		
+		//2. create one new sheet with one name
+		Sheet sheet = workbook.createSheet("SHIPMENTS");
+		
+		//3. add rows to sheet 
+		addHeader(sheet);
+		addBody(sheet,list);
+		
+		
+	}
+	
+	private void addHeader(Sheet sheet) {
+		//row#0
+		Row row = sheet.createRow(0);
+		row.createCell(0).setCellValue("ID");
+		row.createCell(1).setCellValue("MODE");
+		row.createCell(2).setCellValue("CODE");
+		row.createCell(3).setCellValue("ENABLED");
+		row.createCell(4).setCellValue("GRADE");
+		row.createCell(5).setCellValue("NOTE");
+	}
+
+	private void addBody(Sheet sheet, List<ShipmentType> list) {
+		int rowNum = 1;
+		for(ShipmentType st : list) {
+			Row row = sheet.createRow(rowNum++);
+			row.createCell(0).setCellValue(st.getId());
+			row.createCell(1).setCellValue(st.getShipMode());
+			row.createCell(2).setCellValue(st.getShipCode());
+			row.createCell(3).setCellValue(st.getEnbleShip());
+			row.createCell(4).setCellValue(st.getShipGrade());
+			row.createCell(5).setCellValue(st.getShipDesc());
+		}
+	}
+
+}
+
+
+4. Controller method
+	//8. Export to Excel
+	@GetMapping("/excel")
+	public ModelAndView exportData() {
+		ModelAndView m = new ModelAndView();
+		m.setView(new ShipmentTypeExcelView()); //view class object
+		
+		//fetch data form DB
+		List<ShipmentType> list = service.getAllShipmentTypes();
+		m.addObject("list", list);
+		
+		return m;
+
+	}
+
+}
+----------------------------------------------
+

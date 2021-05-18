@@ -1,0 +1,85 @@
+		Date : 05/04/2021
+		Project Batch 7AM
+		  Demo Session-1
+		    Mr. RAGHU
+	---------------------------------
+		javabyraghu@gmail.com
+	https://www.facebook.com/groups/thejavatemple
+
+Admin: Srikanth
+Mobile: +91-630 296 8665
+
+Basics:
+Core Java(OOPs,String, Collection)
+Adv Java (Servlets)
+
+Good:
+Spring Boot (Data JPA) / Hibernate
+Spring Boot Web MVC / Spring MVC
+
+Recordings: First 3 sessions only 
+[No other class recordings given]
+Live class and Support For Bug Fixes
+
+Current Project is only : Level-II 
+Level-I    (Spring Project)  [not taking now]
+Level-II   (Spring Boot Project)
+Level-III  (Microservice Project)
+
+Whome? : Fresher (zero) to 3+ years (max 4yrs)
+Domain : Supply Chain Management 
+Project: Warehouse
+Module : 15 
+
+Duration: 3 months, every day 1hr 15 min to 1hr 30mins
+	   Monday to Satureday (no class on sunday)
+	   (Max 3 months 15 days)
+Tools : Maven, STS, Debug Process, Log4J, JUnit,
+        Github, AGILE with JIRA.
+        Excel/PDF, JFreeCharts,..etc
+	
+Concepts:
+ Spring Boot
+   Data JPA
+   Web MVC
+   Thymeleaf , HTML, CSS, JS, JQuery, Bootstrap
+   Security
+   ReST
+   MessageQueues
+   Batch API
+  
+=> You can add in your resume (Fresher to 3+) 
+=> Only Subject (No certificate)
+=> All Document /Code/Images (only softcopy)
+   (private Google class Drive)
+===========================================================
+		Demo Session #1 
+Project-> 3D Knowledge
+
+D - Domain      : Theory  (Business Analyst)
+   it provides full details of project, like
+   what it is ? where it is used? how it works?
+   What operations we can do? (sample screens)
+              
+D - Design      : 
+   1. DFD (Data Flow Design) : Flow Of data between
+       UI and Database  using our application.
+   2. E-R   : Entity and Relation (Database Design)
+       [1...1/1...*/*...1/*...*]
+         Entity - Table , 
+	 Relation : One Table PK is taken as another table FK
+   3. UML (OOPs) : Unified Modeling Language
+        class, object, state ..etc
+
+D - Development :
+       Design into Code
+       Test/Unit Test
+       Implement Logs + ELK
+       Deploy - PCF/Open Clouds (Free services)
+         [DevOps/AWS Team]
+
+PayTM : ?
+  Domain : E-Wallet, E-Commerce App
+     -> Register, Login, Profile Update, Validate Email, mobile
+     -> Bill Payments, Recharges, Bus Ticket, Movies
+     -> Shopping,  Purchase items..etc

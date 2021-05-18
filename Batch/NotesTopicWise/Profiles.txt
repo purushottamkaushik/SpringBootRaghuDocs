@@ -1,0 +1,136 @@
+                  Date : 11-May-21
+			      Spring Boot 6:30 AM
+			         Mr. RAGHU
+    ------------------------------------------------------------------
+                  email: javabyraghu@gmail.com
+
+
+Q) What is Environment ?
+A) A System/Computer where our application is running with full setup
+   is called as Environment. That contains server, code, Database, other
+   softwares/plugins..etc
+
+Possible Environments are:
+   Dev  = Devloper Machine
+   QA   = Quality Analysis
+   UAT  = User Acceptance Test
+   Prod = Production Server
+   ProdSupp/MainSuppo = Production Support Server
+-----------------------------------------------------------------
+Profiles:- 
+ Profiles are used to load properties/YAML based on Environment (or/and)
+ Execute code based on Environment.
+
+=> If we move our application from one system to another system
+   (one Environment to another Environment) then there may be
+   changes in code/Inputs. To handle this process use Profiles.
+
+Q) Does every appliation needs Profiles?
+A) No. But most of the applications needs this.
+
+--------------------------------------------------------------
+a. Load Properties file based on System/Environment.
+=> Create one Properties/YAML For one Environment using naming rule
+
+   application-profilename.properties
+                (or)
+   application-profilename.yml
+
+b. Execute Code based on System/Environment.
+=> To execute code for Environment based, 
+    'Define code and add @Profile("profilename")'
+
+@Profile("dev")
+@Component
+class ___{
+  //methods
+}
+
+*) Here, profilename it can be any name 
+  ex: abcd, hello123, sample. But in realtime names used as 
+      dev, qa, prod, uat, test ..etc
+
+*) To activate one profile we need to pass key-val as (ex)
+       --spring.profiles.active=qa (as option args)
+
+  (using JAR/WAR file)
+   cmd> java -jar MyApp.jar  --spring.profiles.active=qa
+   cmd> java -jar MyApp.war  --spring.profiles.active=qa
+=======================================================================
+*) If we do not activate any profile then default is exist ie
+   application.properties. It is loaded in Every Environment.
+
+*) if same key is present in default and your profile then
+   it is overriden with your profile properties key.
+
+ex
+--application.properties--
+my.app.title=COMMON-TITLE
+my.app.db=COMMON-DB
+
+--application-prod.properties--
+my.app.db=PROD-DB-ORACLE
+
+Then Loaded Values for profile 'prod'(--spring.profiles.active=prod)
+my.app.title=COMMON-TITLE, my.app.db=PROD-DB-ORACLE
+
+*) If key is not present any where then @Value will throw
+  IllegalArgumentException. @ConfigProps will give default value.
+
+*) We should not activate multiple profiles for one environment,
+   which is meaning less. one profile = one environment.
+   But still if we try to do, then last one is loaded.
+
+   --spring.profiles.active=qa,prod
+
+   Then first default is loaded, next qa is loaded(override),
+   finally prod is loaded (override).
+   
+*) If given profile properties not exist then data is taken from default 
+    alwasys. Ex: 
+     --spring.profiles.active=uat
+ 
+   But UAT profile not exist then application.properties (default loaded).
+
+===Ex=======================================================================
+Name : SpringBootProfiles
+Dep  : Lombok
+
+--application.properties--
+my.app.title=COMMON-TITLE
+my.app.db=COMMON-DB
+
+--application-qa.properties--
+my.app.db=DB-QA-MYSQL
+--------------------------
+
+--application-prod.properties--
+my.app.db=PROD-DB-ORACLE
+--------------------------
+
+*)Runner class
+package in.nareshit.raghu.runner;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import lombok.Data;
+
+@Component
+@Data
+public class MyDataRunner implements CommandLineRunner {
+	
+	//same for all profiles > then define in default file(application.properties)
+	@Value("${my.app.title}")
+	private String title;
+	
+	@Value("${my.app.db}")
+	private String db;
+	
+	
+	public void run(String... args) throws Exception {
+		System.out.println(this);
+	}
+
+}

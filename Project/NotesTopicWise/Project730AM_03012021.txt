@@ -1,0 +1,90 @@
+                        Date : 03-May-21
+			Project Batch 7:30AM
+			  Mr. RAGHU
+     -------------------------------------------------------
+Code link:
+https://www.mediafire.com/file/59e784w0ibsl1r4/Warehouse_30042021_730AM.zip/file
+
+a. HyperLink / <a> are GET type by default.
+b. Links are used in Project link ViewAll, Edit, Delete, Read More..etc
+c. Syntax:
+     <a th:href="@{/fullpath}"> ____ </a>
+
+d. URL-Rewriting:-
+   Creating one URL using static path and dynamic path
+
+   static path  = /st/delete?id=__
+   dynamic path = id(of current row)
+
+Syntax:
+ <a th:href="@{/path(key=val)}"> ___ </a>  ===> /path?key=val
+
+Ex:
+<a th:href="@{/st/delete(id=${ob.id})}">DELETE</a>
+
+    converted to => /st/delete?id=<vaulue>
+
+http://localhost:9696/st/delete?id=1
+http://localhost:9696/st/delete?id=2
+http://localhost:9696/st/delete?id=3
+
+Expanded Mode:
+@ {
+    /st/delete
+       ( 
+          id =  ${ob.id}  
+       )
+ }
+
+=> Use $ to read data from Controller, use @ symbol for URL, locations, Links
+
+=====code====================================================================
+1. Repository
+=> use deleteById(id) pre-defined method
+
+2. service interface
+=> Define one abstract method that reads id.
+
+  void deleteShipmentType(Integer id);
+
+3. Service Impl
+
+   public void deleteShipmentType(Integer id) {
+	repo.deleteById(id);
+   }
+
+4. Controller
+
+      //4. delete by id
+	@GetMapping("/delete")
+	public String deleteShipmentType(
+			@RequestParam Integer id,
+			Model model
+			) 
+	{
+		//call service
+		service.deleteShipmentType(id);
+		
+		//create msg
+		String msg = "Shipment Type '"+id+"' Deleted!";
+		
+		//load new data
+		List<ShipmentType> list = service.getAllShipmentTypes();
+		
+		//send data to UI
+		model.addAttribute("message", msg);
+		model.addAttribute("list", list);
+		
+		//goto UI page
+		return "ShipmentTypeData";
+	}
+
+5. UI : ShipmentTypeData.html
+
+Modify Delete Link:
+<a th:href="@{/st/delete(id=${ob.id})}" class="btn btn-danger"> DELETE </a>
+
+Show Message:
+<div class="card-footer bg-success text-white" th:if="${message!=null}">
+		<span th:text="${message}"></span>
+</div>

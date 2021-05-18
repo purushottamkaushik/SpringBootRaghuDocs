@@ -1,0 +1,104 @@
+			Date : 09/04/2021
+			Project Batch 7AM
+			  Mr. RAGHU
+	--------------------------------------------
+	         email: javabyraghu@gmail.email 
+	FB: https://www.facebook.com/groups/thejavatemple
+
+	           UI -- Model -- Database Table
+
+JRTP Day-1: https://youtu.be/_5BNKad9du0
+JRTP Day-2: https://youtu.be/ZJi_-8prRNo
+JRTP Day-3: https://youtu.be/FfsAFxiUhK4
+
+  ========================================================
+  For Input#1 example: Text, Radio, Trext aea, DropDown
+   then create a model class variable as Primitive Type
+   String, Integer, Double ..etc that stores only one value
+   at a time.
+
+  For Input#2 Exmple: Checkbox, Multi-select DropDown
+    then create a model class variable as Collection type
+    List,Set ..etc that stores multiple values at a time.
+
+*) For all Primitive variables one table is created (Parent table)
+   For every collection variable one child table is created.
+===============================================================
+Q) Why are we using Integer insted of int?
+A) 
+   int - default - 0             [needs memory]
+      Primitive type, no method call is possible
+     (Partially Object Oriented)
+
+   Integer - default - null      [ no memory required]
+      class type, we can perform operation
+      parsing, wrapping, convert...
+     (Fully Object Oriented)
+-------------------------------------------------------------
+Ex#1  Equal Code
+
+a) Model class
+
+package in.nit.model;
+
+@Data
+@Entity
+@Table(name="stdtab")
+public class Student {
+  @Id
+  @GeneratedValue
+  @Column(name="sid")
+  private Integer sid;
+  @Column(name="sname")
+  private String sname;
+  @Column(name="sgen")
+  private String sgen;
+
+  @ElementCollection
+  @CollectionTable(
+      name="stdlangs"
+      joinColumns = @JoinColumn(name="sid")
+      )
+  @Column(name="lang")
+  private Set<String> langs;
+}
+
+*) Here, @ElementCollection indicates to
+   ORM(JPA) to create table with defaults
+   Like,
+      tabe name = className_variableName
+      FK Column = PK column_name
+      Data Column = variableName
+
+=> but we mostly provide our own table and
+   column details. For that use annotation
+    @CollectionTable(...)
+
+
+b) StudentRegister.html
+<html>
+<head> </head>
+<body>
+<h2>WELCOME TO STUDENT REGISTER PAGE</h2>
+<pre>
+NAME : <input type="text" name="sname"/>
+GEN  : 
+  <input type="radio" name="sgen" value="Male"/> Male
+  <input type="radio" name="sgen" value="Female"/> Female
+LANGS:
+   <input type="checkbox" name="langs" value="ENG"/> ENG
+   <input type="checkbox" name="langs" value="TEL"/> TEL
+   <input type="checkbox" name="langs" value="TML"/> TML
+   <input type="checkbox" name="langs" value="HIN"/> HIN
+	<input type="submit" value="ADD"/>
+</pre>
+</body>
+</html>
+
+*) variable Name === Input name
+=====================================================
+@Entity -- creates parent table
+@ElementCollection -- creates child table
+
+Your own table and column names then use
+@Table, @Column, @CollectionTable..

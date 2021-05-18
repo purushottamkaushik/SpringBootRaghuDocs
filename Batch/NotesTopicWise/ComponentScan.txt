@@ -1,0 +1,160 @@
+                     Date: 23/04/2021
+		     Spring Boot 6:30AM
+		       Mr. RAGHU
+ ------------------------------------------------------
+ Notes: Contact Admin 
+ Srikanth +91-630 296 8665
+ (Whatsapp)
+===========================================
+       javabyraghu@gmail.com
+
+a. ComponentScanning :-
+=> Spring Container first try to find/scan our classes.
+=> If found then only object is created for our classes.
+=>** Scanning is done using one package name by container.
+     Such package is called 'base-package'
+
+=>** Container will find classes from given package and
+     sub-packages too.
+=> In Spring f/w Programmer has to provides 'base-package'
+   using one annotation
+     @ComponentScan(basePackage="in.nareshit.raghu") 
+     
+=> In Spring boot by default starter/main class package
+=========================================================
+main class - package name - in.nareshit.raghu (base-package)
+*) Your class can be in package 'in.nareshit.raghu'
+    or its sub package.
+
+a. Product    - package name - in.nareshit.raghu
+    Yes Found/Scanned.
+b. Contract   - package name - in.nareshit.raghu.model
+    Yes Found/Scanned, give class is under base-package's
+    sub-package.
+c. Admin    - package name - in.nareshit
+   No. It is super-package. not same or sub-package.
+
+d. Vendor - package name  - com.app
+    No.
+*) You must provide your class inside base-package only
+  if we write outside or no-package given then Container
+  will not find your class.
+
+--FAQs--------------------------------------------------
+Q) Can we modify base-package from main class package to
+   any other in Spring Boot?
+A) Yes. But not recomanded. Just add 
+    @ComponentScan(basePackages="____") 
+   If we provide externally base-package. 
+   Then start class package name no longer is considered
+   as base-package. It is overriden with given package.
+
+Q) Can we provide multiple base-packages ?
+A) YES. using Array style.
+     @ComponentScan(basePackages = {
+                           "pack1",
+                           "pack2",				
+                           "pack3",
+                           "pack4",
+			   .....
+			}
+		    )
+ex:
+  @ComponentScan(basePackages = {"com.app.test","in.nareshit.raghu"})
+
+Q) Who is providing base-package in Spring boot?
+A)  @SpringBootApplication annotation is giving this
+
+Q) Can we remove base-package concept from Spring/Boot?
+A) NO.
+
+Q) Can we exclude few classes/packages from basepackage?
+A) YES. _______
+
+--------------------------------------------------------
+Q) What is annotation? How to create it? how it works?
+A) _____ 
+  
+ 
+==Code==============
+1. package com.app.test;
+
+import org.springframework.beans.factory.annotation.Value;
+//ctrl+shift+O
+import org.springframework.stereotype.Component;
+
+@Component
+public class Employee {
+	
+	@Value("10")
+	private Integer eid;
+
+	public Employee() {
+		super();
+	}
+
+	public Integer getEid() {
+		return eid;
+	}
+
+	public void setEid(Integer eid) {
+		this.eid = eid;
+	}
+
+	@Override
+	public String toString() {
+		return "Employee [eid=" + eid + "]";
+	}
+	
+}
+--
+package in.nareshit.raghu;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Admin {
+	@Value("TEST")
+	private String code;
+
+	public Admin() {
+		super();
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	@Override
+	public String toString() {
+		return "Admin [code=" + code + "]";
+	}
+	
+}
+--
+2. Main class
+package in.nareshit.raghu;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+//@ComponentScan(basePackages = "com.app.test")
+//@ComponentScan(basePackages = {"com.app.test","in.nareshit.raghu"})
+public class SpringBoot2ComponentScanExApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext ac = SpringApplication.run(SpringBoot2ComponentScanExApplication.class, args);
+		Object ob1 = ac.getBean("employee");
+		Object ob2 = ac.getBean("admin");
+		System.out.println(ob1);
+		System.out.println(ob2);
+	}
+
+}

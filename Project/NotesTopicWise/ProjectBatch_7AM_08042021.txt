@@ -1,0 +1,157 @@
+			Date : 08/04/2021
+			Project Batch 7AM
+			  Mr. RAGHU
+	--------------------------------------------
+		email : javabyraghu@gmail.com
+	FB: https://www.facebook.com/groups/thejavatemple
+
+Demo Videos:
+JRTP Day-1: https://youtu.be/_5BNKad9du0
+JRTP Day-2: https://youtu.be/ZJi_-8prRNo
+JRTP Day-3: https://youtu.be/FfsAFxiUhK4
+=================================================================
+		Project = Module + Module
+
+1. User Interface (UI)
+2. Layers Design (PL/SL/DAL/IL)
+3. Database Design (Tables - Relations 1...1/1...*/*...1/*...*)
+
+-----------------------------------------------------------------
+*) Model class:
+  Here, A class that is mapped with database table and UI HTML Form.
+  So, that Form Data can be converted into Object Format and
+  same Object can be stored into Database table.
+
+=> 1 input is taken as one variable into Model class
+=> Need to add one additional input for ID(PrimaryKey).
+========================================================================
+*) package name rule : reverse of domain name
+                 http://nareshit.in  => in.nareshit.____
+camelCase Rules:
+*) Variable starts with lowercase, next word first letter uppercase
+
+double --> 0.0 (needs memory)
+Double --> null (no memory required)
+
+*) @Data (Lombok API) Annotation :
+ Generates  Constructor, set/get, toString, ....
+
+-----Ex#1------------------------------------
+1. Model 
+
+package in.nit.model;
+//ctrl+shift+O (Import)
+@Data
+@Entity
+@Table(name="emptab")
+public class Employee {
+  @Id
+  @Column(name="eid")
+  @GeneratedValue
+  private Integer id;
+
+  @Column(name="ename")
+  private String empName;
+
+  @Column(name="esal")
+  private Double empSal;
+
+  @Column(name="email")
+  private String empMail;
+}
+*) Note:
+@Id : Primary Key 
+@Entity : Map class with table and
+		variables with column.
+@Table : Optional, to provide table details
+@Column : Optiona, to provide column details
+
+@GeneratedValue : Generates one PK value
+           on INSERT/SAVE Operation.
+
+
+2. HTML Form
+<html>
+<head>  </head>
+<body>
+<h2>Employee Register </h2>
+<form action="#" method="POST">
+<pre>
+NAME  <input type="text" name=""/>
+SAL   <input type="text" name=""/>
+EMAIL <input type="text" name=""/>
+   <input type="submit" value="Register"/>
+</pre>
+</form>
+</body>
+</html>
+
+3. Database Table
+create table emptab(
+  eid   int,
+  ename varchar(20),
+  esal  double,
+  email varchar(40)
+)
+=======================================================
+Ex#2
+package in.nit.model;
+//ctrl+shift+O (Import)
+@Data
+@Entity
+@Table(name="stdtab")
+public class Student {
+  @Id
+  @Column(name="sid")
+  @GeneratedValue
+  private Integer id;
+
+  @Column(name="sname")
+  private String stdName;
+
+  @Column(name="scourse")
+  private String stdCourse;
+  
+  @Column(name="email")
+  private String stdMail;
+
+  @Column(name="gen")
+  private String stdGen;
+}
+2. HTML Form
+<html>  
+ <head></head>
+<body>
+<h1> STUDENT REGISTER </h1>
+<form action="#" method="POST">
+<pre>
+NAME : <input type="text" name=""/>
+COURSE: <select name="">
+	  <option value="">-SELECT-</option>
+	  <option value="JAVA">JAVA</option>
+	  <option value=".NET">.NET</option>
+	  <option value="PHP">PHP</option>
+	  <option value="UI">UI</option>
+        </select>
+EMAIL : <input type="text" name=""/>
+GENDER:
+     <input type="radio" name="" value="Male" /> Male
+     <input type="radio" name="" value="Female" /> Female
+     <input type="submit" value="Register"/>
+</pre>
+</form>
+</body>
+</html>
+
+3. Database table
+create table stdtab(
+  sid   int,
+  sname varchar(20),
+  sname varchar(20),
+  semail varchar(40),
+  sgen varchar(6),
+)
+===============================================
+Task
+a. Draw design : class and table
+b. code : model, HTML and DB table

@@ -1,0 +1,349 @@
+                               Date : 04-May-21
+			       Project Batch 7:30
+			        Mr. RAGHU
+     ----------------------------------------------------------------------
+             Operation-4  Show Edit Page and Do Update
+
+Stage#1 Show Data in Edit Page
+
+*) Define Edit HyperLink at Data page
+*) Read id at Controller and fetch data using service
+*) send object to UI Form
+*) use Thymeleaf Edit Form
+   with object name  th:object="${name}"
+   and Bind Input with variable name th:field="*{variable}"
+
+Stage#2 On Click Update Button, update Data in DB
+
+
+------Servlets-------------------------
+http://......../edit?id=10
+
+Reading data
+String sid = request.getParameter("id");
+int id = Integer.parseInt(sid);
+
+--Spring Boot -------------------------
+Reading data
+@RequestParam Integer id
+---------------------------------------
+
+
+1. HTML Form data can be converted into Object.
+   But Object data can not be filled back to HTML.
+
+2. Dynamic Form (Form with Data ) use Thymeleaf Form
+
+HTML:
+ <form th:action="@{/st/save}" method="POST">
+
+Thymeleaf Form: (Link with Object)
+
+ <form th:action="@{/st/update}" method="POST" th:object="${objectName}">
+
+
+HTML:
+  <input type="text" name="shipCode" id="shipCode" />
+Thymeleaf:
+  <input type="text" th:field="*{shipCode}" />
+
+*)readonly - non editable filed. (no edit allowed)
+----------------------------------------------
+Java 8 Added Optional<T> class to avoid nullpointer exception
+
+String s=___;
+s.length() ;//if s is null, it may throw NullPointerException
+
+if(s!=null)
+  s.length() ; //good approch
+
+
+-----code---------------------------------------------------
+1. Repository
+  findById(id):Optional<T>
+
+2. Service Interface
+   ShipmentType getShipmentType(Integer id);
+
+3. Service Impl
+    public ShipmentType getShipmentType(Integer id) {
+	Optional<ShipmentType> opt = repo.findById(id);
+	if(opt.isPresent()) {
+		return opt.get();
+	} else {
+		//throw exception(ShipmentTypeNotFoundException);
+	}
+	return null;
+   }
+
+4. Controller
+      //5. show edit page
+	@GetMapping("/edit")
+	public String showShipmentTypeEdit(
+			@RequestParam Integer id,
+			Model model) 
+	{
+		//fetch from DB using service
+		ShipmentType st = service.getShipmentType(id);
+		
+		//send object to UI as FORM DATA
+		model.addAttribute("shipmentType", st);
+		
+		//GOTO UI
+		return "ShipmentTypeEdit";
+	}
+5. ShipmentTypeEdit.html
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary text-white text-center">
+                <h3>SHIPMENT TYPE EDIT PAGE!</h3>
+            </div>
+            <div class="card-body">
+                <form id="shipmentTypeRegister" th:action="@{/st/update}" method="POST" th:object="${shipmentType}">
+                <!-- Row#0 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Id</label>
+                        </div>
+                        <div class="col-4">
+                             <input type="text" th:field="*{id}" class="form-control" readonly/>
+                        </div>
+                    </div>
+
+                    <!-- Row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Mode</label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control" th:field="*{shipMode}">
+                                <option value="">-SELECT-</option>
+                                <option value="Air">Air</option>
+                                <option value="Truck">Truck</option>
+                                <option value="Ship">Ship</option>
+                                <option value="Train">Train</option>
+                            </select>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipModeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#2 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Code</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" th:field="*{shipCode}" class="form-control"/>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipCodeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#3 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Enable Shipment</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" th:field="*{enbleShip}" value="Yes"/> Yes
+                            <input type="radio" th:field="*{enbleShip}" value="No"/> No
+                        </div>
+                        <div class="col-5">
+                            <span id="enbleShipError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#4 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Grade</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" th:field="*{shipGrade}" value="A"/> A
+                            <input type="radio" th:field="*{shipGrade}" value="B"/> B
+                            <input type="radio" th:field="*{shipGrade}" value="C"/> C
+                        </div>
+                        <div class="col-5">
+                            <span id="shipGradeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#5 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Description</label>
+                        </div>
+                        <div class="col-4">
+                            <textarea th:field="*{shipDesc}" class="form-control"></textarea>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipDescError"></span>
+                        </div>
+                    </div>
+                    <input type="submit" value="Update" class="btn btn-success"/>
+                </form>
+            </div>
+            <!-- card body end -->
+           
+        </div>
+        <!-- card end -->
+    </div>
+    <!-- container end -->
+<script type="text/javascript">
+$(document).ready(function(){
+    //1. hide error sections
+    $("#shipModeError").hide();
+    $("#shipCodeError").hide();
+    $("#enbleShipError").hide();
+    $("#shipGradeError").hide();
+    $("#shipDescError").hide();
+
+    //2. define error variables
+    var shipModeError = false;
+    var shipCodeError = false;
+    var enbleShipError = false;
+    var shipGradeError = false;
+    var shipDescError = false;
+
+    //3. define validate function
+    function validate_shipMode(){
+        var val = $("#shipMode").val();
+        if(val==''){
+            $("#shipModeError").show();
+            $("#shipModeError").html("*Please select <b>Mode</b>");
+            $("#shipModeError").css('color','red');
+            shipModeError = false;
+        } else {
+            $("#shipModeError").hide();
+            shipModeError = true;
+        }
+        return shipModeError;
+    }
+    function validate_shipCode(){
+        var val = $("#shipCode").val();
+        if(val==''){
+            $("#shipCodeError").show();
+            $("#shipCodeError").html("*Please select <b>Code</b>");
+            $("#shipCodeError").css('color','red');
+            shipCodeError = false;
+        } else {
+            $("#shipCodeError").hide();
+            shipCodeError = true;
+        }
+        return shipCodeError;
+    }
+    function validate_enbleShip(){
+        var len = $('[name="enbleShip"]:checked').length;
+        if(len==0){
+            $("#enbleShipError").show();
+            $("#enbleShipError").html("*Select one<b>Enable Shipment</b>");
+            $("#enbleShipError").css('color','red');
+            enbleShipError = false;
+        } else {
+            $("#enbleShipError").hide();
+            enbleShipError = true;
+        }
+        return enbleShipError;
+    }
+    function validate_shipGrade(){
+        var len = $('[name="shipGrade"]:checked').length;
+        if(len==0){
+            $("#shipGradeError").show();
+            $("#shipGradeError").html("*Select one<b>Shipment Grade</b>");
+            $("#shipGradeError").css('color','red');
+            shipGradeError = false;
+        } else {
+            $("#shipGradeError").hide();
+            shipGradeError = true;
+        }
+        return shipGradeError;
+    }
+    function validate_shipDesc(){
+        var val = $("#shipDesc").val();
+        if(val==''){
+            $("#shipDescError").show();
+            $("#shipDescError").html("*Please Enter <b>Description</b>");
+            $("#shipDescError").css('color','red');
+            shipDescError = false;
+        } else {
+            $("#shipDescError").hide();
+            shipDescError = true;
+        }
+        return shipDescError;
+    }
+
+    //4. link with action event
+    $("#shipMode").change(function(){
+        validate_shipMode();
+    })
+    $("#shipCode").keyup(function(){
+        validate_shipCode();
+    })
+    $('[name="enbleShip"]').change(function(){
+        validate_enbleShip();
+    })
+    $('[name="shipGrade"]').change(function(){
+        validate_shipGrade();
+    })
+    $("#shipDesc").keyup(function(){
+        validate_shipDesc();
+    })
+
+    //5. on click form submit
+    $("#shipmentTypeRegister").submit(function(){
+        validate_shipMode();
+        validate_shipCode();
+        validate_enbleShip();
+        validate_shipGrade();
+        validate_shipDesc();
+
+        if(shipModeError && shipCodeError && enbleShipError
+            && shipGradeError && shipDescError)
+            return true;
+        else return false;
+    })
+});
+</script>    
+</body>
+
+</html>
+
+-----------------ShipmentTypeData.html-------------
+<a th:href="@{/st/edit(id=${ob.id})}" class="btn btn-warning">EDIT</a>
+
+
+--For Update Code is----------
+*) Service Interface
+  void updateShipmentType(ShipmentType st);
+
+*) ServiceImpl
+  public void updateShipmentType(ShipmentType st) {
+	//is given object present
+	//then update
+	//else throw exception
+	repo.save(st);
+  }
+
+*) Controller
+      //6. Read Form Data and submit
+	@PostMapping("/update")
+	public String updateShipmentType(
+			@ModelAttribute ShipmentType shipmentType) 
+	{
+		//call service for update
+		service.updateShipmentType(shipmentType);
+		//redirect to all
+		return "redirect:all";
+	}
+-------------------------------------------------------

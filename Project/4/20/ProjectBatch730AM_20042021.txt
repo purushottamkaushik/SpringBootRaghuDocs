@@ -1,0 +1,241 @@
+		      Date : 20/04/2021
+		     Project Batch 7:30AM
+		       Mr. RAGHU
+  ---------------------------------------------------------
+Visual Studio Code:-
+S#1 Goto https://code.visualstudio.com/download
+S#2 Choose OS Based Link
+S#3 Install the software (Double > next > next > finish)
+S#4 Color theme
+  > File > Preferences > color theme > Choose one
+S#5 Font setting
+  > File > Preferences > Setting > Search with Font
+  > Choose Font > Modify value (Auto saved)
+S#6 Open one Folder
+  > File > Open Folder > create new folder with name 
+      'project730am' > Finish
+S#7 Click on + Symbol to create new File
+
+*) After coding 
+> Right click on code/page > Format Document (alt+shift+F) 
+=======================================================
+Q) How can we display one row with
+    7 columns, 2.5 columsn and 2.5 columns
+    using Grid System?
+
+A) Use col-5 as one row and that is converted
+   into 12 columns again. Now make it as 6/6 cols.
+
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <style>
+        .a{ background-color: red;  }
+        .b{ background-color: pink;  }
+        .c{ background-color: yellow;  }
+        .d{ background-color: orange;  }
+    </style>
+</head>
+<body>
+<div class="row">
+    <div class="col-7 a">
+        Hi
+    </div>
+    <div class="col-5">
+        <div class="row">
+            <div class="col-6 c">
+                Hello
+            </div>
+            <div class="col-6 d">
+                Bye
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+=========================================================
+<input class="form-control"/> (not for radio/checkbox)
+
+Todo Code Format     => Alt + Shift + F
+To comment one link  => select line => clt+/ 
+----------------------------------------------
+Form Input attributes:-
+name="" is used for BackEnd (Spring Boot)
+id="" is used for Validations FrontEnd, JQuery...
+
+<label for="id"> => on click Label, text box gets focus.
+
+--Ex#1--------------------------------------
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h2>User Login Form</h2>
+
+        <form action="#" method="POST">
+            <!-- Row#1 -->
+            <div class="row">
+                <div class="col-3">
+                    <label for="userId">User Name</label>
+                </div>
+                <div class="col-5">
+                    <input type="text" name="userId" id="userId" class="form-control" />
+                </div>
+                <div class="col-4">
+                    <span id="userIdError"></span>
+                </div>
+            </div>
+            <!-- Row#2 -->
+            <div class="row">
+                <div class="col-3">
+                    <label>Password</label>
+                </div>
+                <div class="col-5">
+                    <input type="password" name="upwd" id="upwd" class="form-control" />
+                </div>
+                <div class="col-4">
+                    <span id="upwdError"></span>
+                </div>
+            </div>
+            <input type="submit" value="Login" class="btn btn-success"/>
+        </form>
+    </div>
+</body>
+
+</html>
+=======Ex#2===============================
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary text-white text-center">
+                <h2>User Login Form</h2>
+            </div>
+            <div class="card-body">
+                <form action="#" method="POST">
+                    <!-- Row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="userId">User Name</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="text" name="userId" id="userId" class="form-control" />
+                        </div>
+                        <div class="col-4">
+                            <span id="userIdError"></span>
+                        </div>
+                    </div>
+                    <!-- Row#2 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Password</label>
+                        </div>
+                        <div class="col-5">
+                            <input type="password" name="upwd" id="upwd" class="form-control" />
+                        </div>
+                        <div class="col-4">
+                            <span id="upwdError"></span>
+                        </div>
+                    </div>
+                    <input type="submit" value="Login" class="btn btn-success" />
+                </form>
+            </div>
+            <!-- card body end -->
+            <div class="card-footer bg-info">
+                <span class="text-white">Logout successful</span>
+            </div>
+
+        </div>
+        <!-- card end -->
+    </div>
+    <!-- container end -->
+</body>
+
+</html>
+=============================
+Q) <div>, <span> ?
+A) To show any data inside web page at any area.
+  <div> will display data and change line
+  <span> will display data do not change line
+----------------------------------
+ <div>A</div>
+ <div>B</div>
+ Output
+ A
+ B
+ <span>A</span>
+ <span>B</span>
+ Output:
+ A B
+--Ex#3------------------------------
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container">
+        <h3>Employee Register Form</h3>
+
+        <form action="#" method="POST">
+            <!-- Row# -->
+            <div class="row">
+                <div class="col-3">
+                    <label>Employee Id</label>
+                </div>
+                <div class="col-5">
+                    <input type="text" name="empId" id="empId" class="form-control" />
+                </div>
+                <div class="col-4">
+                    <span id="empIdError"></span>
+                </div>
+            </div>
+            <!-- Row# -->
+            <div class="row">
+                <div class="col-3">
+                    <label>Employee Name</label>
+                </div>
+                <div class="col-5">
+                    <input type="text" name="empName" id="empName" class="form-control" />
+                </div>
+                <div class="col-4">
+                    <span id="empNameError"></span>
+                </div>
+            </div>
+            <!-- Row# -->
+            <div class="row">
+                <div class="col-3">
+                    <label>Employee Salary</label>
+                </div>
+                <div class="col-5">
+                    <input type="text" name="empSal" id="empSal" class="form-control" />
+                </div>
+                <div class="col-4">
+                    <span id="empSalError"></span>
+                </div>
+            </div>
+            <input type="submit" value="Add Employee" class="btn btn-primary" />
+        </form>
+    </div>
+</body>
+
+</html>
+===T#1=======================================
+Student Form
+ StdId   : text
+ StdName : text
+ StdFee  : text
+ StdCourse : dropdown
+
+a) without card design
+b) with card design
+

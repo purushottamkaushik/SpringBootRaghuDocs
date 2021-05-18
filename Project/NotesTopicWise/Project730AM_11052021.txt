@@ -1,0 +1,472 @@
+                                Date : 11-May-21
+			      Project Batch 7:30AM
+                                 Mr. RAGHU
+    -----------------------------------------------------------------------
+
+*)Externalize JQuery Validations:-
+
+Step#1 create a folder with any name under static ex: myjs
+Step#2 Create a file with extension .js with any name ex: shipment.js
+Step#3 Move JQuery code from Register page to shipment.js
+Step#4 Delete JQuery code in both Register.html and Edit.html 
+    place below line before <body> close.
+
+<script type="text/javascript" th:src="@{/myjs/shipment.js}"></script>  
+
+--shipment.js---
+
+
+===========================================================================
+
+                     AJAX Validation -- In Project
+
+*) Problem Statement:-
+For Register Page Given Input is compared with every row in DB table,
+   which is valid.
+
+Even for Edit Page Given Input is compared with Every Row, which is invalid.
+
+=> While Register it is new entry so compare with all rows.
+=> While edit it is already exist, if we compare with all rows 'it will give
+   error bcoz it is exist already'.
+
+*)Solution Statement:-
+
+For Register Page Given Input must be compared with every row in DB table.
+
+SQL: 
+   select count(*) from shipmenttype where code=?
+
+But for Edit Page given Input must be compared with every row
+               not current row.
+
+   select count(*) from shipmenttype where code=? and id!=currentId;
+
+Define AJAX code if id is not present ie Register check
+if id exist then edit check.
+
+--code changes--
+1. Repository
+package in.nareshit.raghu.repo;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import in.nareshit.raghu.model.ShipmentType;
+
+public interface ShipmentTypeRepository
+	extends JpaRepository<ShipmentType, Integer>
+{
+
+	//Register check
+	@Query("SELECT count(shipCode) from ShipmentType where shipCode=:code")
+	Integer getShipmentTypeCodeCount(String code);
+	
+	//Edit check
+	@Query("SELECT count(shipCode) from ShipmentType where shipCode=:code and id!=:id")
+	Integer getShipmentTypeCodeCountForEdit(String code,Integer id);
+}
+
+2. Service Interface
+
+boolean isShipmentTypeCodeExist(String code);
+boolean isShipmentTypeCodeExistForEdit(String code,Integer id);
+
+3. Service Impl
+public boolean isShipmentTypeCodeExist(String code) {
+		/*
+		Integer count = repo.getShipmentTypeCodeCount(code);
+		boolean isExist = count > 0 ? true: false;
+		return isExist;*/
+		//return repo.getShipmentTypeCodeCount(code) > 0 ? true: false;
+		return repo.getShipmentTypeCodeCount(code) > 0 ;
+	}
+	
+	public boolean isShipmentTypeCodeExistForEdit(String code,Integer id) {
+		return repo.getShipmentTypeCodeCountForEdit(code, id) > 0;
+	}
+
+4.Controller
+//7. AJAX Validation
+	@GetMapping("/validate")
+	@ResponseBody
+	public String validateShipmentTypeCode(
+			@RequestParam String code,
+			@RequestParam Integer id
+			) 
+	{
+		String message="";
+		//for register check
+		if(id==0 && service.isShipmentTypeCodeExist(code)) {
+			message = code + ", already exist";
+		} else if(id!=0 && service.isShipmentTypeCodeExistForEdit(code,id)) {
+			//for edit check
+			message = code + ", already exist";
+		}
+		
+		return message; 
+	}
+
+5.  Register Page
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary text-white text-center">
+                <h3>SHIPMENT TYPE REGISTER PAGE!</h3>
+            </div>
+            <div class="card-body">
+                <form id="shipmentTypeRegister" th:action="@{/st/save}" method="POST">
+                    <!-- Row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Mode</label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control" name="shipMode" id="shipMode">
+                                <option value="">-SELECT-</option>
+                                <option value="Air">Air</option>
+                                <option value="Truck">Truck</option>
+                                <option value="Ship">Ship</option>
+                                <option value="Train">Train</option>
+                            </select>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipModeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#2 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Code</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="shipCode" id="shipCode" class="form-control"/>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipCodeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#3 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Enable Shipment</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" name="enbleShip" id="enbleShip1" value="Yes"/> Yes
+                            <input type="radio" name="enbleShip" id="enbleShip2" value="No"/> No
+                        </div>
+                        <div class="col-5">
+                            <span id="enbleShipError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#4 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Grade</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" name="shipGrade" id="shipGrade1" value="A"/> A
+                            <input type="radio" name="shipGrade" id="shipGrade2" value="B"/> B
+                            <input type="radio" name="shipGrade" id="shipGrade3" value="C"/> C
+                        </div>
+                        <div class="col-5">
+                            <span id="shipGradeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#5 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Description</label>
+                        </div>
+                        <div class="col-4">
+                            <textarea name="shipDesc" id="shipDesc" class="form-control"></textarea>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipDescError"></span>
+                        </div>
+                    </div>
+                    <input type="submit" value="Create" class="btn btn-success"/>
+                </form>
+            </div>
+            <!-- card body end -->
+            <div class="card-footer text-center" th:if="${message!=null}">
+                <span class="text-success" th:text="${message}"></span>
+            </div>
+            <!-- card footer end -->
+        </div>
+        <!-- card end -->
+    </div>
+    <!-- container end -->
+<script type="text/javascript" th:src="@{/myjs/shipment.js}"></script>    
+</body>
+
+</html>
+
+6. Edit Page
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary text-white text-center">
+                <h3>SHIPMENT TYPE EDIT PAGE!</h3>
+            </div>
+            <div class="card-body">
+                <form id="shipmentTypeRegister" th:action="@{/st/update}" method="POST" th:object="${shipmentType}">
+                <!-- Row#0 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Id</label>
+                        </div>
+                        <div class="col-4">
+                             <input type="text" th:field="*{id}" class="form-control" readonly/>
+                        </div>
+                    </div>
+
+                    <!-- Row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Mode</label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control" th:field="*{shipMode}">
+                                <option value="">-SELECT-</option>
+                                <option value="Air">Air</option>
+                                <option value="Truck">Truck</option>
+                                <option value="Ship">Ship</option>
+                                <option value="Train">Train</option>
+                            </select>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipModeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#2 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Code</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" th:field="*{shipCode}" class="form-control"/>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipCodeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#3 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Enable Shipment</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" th:field="*{enbleShip}" value="Yes"/> Yes
+                            <input type="radio" th:field="*{enbleShip}" value="No"/> No
+                        </div>
+                        <div class="col-5">
+                            <span id="enbleShipError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#4 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Grade</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" th:field="*{shipGrade}" value="A"/> A
+                            <input type="radio" th:field="*{shipGrade}" value="B"/> B
+                            <input type="radio" th:field="*{shipGrade}" value="C"/> C
+                        </div>
+                        <div class="col-5">
+                            <span id="shipGradeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#5 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Description</label>
+                        </div>
+                        <div class="col-4">
+                            <textarea th:field="*{shipDesc}" class="form-control"></textarea>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipDescError"></span>
+                        </div>
+                    </div>
+                    <input type="submit" value="Update" class="btn btn-success"/>
+                </form>
+            </div>
+            <!-- card body end -->
+           
+        </div>
+        <!-- card end -->
+    </div>
+    <!-- container end -->
+<script type="text/javascript" th:src="@{/myjs/shipment.js}"></script>    
+</body>
+
+</html>
+
+
+7. shipment.js
+$(document).ready(function(){
+    //1. hide error sections
+    $("#shipModeError").hide();
+    $("#shipCodeError").hide();
+    $("#enbleShipError").hide();
+    $("#shipGradeError").hide();
+    $("#shipDescError").hide();
+
+    //2. define error variables
+    var shipModeError = false;
+    var shipCodeError = false;
+    var enbleShipError = false;
+    var shipGradeError = false;
+    var shipDescError = false;
+
+    //3. define validate function
+    function validate_shipMode(){
+        var val = $("#shipMode").val();
+        if(val==''){
+            $("#shipModeError").show();
+            $("#shipModeError").html("*Please select <b>Mode</b>");
+            $("#shipModeError").css('color','red');
+            shipModeError = false;
+        } else {
+            $("#shipModeError").hide();
+            shipModeError = true;
+        }
+        return shipModeError;
+    }
+    function validate_shipCode(){
+        var val = $("#shipCode").val();
+        var exp = /^[A-Z\-\s]{4,8}$/;
+        if(val==''){
+            $("#shipCodeError").show();
+            $("#shipCodeError").html("*Please enter <b>Code</b>");
+            $("#shipCodeError").css('color','red');
+            shipCodeError = false;
+        } else if (!exp.test(val)) {
+             $("#shipCodeError").show();
+             $("#shipCodeError").html("*<b>Code</b> must be 4-8 uppercase letters");
+             $("#shipCodeError").css('color', 'red');
+             shipCodeError = false;
+        } else {
+			var id = 0 ; //for register
+			if($("#id").val()!=undefined) { //for edit
+				id = $("#id").val(); //if present
+			}
+        	//ajax call start    
+        	$.ajax({
+				url : 'validate',
+				data: { "code": val,"id":id},
+				success:function(resTxt) {
+					if(resTxt!='') { //error, duplicate exist
+						$("#shipCodeError").show();
+            			$("#shipCodeError").html(resTxt);
+             			$("#shipCodeError").css('color', 'red');
+             		    shipCodeError = false;
+					} else { //valid, no duplicate
+						$("#shipCodeError").hide();
+             		    shipCodeError = true;
+					}
+				}
+			});
+        	//ajax call end    
+        }
+        return shipCodeError;
+    }
+    function validate_enbleShip(){
+        var len = $('[name="enbleShip"]:checked').length;
+        if(len==0){
+            $("#enbleShipError").show();
+            $("#enbleShipError").html("*Select one<b>Enable Shipment</b>");
+            $("#enbleShipError").css('color','red');
+            enbleShipError = false;
+        } else {
+            $("#enbleShipError").hide();
+            enbleShipError = true;
+        }
+        return enbleShipError;
+    }
+    function validate_shipGrade(){
+        var len = $('[name="shipGrade"]:checked').length;
+        if(len==0){
+            $("#shipGradeError").show();
+            $("#shipGradeError").html("*Select one<b>Shipment Grade</b>");
+            $("#shipGradeError").css('color','red');
+            shipGradeError = false;
+        } else {
+            $("#shipGradeError").hide();
+            shipGradeError = true;
+        }
+        return shipGradeError;
+    }
+    function validate_shipDesc(){
+        var val = $("#shipDesc").val();
+        if(val==''){
+            $("#shipDescError").show();
+            $("#shipDescError").html("*Please Enter <b>Description</b>");
+            $("#shipDescError").css('color','red');
+            shipDescError = false;
+        } else {
+            $("#shipDescError").hide();
+            shipDescError = true;
+        }
+        return shipDescError;
+    }
+
+    //4. link with action event
+    $("#shipMode").change(function(){
+        validate_shipMode();
+    })
+    $("#shipCode").keyup(function(){
+		//to uppercase
+		 $(this).val(
+     		$(this).val().toUpperCase()
+  		 );
+        validate_shipCode();
+    })
+    $('[name="enbleShip"]').change(function(){
+        validate_enbleShip();
+    })
+    $('[name="shipGrade"]').change(function(){
+        validate_shipGrade();
+    })
+    $("#shipDesc").keyup(function(){
+        validate_shipDesc();
+    })
+
+    //5. on click form submit
+    $("#shipmentTypeRegister").submit(function(){
+        validate_shipMode();
+        validate_shipCode();
+        validate_enbleShip();
+        validate_shipGrade();
+        validate_shipDesc();
+
+        if(shipModeError && shipCodeError && enbleShipError
+            && shipGradeError && shipDescError)
+            return true;
+        else return false;
+    })
+});

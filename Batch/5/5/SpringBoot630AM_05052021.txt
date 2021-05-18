@@ -1,0 +1,108 @@
+                              Date : 05-May-21
+			      Spring Boot 6:30AM
+			        Mr. RAGHU
+	---------------------------------------------------------------
+	                Email:  javabyraghu@gmail.com
+Maven Sessions(1,2,3)
+https://www.youtube.com/watch?v=9eJAvApRAI0
+https://www.youtube.com/watch?v=jOykBjSl1X0
+https://www.youtube.com/watch?v=iLwuhbnFPqo
+
+*) Spring Configuration Processor:-
+ This is used to auto-configure our variables as keys in Application.
+ ie one variable in class defined under @ConfigurationProperties
+  is taken as one key.
+
+*) While creating Application just add depenency
+   'spring configuration processor'.
+
+(or in pom.xml)
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-configuration-processor</artifactId>
+	<optional>true</optional>
+</dependency>
+
+=========Task#1================================================
+a. Define 4 variables in a runner class
+   (driver,url,username, password : String type only)
+b. Provide keys in application.properties (any name 4 keys)
+c. Read key-val data using @Value Annotation.
+
+=========Task#2================================================
+a. Define 4 variables in a runner class 
+   (driver,url,username, password : String type only)
+b. Provide keys in application.properties 
+   (any name 4 keys with common prefix)
+c. Read key-val data using @ConfigurationProperties Annotation.
+---------------------------------------------------------------
+
+  +-------------------------------------------------------+                      
+  | 	                 YAML(.yml)                       |
+  +-------------------------------------------------------+
+
+=> YAML is a new way of representing key-val data.
+=> It is advaced to properties file we can call.
+=> This is not exist in regular Java API. 
+   Added in Spring Boot only.
+
+=> Java is designed using properties concept only.
+
+---application.properties--------
+spring.datasource.driver-class-name=Oracle
+spring.datasource.url=jdbc-oracle-abcd
+spring.datasource.username=nit
+spring.datasource.password=raghu
+----------------------------------
+
+---application.yml--------
+spring:
+  datasource:
+    driver-class-name: Oracle
+    url: jdbc-oracle-abcd
+    username: nit
+    password: raghu
+----------------------------------
+
+=> YAML(.yml) is also called as YAML Ain’t Markup Language.
+   (Ref Link# https://yaml.org/spec/1.1/current.html )
+=> It will reduce duplicate words in key-val files.
+=> Look and Feel is more simple compared to properties.
+=> YAML(.yml) file is loaded into Container using SnakeYAML API
+  (Readymade API given by 3rd party)
+===================================================================
+Converting Properties file into YAML File
+
+a. Use colon(:) in place of dot(.) and equals(=)
+b. Change to new line after colon(:) and give atleast one space
+c. Provide one space before value.
+d. same level keys must have same space count
+
+** Do not repeate any word in YAML File.
+
+----Examples-----------------------------------------
+Ex#1.
+application.properties
+my.app.id=10
+my.app.code=NEW
+my.app.version=3.3
+
+application.yml
+my:
+ app:
+   id: 10
+   code: NEW
+   version: 3.3
+   
+Ex#2
+application.properties
+test.service.num=33
+test.service.name=SAMPLE
+test.service.cost=400.0
+
+application.yml
+test:
+ service:
+   num: 33
+   name: SAMPLE
+   cost: 400.0

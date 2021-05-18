@@ -1,0 +1,278 @@
+                        Date : 28/04/2021
+			Spring Boot 6:30PM
+			 Mr. RAGHU
+ -------------------------------------------------------------
+                    Lombok - using annotations
+
+--code samples---------------------------------
+*) @NoArgsConstructor : Lombok generates default constrcutor.
+1.
+@NoArgsConstructor
+public class Employee { }
+
+Lombok Generated Code:
+public class Employee {
+   public Employee() {
+      super();
+   }
+}
+------------------------------
+*) @AllArgsConstructor : It will generate constructor with
+         all variables as parameterized const. if there are no
+	 variables then it will generate default constructor.
+
+2.
+@AllArgsConstructor
+public class Employee {
+	private Integer empId;
+	private String empName;
+}
+Lombok Generated code:
+public class Employee {
+   private Integer empId;
+   private String empName;
+   public Employee(Integer empId,String empName) {
+       super();
+       this.empId = empId;
+       this.empName = empName;
+   }
+}
+
+3.
+@AllArgsConstructor
+public class Employee { }
+
+Lombok Generated Code:
+public class Employee {
+   public Employee() {
+      super();
+   }
+}
+
+4.
+@NoArgsConstructor
+@AllArgsConstructor
+public class Employee {
+   private Integer empId;
+}
+Lombok Generated Code:
+public class Employee {
+   private Integer empId;
+   public Employee() {
+     super();
+   }
+   public Employee(Integer empId) {
+     super();
+     this.empId = empId;
+   }
+}
+
+5.**
+@NoArgsConstructor
+@AllArgsConstructor
+public class Employee { }
+
+Lombok Generated code:
+public class Employee { 
+  public Employee() { super(); }
+  public Employee() { super(); }
+}
+*) Java compiler says duplicate methods  Employee().
+  Lombok work is to generate code only based on 
+  annotation given by programmer. Java Compiler will verify
+  error and syntaxes in code.
+
+*) Constrcutor also a method which gets executed only once
+   while creating object.
+
+------------------------------------------------------
+*) @RequiredArgsConstructor + @NonNull
+ 
+=> It will generate selected variables(variable having @NonNull)
+   Param. constrcutor.
+
+6.
+@RequiredArgsConstructor
+public class Employee {
+   @NonNull
+   private Integer empId;
+   private String empName;
+}
+Lombok Generated Code:
+public class Employee {
+   private Integer empId;
+   private String empName;
+   public Employee(Integer empId) {
+      super(); 
+      this.empId = empId;
+   }
+
+}
+
+=> If class has zero variables (or) no variable has @NonNull
+   then default constrcutor is generated.
+
+7.
+@RequiredArgsConstructor
+public class Employee { }
+
+Lombok Generated Code:
+public class Employee { 
+  public Employee() { super(); }
+}
+
+8.
+@RequiredArgsConstructor
+public class Employee {
+   private Integer empId;
+   private String empName;
+}
+Lombok Generated Code:
+public class Employee { 
+  public Employee() { super(); }
+}
+-------------------------------------------------
+9.*
+@NoArgsConstructor
+@AllArgsConstructor
+@RequiredArgsConstructor
+public class Employee { }
+
+Lombok Generated Code: //compile time error
+public class Employee { 
+  public Employee() { super(); }
+  public Employee() { super(); }
+  public Employee() { super(); }
+}
+
+10.**
+@AllArgsConstructor
+@RequiredArgsConstructor
+public class Employee {
+	@NonNull
+	private String empName;
+}
+Lombok Generated Code: //compile time error
+public class Employee { 
+  private String empName;
+  public Employee(String empName) { 
+     super();
+     this.empName = empName;
+  }
+  public Employee(String empName) { 
+     super();
+     this.empName = empName;
+  }
+}
+
+*) Lombok dis-advantage is, 'It is just generting code
+   based on annotation given. It is not working based
+   on java compiler view, these may give compile time errors'.
+
+*) When ever we print any reference variable using println()
+   method, it is calling internally toString() method
+   that exist in Object(C)[java.lang].
+
+   By default toString() method define with logic
+      print full class name + @ + hashCode into HexaDecimal Format
+
+--API View --
+class Object {
+   String toString() {
+        return getClass().getName() 
+	  + "@" 
+	  + Integer.toHexString(hashCode());
+    }
+}
+--------------------------------------------
+@ToString : This lombok annotation is used to override
+  toString() method in our class that prints all variables
+  data.
+
+11.
+@ToString
+public class Employee {
+   private Integer empId;
+   private String empName;
+}
+Lombok generated code
+public class Employee {
+   private Integer empId;
+   private String empName;
+
+   public String toString() {
+     return "Employee(empId="+empId+", empName="+empName+")";
+   }
+}
+=================================================
+Q) What is the difference between == and equals() method
+   in Object class?
+A) Both are same by default.
+   They will check two are refering same object or not.
+
+   But if we override equals() method then it will compare
+   objects data and even references concept.
+
+   == alwasy checks only refereces pointing.    
+
+
+12.
+@EqualsAndHashCode
+public class Employee {
+	private Integer empId;
+	private String empName;
+
+}
+Lombok Generated code:
+public class Employee {
+	private Integer empId;
+	private String empName;
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((empId == null) ? 0 : empId.hashCode());
+		result = prime * result + ((empName == null) ? 0 : empName.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		if (empId == null) {
+			if (other.empId != null)
+				return false;
+		} else if (!empId.equals(other.empId))
+			return false;
+		if (empName == null) {
+			if (other.empName != null)
+				return false;
+		} else if (!empName.equals(other.empName))
+			return false;
+		return true;
+	}
+}
+//check at main class
+Employee e1 = new Employee(20, "ABC");
+Employee e2 = new Employee(20, "ABC");
+System.out.println(e1);
+System.out.println(e1.equals(e2));
+=======================================================
+Q) If we create a String object in two different systems
+  (VMs) and print hashCode() ? Are they same or different?
+  Why/How?
+A)___
+
+Q) Can two different object have same hasCode ? When/Why?
+A) ____
+
+Q) Why should we override equals() and hashCode() methods 
+   in our class?
+A) ____
+========================================================

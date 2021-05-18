@@ -1,0 +1,98 @@
+                      Date: 21/04/2021
+		     Spring Boot 6:30AM
+		        Mr. RAGHU
+  --------------------------------------------------------
+Spring Boot & MicroServices @ 6.30 AM | by Mr. Raghu
+Spring Boot Day-1: https://youtu.be/E3Ten5bOBcM
+Spring Boot Day-2: https://youtu.be/A8300iBA70k
+Spring Boot Day-3: https://youtu.be/iyylaEK79nE
+Spring Boot Day-4: https://youtu.be/qKJzxw1yYeA
+
+
+     fb : https://www.facebook.com/groups/thejavatemple
+             email : javabyraghu@gmail.com
+
+*) Spring Boot application is created using
+   a. Maven
+   b. Gradle
+
+*) Every Spring Boot project is created by 
+   Spring Initializer Website.
+   https://start.spring.io
+
+*) Code    : .java
+   Compile : .class
+   Build   : .jar/.war/.ear
+        JAR = Java Archive 
+	WAR = Web Archive  
+	EAR = Enterprise Archive (EJB)
+
+*) Spring boot application contains 3 files (for sure) mainly
+  1. Starter class / Main class
+  2. Input file
+      a. application.properties
+      b. application.yml
+
+  3. pom.xml(Maven)/build.gradle(Gradle)
+
+--Downloadd--------------------------------------------------
+JDK : 8/11/Latest version
+  https://www.oracle.com/in/java/technologies/javase-jdk11-downloads.html
+STS(Spring Tool Suite)
+ > Goto : https://spring.io/tools
+ > Choose OS based Link
+ > Click on Keep Option
+ > Double click to Extract
+--setup----------------------------------------------------------
+a. Open STS
+ > Goto Downloads Location : E:\sts-4.10.0.RELEASE
+ > Double click on : SpringToolSuite4.exe
+
+b. Enter Workspace Location
+  ex: E:\springboot630_APRIL_2021
+
+*) Note: To set back all panes and window options
+> Window > Perspective > Resetperspective
+
+c. Font setup
+> Window > Preferences > Search with Font
+> Expand Basics > Choose Text Font > Edit details
+> Apply and close.
+
+
+======================shortcuts===============================
+a. ctrl+shift+R  (open resource)
+     To open a file exist in workspace (you code file)
+
+b. ctrl+shift+T (open type)
+      To open a file which is predefined
+c. ctrl+O (Overview) 
+     To view all members of class/interface
+     [press two times to see including parent class members]
+
+d. ctrl+M : Maximise and restore
+
+e. ctrl and + / ctrl and -  : font size adjust
+
+f. ctrl+mouse click > Go into code
+
+g.** ctrl+shift+O  : to get imports
+
+============================================
+*) Modified Starter/Main class
+package in.nareshit.raghu;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class SpringBoot2FirstAppApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext ac = SpringApplication.run(SpringBoot2FirstAppApplication.class, args);
+		System.out.println(ac);
+	}
+
+}
+========================================

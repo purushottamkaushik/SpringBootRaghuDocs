@@ -1,0 +1,93 @@
+                             Date : 07-May-21
+			   Project Batch7:30AM
+			       Mr. RAGHU
+    ------------------------------------------------------------
+			 Module: ShipmentType
+File Names:
+1. Model class : ShipmentType
+2. Repository  : ShipmentTypeRepository
+3. Service(I)  : IShipmentTypeService
+4. Service(C)  : ShipmentTypeServiceImpl
+5. Controller  : ShipmentTypeController
+6. UI:
+  ShipmentTypeRegister.html
+  ShipmentTypeData.html
+  ShipmentTypeEdit.html
+
+URLs(Paths) taken in Controller
+  class level - /st
+  methods     - /register, /save, /all, /delete, /edit, /update, /validate
+
+  -------------------------------TASK--------------------------------------
+		Module : Uom    [Unit of Measure]
+
+File Names:
+1. Model class : Uom
+
+package in.nareshit.raghu.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name="uom_tab")
+public class Uom {
+	@Id
+	@GeneratedValue
+	@Column(name="uom_id_col")
+	private Integer id;
+	
+	@Column(name="uom_type_col")
+	private String uomType;
+	
+	@Column(name="uom_model_col")
+	private String uomModel;
+	
+	@Column(name="uom_desc_col")
+	private String uomDesc;
+}
+
+
+
+2. Repository  : UomRepository
+package in.nareshit.raghu.repo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import in.nareshit.raghu.model.Uom;
+
+public interface UomRepository extends JpaRepository<Uom, Integer>
+{
+
+}
+
+3. Service(I)  : IUomService
+4. Service(C)  : UomServiceImpl
+5. Controller  : UomController
+6. UI:
+  UomRegister.html
+  UomData.html
+  UomEdit.html
+
+URLs(Paths) taken in Controller
+  class level - /uom
+  methods     - /register, /save, /all, /delete, /edit, /update, /validate
+
+--DropDown---
+<select name="uomType" id="uomType">
+  <option value="">-SELECT-</option>
+  <option vaue="PACKING">PACKING</option>
+  <option value="NO PACKING"> NO PACKING</option>
+  <option vaue="NA">NA</option>
+</select>
+
+For Thymeleaf:
+<select th:field="*{uomType}">

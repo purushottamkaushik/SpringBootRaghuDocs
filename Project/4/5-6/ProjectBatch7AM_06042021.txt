@@ -1,0 +1,107 @@
+		   Date : 06/04/2021
+		   Project Batch 7AM
+		      Demo - 2
+		      Mr. RAGHU
+	-------------------------------------------
+	FB: https://www.facebook.com/groups/thejavatemple
+	         email: javabyraghu@gmail.com
+       Admin: Srikanth  Mobile: +91-630 296 8665
+
+HTML,CSS,JS,Thymeleaf, Boostrap
+1 example -Angular, ReactJS
+
+----------------------------------------------------------
+	Project is a collection of Modules
+	one Module indicates one type of task
+
+Gmail :
+   User (Register & Login)
+   Inbox
+   Sent Mails
+   Send Email
+   Drafts
+   Settings
+   ..etc
+
+Amazon :
+  User (Register & Login)
+  Search
+  Cart 
+  Payment
+  Tracking
+  Invoice
+  Returns
+  Feeback and Comments
+  ..etc
+
+Paytm:
+  User (Register & Login)
+  Bill Payments (CC/xyz)
+  Wallet Operations
+  Recharge
+  Scan and Pay
+  UPI Operations
+  Booking Tickets
+  Insurance
+  Shopping
+  KYC Update
+  HelpDesk
+  FastTag
+  ..etc
+
+Step#1 Implement Module / Module Implementation
+Step#2 Integrate Module / Module Integration
+
+S/w Company:-
+   Employee Module(Add/View/Update/Remove operations)
+   Project  Module
+   Department Module
+
+ Every Employee must be connected with one Department
+ Many Employees will be connected with multiple Projects
+    ( 1 Employee can do multiple Projects,
+         many Employees can work for one Project)
+
+*) Inheritance (IS-A) 
+*) Association (HAS-A)
+-----------------------------------------------
+ 1...1      @OneToOne
+ 1...*      @OneToMany
+ *...1      @ManyToOne
+ *...*      @ManyToMany
+-----------------------------------------------
+  Step#1 Implement Module / Module Implementation
+
+to implement one Module we need 4 Layers given as:
+
+ a. Presentation Layer (PL) : User Interface (UI)
+ b. Service Layer (SL)      : Logics, Calculations,
+                              Transaction Management..etc
+ c. Data Access Layer (DAL) : Database Operations.
+                      (INSERT, UPDATE, DELETE..etc)
+ d. Integration Layer (IL)  : Webservices (REST)
+
+To implement one Module, different types of files are
+1. Model (C)              Ex:  Employee.java
+2. Repository(I)          Ex:  EmployeeRepository.java
+3. Service Interface(I)   Ex:  IEmployeeService.java
+4. Service Impl (C)       Ex:  EmployeeServiceImpl.java
+5. Controller (C)         Ex:  EmployeeController.java
+6. Validator (C)          Ex:  EmployeeValidator.java
+7. View (C)               Ex:  EmployeeExcelView.java
+			       EmployeePdfView.java
+8. Util (C)               Ex:  EmployeeUtil.java
+       EmailUtil.java, OtpUtil.java, CollUtil.java
+9. Rest (Producer/Consumer)Ex: EmployeeRestController.java
+			       EmployeeRestConsumer.java
+==========================================================                
+   BookMyShow -------webservices(REST)--------- PayTM
+
+ IS-A  / HAS-A
+
+ Employee _______ Person   IS-A
+ Student  ______  Book     HAS-A
+ Customer  _____  Address  HAS-A
+
+  Car  _____ Vehicle  IS-A
+  Car  _____ Engine   HAS-A

@@ -1,0 +1,176 @@
+                               Date : 15-May-21
+			       Spring Boot 6:30AM
+			         Mr. RAGHU
+	----------------------------------------------------------------
+Latest:
+https://spring.io/blog/2020/11/10/new-in-spring-5-3-improved-cron-expressions
+
+Scheduling(3)
+a. fixedDelay = Exact time gap between two method calls
+		(without including method execution time)
+b. fixedRate = Max time gap between two method calls 
+                including method execution time
+c.** cron    = Expression that indicates date and time
+		[point of time]
+
+*) fixedRate and fixedDelay = period of time
+--------------------------------------------------------------
+**) cron  = Linux OS to indicate date-time based scheduling.
+            We are using similer one to indicate task scheduling
+	    in Spring Batches also.
+
+=> It is a combination of 6 positions
+   SEC   MIN   HRS  DAY  MONTH  WEEK
+   0-59  0-59 0-23 1-31  1-12  SUN-SAT
+
+=> We can not provide year. Not possible to provide year.
+   We can give upto month, same expression is executed in next year.
+
+=> Possible symbols:
+  *   =  all/any/every
+  -   =  range (start-end)
+  ,   =  possible values (a,b,c)
+  ?   =  all/any (used only for DAY and WEEK day when month is provided).
+  /   =  Period of time.
+
+===Examples==================================================
+1.  0  0  10  *  *  *
+=> Given task is executed every day at
+    10:00:00 AM
+
+ App Started - 15th May -2021 6:50AM
+  1st execution -- 10:00:00 AM - 15th May
+  2nd execution -- 10:00:00 AM - 16th May
+  3rd execution -- 10:00:00 AM - 17th May
+  ...etc
+
+2.  0  0  9,10  *  *  *
+
+=> Given task is executed every day at
+    9:00:00 AM and 10:00:00 AM (2 times in a day)
+
+3. 0  0  8-11  *  *  *
+=> Given task is executed every day at
+   8:00:00 AM
+   9:00:00 AM
+   10:00:00 AM
+   11:00:00 AM
+
+4.  0  15  *  *  *  *
+=> Given task is executed every hour 15th min (not 15 mins gap)
+
+App Started - 15th May -2021 6:50:00 AM
+  1st execution -- 7:15:00 AM  (15th min of 7AM)
+  2nd execution -- 8:15:00 AM  (15th min of 8AM)
+  3rd execution -- 9:15:00 AM  (15th min of 9AM)
+
+5. 0  15  0  * * *
+=> Given task is executed every day (midnight)
+    12:15:00 AM
+
+6. 10  10  23  *  *  *
+=> Given task is executed every day 
+    11:10:10 PM
+
+7.  10  10  *  *  *  *
+=> Given task is executed every hour 10th min -10th sec 
+   (not 10 mins , 10 sec gaps)
+
+  1st execution is : 7:10:10  AM
+ next execution is : 8:10:10  AM
+ next execution is : 9:10:10  AM
+
+8. 10  *  *  *  *  *
+=> Given task is executed : 10th sec of every minute
+
+-----------------------------------------
+  Every value indicates point of time
+   0  0  9  *  * *  => 9th hr 0th min and 0th sec
+  But i want time gap (period of time)
+   10sec gap, 30 min gap, 4hrs gap..etc 
+   then use symbols  /
+
+9. */10  *  *  *  *  *
+=> Execeute given task with  10 sec gap
+
+   *  */15  *  *  *  *
+   a. 15th min of every hrs
+   b. 15 min gap 
+
+10.  0  0  9  1  1  SUN,FRI
+=> Execute given task
+  Every Year JAN 1st 9:00:00 AM (if day is SUN or FRI day)
+
+11.  0  0  9  10  *  *
+=> Execute given task, every month 10th day (any week day)
+    9:00:00 AM
+
+12. */10 * * * * * *
+IllegalStateException: Encountered invalid @Scheduled method
+  Cron expression must consist of 6 fields
+
+13. * * * * * *
+  Execute task in continiouesly without gap.
+
+14. */1 * * * * *
+=> Execute task with 1 sec gap.
+
+15. 0 0 9 10  *  MON-FRI
+=> Every month 10th DAY (if not SAT or SUN day)
+   at 9:00:00 AM
+
+16.  0 0 9 * 10 *  (invalid)
+     0 0 9 ? 10 ?  
+     (if month is provided and we need every day and week day 
+           then use symbol ?)
+=>  Every year Oct - every day 9:00:00 AM
+
+
+---Code-----------------------------------------------
+Name : SpringBoot2TaskScheduling
+
+1. At main class: @EnableScheduling
+
+2. Message class
+package in.nareshit.raghu.gen;
+
+//ctrl+shift+O
+import java.util.Date;
+
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MessageGenerator {
+	
+	@Scheduled(cron = "10 * * * * *")
+	public void myGen1() {
+		System.out.println("Hello Point " + new Date());
+	}
+
+
+	@Scheduled(cron = "*/10 * * * * *")
+	public void myGen2() {
+		System.out.println("Hello Period " + new Date());
+	}
+}
+*) If we define invaid expressions ("66 * * * * *")
+IllegalStateException: Encountered invalid @Scheduled method 
+'myGen': Range exceeds maximum (60): '66' in expression "66 * * * * *"
+
+Q) Execut task last day of every month?
+Cron Expression	Meaning
+0 0 0 L * *
+last day of the month at midnight
+
+0 0 0 L-3 * *
+
+third-to-last day of the month at midnight
+
+0 0 0 * * 5L
+
+last Friday of the month at midnight
+
+0 0 0 * * THUL
+
+last Thursday of the month at midnight

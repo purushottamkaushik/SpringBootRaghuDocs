@@ -1,0 +1,141 @@
+		      Date : 19/04/2021
+		      Spring Boot 6:30AM
+		        Mr. RAGHU
+	-----------------------------------------
+	   email: javabyraghu@gmail.com
+   FB : https://www.facebook.com/groups/thejavatemple
+Demo Sessions#
+https://www.youtube.com/watch?v=E3Ten5bOBcM
+https://www.youtube.com/watch?v=A8300iBA70k
+---------------------------------------------------------
+Spring Conatiner:-
+ a. Find/Scan our class and create object to it.
+ b. Provide data to variables
+ c. Objects are linked based on relations (HAS-A)
+ d. Destroy the objects.
+=========================================================
+*) Every application in Spring/Spring Boot works with Container.
+*) Two types of containers
+  a. BeanFactory (Old Container)
+  b. ApplicationContext (New Container)
+
+*) Programmer has to provide 2 inputs 
+  1. Spring Bean (class + rules given by Container)
+  2. Spring Configuration File (XML/Java*/Annotation***)
+====ex=====================================================
+Annotation Configuration:-
+=> This Configuration is applicable for Programmer-defined
+   classes only. Not For Pre-defined classes.
+
+=> It is only faster in execution compared to XML/Java.
+
+=> You must have source code (.java file) with you to defined
+   this configuration.
+
+Annotations?:
+@Component
+@Repository
+@Service
+@Controller
+@RestController
+@Value
+@Autowired
+..etc
+
+1. @Component : If we apply this annotation, then Spring Container
+                 creates object to our class.
+
+=> By Default object name is taken as className first letter
+   lowercase.(CamelCase Rule)
+=> Object is created using default constrcutor.
+
+ex:a)
+@Component
+class MyDbConnection{ }
+=> Spring container
+     MyDbConnection  myDbConnection = new MyDbConnection();
+
+ex:b) @Component("mycon")
+  class MyDbConnection { }
+=> Spring container
+     MyDbConnection  mycon = new MyDbConnection();
+
+ex:c)
+@Component("sob")
+interface Sample {}
+=> Spring container can never create object to
+   interface or abstract class.
+
+=> We need to define Implementation class(sub class)
+   then only container can create object to it.
+
+--------------------------------------------------
+@Value: Provide data to variables 
+ a. Hard Coded values(dont use it)
+ b.**** Data from Proeprties files
+ c.** SpEL (Data from an expression)
+    [Spring Expression Language]
+
+---ex:a)-----------------------------------------
+@Component
+class Process {
+   @Value("NIT")
+   String code;
+   @Value("NEW")
+   String model;
+}
+=> Process object is created with code="NIT", model="NEW".
+
+---ex:b)------------------------------------------
+=> properties files store data in key=val format.
+=> Symbol # used for comment
+=> key can have symbols like dot(.),dash(-) and
+        underscore(_) . Do not use Space.
+=> Follow syntax to read data using key.
+    @Value("${key}")
+
+--application.properties--
+# (comment) key=val
+my.cde=NIT
+my.mdl=NEW
+------------------------
+@Component("pob")
+class Process {
+    @Value("${my.cde}")
+    String code;
+    @Value("${my.mdl}")
+    String model;
+}
+=> Creating object and read data from properties file
+
+--ex:b)-----------------------------------
+--application.properties--
+my.driver=Oracle
+my.url=jdbc-orcl
+---------------------------
+class MyConnection {
+   String driver ;
+   String url;
+}
+
+---------------------------------------------------
+Q) Who will provide default constructor and when?
+A) Java Compiler. If class has zero constrcutors
+   while comipiling the source file.
+
+Q) What is Hard Coding in programming?
+A) Provide a direct value to a variable inside code
+   (.java file)
+ex:
+ class A{
+    int id=10; //hard coding
+ }
+=> To remove hard coding provide data at runtime
+  using different sources
+    a. Command Line Inputs
+    b. Scanner/Buffered Readers
+    c. Properties files
+    d. Database inputs
+    f. HTML Form Inputs
+    ..etc
+======================================================

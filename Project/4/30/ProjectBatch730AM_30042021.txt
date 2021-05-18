@@ -1,0 +1,142 @@
+                     Date : 30/04/2021
+		     Project Batch 7:30AM
+		       Mr. RAGHU
+  ----------------------------------------------------------
+              Operation-II - Fetch Data from DB
+                    Show at UI as HTML Table
+
+--coding order------------------
+1. Repository
+ findAll() method is pre-defined that will fetch all rows as
+   List<T>
+
+2. Service interface
+
+  List<ShipmentType>  getAllShipmentTypes();
+
+3. Service Impl : call repository findAll() method
+
+  public List<ShipmentType> getAllShipmentTypes() {
+	List<ShipmentType> list = repo.findAll();
+	return list;
+  }
+
+4. Controller
+ // call service and get List<T>
+ // use Model
+ // send data to UI
+ // Provide GET + Path /all
+
+       @GetMapping("/all")
+	public String fetchShipmentTypes(
+			Model model ) 
+	{
+		//call service get List<T>
+		List<ShipmentType> list = service.getAllShipmentTypes();
+		
+		// send data to UI
+		model.addAttribute("list", list);
+		
+		//goto UI page
+		return "ShipmentTypeData";
+	}
+
+5. UI : ShipmentTypeData.html
+     (without UI)
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>MODE</th>
+			<th>CODE</th>
+			<th>ENABLED</th>
+			<th>GRADE</th>
+			<th>DESCRIPTION</th>
+		</tr>
+		<tr th:each="ob:${list}">
+			<td th:text="${ob.id}"> </td>
+			<td th:text="${ob.shipMode}"> </td>
+			<td th:text="${ob.shipCode}"> </td>
+			<td th:text="${ob.enbleShip}"> </td>
+			<td th:text="${ob.shipGrade}"> </td>
+			<td th:text="${ob.shipDesc}"> </td>
+		</tr>
+	</table>
+</body>
+</html>
+         
+--------------------------------------------------------------	 
+	 (with UI Design)
+--------------------------------------------------------------
+
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+	<div class="container">
+		<div class="card-header bg-primary text-white text-center">
+			<h3>SHIPMENT TYPE DATA PAGE</h3>
+		</div>
+
+		<div class="card-body">
+			<table class="table table-hover">
+				<tr class="bg-info text-white">
+					<th>ID</th>
+					<th>MODE</th>
+					<th>CODE</th>
+					<th>ENABLED</th>
+					<th>GRADE</th>
+					<th>DESCRIPTION</th>
+					<th>OPERATIONS</th>
+				</tr>
+				<tr th:each="ob:${list}">
+					<td th:text="${ob.id}"></td>
+					<td th:text="${ob.shipMode}"></td>
+					<td th:text="${ob.shipCode}"></td>
+					<td th:text="${ob.enbleShip}"></td>
+					<td th:text="${ob.shipGrade}"></td>
+					<td th:text="${ob.shipDesc}"></td>
+					<td>
+						<a href="#" class="btn btn-danger">DELETE</a> |
+						<a href="#" class="btn btn-warning">EDIT</a>
+					</td>
+				</tr>
+			</table>
+			
+			<div class="card-footer">
+			</div>
+
+		</div> <!-- card end -->
+	</div>
+	<!-- container end -->
+</body>
+</html>
+
+
+---------------------------------------------------------
+ctrl+shift+R
+
+Thymeleaf :
+th:each="oa:${list}"
+
+equal java code is:
+List<A>  list = ---
+for(A oa:list) { ... }
+
+Thymeleaf:
+  th:text=""
+
+equal java code:
+  out.println(__) ; print data

@@ -1,0 +1,81 @@
+                           Date : 07-May-21
+			   Spring Boot 6:30AM
+			     Mr. RAGHU
+     ---------------------------------------------------------------
+Watch this video:
+https://www.youtube.com/watch?v=8P5x4DH2WHA
+
+Total 4 types of passing setup data to application
+1. Option Args(using CLA)
+2. VM Args
+3. Properties
+4. YAML
+======================================================================
+Command Line Argument (CLA)
+=> Passing input to main method as parameter (String[]) is calle as CLA.
+=> While running application we can pass data.
+=> cmd> java ClassName input1 input2 ...
+
+---Example code---
+package in.nareshit.raghu;
+public class Test {
+	public static void main(String[] args) {
+		System.out.println("WELCOME");
+		System.out.println(args[0]);
+	}
+}
+--STS----------------------
+> Right click on code > Run as > Run Configuration
+> Click Arguments Tab > Goto Program Arguments section
+> Enter data > Apply > Run 
+
+====================================================
+1. Option Args(using CLA)
+
+We can pass data to our variables using this option args
+     --key=value
+
+=> We can read even using @Value("${key}")  (or) @ConfigurationProperties
+=> This is 1st priority in order. Used to pass data at runtime.
+
+--Ex--
+a)
+ Name:SpringBoot2InputsOptionArgsTest
+ Dep : Lombok
+
+b) Runner class
+package in.nareshit.raghu.runner;
+//ctrl+shift+O
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import lombok.Data;
+
+@Component
+@Data
+public class DataTest implements CommandLineRunner {
+
+	@Value("${my.code}")
+	private String code;
+	
+	public void run(String... args) throws Exception {
+		System.out.println(code);
+	}
+
+}
+c) application.properties
+ my.code=FROM-PROPS
+
+d) application.yml
+ my:
+  code: FROM-YML
+
+e)** Run Your application with option args
+> Goto Starter class(main class)
+> Right click > Run As  > Run Configuration
+> Click On Argument tab > Goto Program Args section
+> Enter data like
+   --my.code=FROM-ARGS
+> Apply > Run 
+ ==================================================================

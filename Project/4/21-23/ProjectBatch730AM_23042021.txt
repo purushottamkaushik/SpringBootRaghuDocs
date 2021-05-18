@@ -1,0 +1,196 @@
+                    Date: 23/04/2021
+		    Project Batch 7:30 AM
+		      Mr. RAGHU
+	----------------------------------
+             email: javabyraghu@gmail.com
+
+JQuery Validations Steps and sample code:-
+
+HTML Form:-
+a. Form Input, add id="__" attribute
+b. Add Error Section <span id="__Error">
+
+JQuery:-
+a. Hide Error Section by default
+b. Define error variable
+c. Define validate function
+d. Link action with event
+f. Define onsubmit Form 
+=======================================================
+*) In validate function must return false if there is
+  error in input. Else return true.
+
+*) To read Form input using selector use method val();
+    $("#___").val();
+
+
+Q) What is the diff b/w === and == ?
+A) == compare data only
+    10 == '10'  //true
+
+   === compare datatype and data
+     10 === 10  //true
+     10 === '10' //false
+
+=======================
+f. Define onsubmit Form 
+   I.   Given id="" to FORM tag
+   II.  Define submit(function(){}) using Form selector
+   III  Call again all validate functions
+   IV. if all error variables are true then return true
+       (ie submit form to server)
+       else return flase (do not submit form)
+
+
+=====Example===========
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h3>Employee Register Form</h3>
+        <form id="myEmpForm" action="#" method="POST">
+            <div class="row">
+                <div class="col-3">
+                    <label>Employee Name</label>
+                </div>
+                <div class="col-4">
+                    <input type="text" name="empName" id="empName" class="form-control" />
+                </div>
+                <div class="col-5">
+                    <span id="empNameError"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <label>Employee Salary</label>
+                </div>
+                <div class="col-4">
+                    <input type="text" name="empSal" id="empSal" class="form-control" />
+                </div>
+                <div class="col-5">
+                    <span id="empSalError"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <label>Employee Department</label>
+                </div>
+                <div class="col-4">
+                    <select name="empDept" id="empDept" class="form-control">
+                        <option value="">-SELECT-</option>
+                        <option value="DEV">DEV</option>
+                        <option value="QA">QA</option>
+                        <option value="BA">BA</option>
+
+                    </select>
+                </div>
+                <div class="col-5">
+                    <span id="empDeptError"></span>
+                </div>
+            </div>
+
+
+            <input type="submit" value="Add Employee" class="btn btn-success" />
+        </form>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //1.  hide Error section
+            $("#empNameError").hide();
+            $("#empSalError").hide();
+            $("#empDeptError").hide();
+
+            //2. define error variable
+            var empNameError = false;
+            var empSalError = false;
+            var empDeptError = false;
+
+            //3. define validate function
+            function validate_empName() {
+                //read form input
+                var val = $("#empName").val();
+                if (val == '') {
+                    $("#empNameError").show();
+                    $("#empNameError").html("*<b>Name</b> can not be empty!");
+                    $("#empNameError").css('color', 'red');
+                    empNameError = false;
+                } else {
+                    $("#empNameError").hide();
+                    empNameError = true;
+                }
+                return empNameError;
+            }
+
+            function validate_empSal() {
+                //read form input
+                var val = $("#empSal").val();
+                if (val == '') {
+                    $("#empSalError").show();
+                    $("#empSalError").html("*<b>Salary </b> can not be empty!");
+                    $("#empSalError").css('color', 'red');
+                    empSalError = false;
+                } else {
+                    $("#empSalError").hide();
+                    empSalError = true;
+                }
+                return empSalError;
+            }
+
+            function validate_empDept() {
+                var val = $("#empDept").val();
+                if (val == '') {
+                    $("#empDeptError").show();
+                    $("#empDeptError").html("*Select one <b>Department</b>");
+                    $("#empDeptError").css('color', 'red');
+                    empDeptError = false;
+                } else {
+                    $("#empDeptError").hide();
+                    empDeptError = true;
+                }
+                return empDeptError;
+            }
+
+            //4. Link with action-event
+            $("#empName").keyup(function () {
+                //call function
+                validate_empName();
+            });
+
+            $("#empSal").keyup(function () {
+                validate_empSal();
+            });
+            //DropDown/select - onChange
+            $("#empDept").change(function () {
+                validate_empDept();
+            });
+
+            // This is executed on click Form submit
+            $("#myEmpForm").submit(function () {
+                //call all validate functions
+                validate_empName();
+                validate_empSal();
+                validate_empDept();
+
+                //if all are ture then return true
+                if (empNameError && empSalError && empDeptError) return true;
+                //else false
+                else return false;
+
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+------------------------------------------------
+Task:
+Student[stdName,stdFee,stdCourse(dropDown)]
+

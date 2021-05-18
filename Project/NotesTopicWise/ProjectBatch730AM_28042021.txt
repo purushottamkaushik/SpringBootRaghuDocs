@@ -1,0 +1,86 @@
+                        Date: 28/04/2021
+		      Project Batch 7:30AM
+		          Mr. RAGHU
+   ------------------------------------------------------
+           #1. Save Product data into Database
+
+DFD Design: Data Flow Design
+  This design gives overview of FLOW OF DATA ie how data is
+  sent from UI to Database and Database to UI.
+
+*) @ModelAttribute:
+  HTML Form data is converted into object by spring container
+  on click submit button. Same object we can read into
+  Controller class using this annotation : @ModelAttribute
+
+  Syntax: @ModelAttribute  ClassName objectName
+          @ModelAttribute  ShipmentType shipmentType
+
+*)Model : This is created by Spring container which stores
+    data in key=val to send data from controller to UI.
+
+    Read data at UI using EL (Expression Language)
+    Syntax: ${key}
+
+========coding order=======================
+1. Repository
+  We use save(object):object method given by Repository (I).
+  It will take object and insert into DB as a table#row
+  and returns same object with ID updated.
+
+2. Service Interface
+ *)Define one abstract method: 
+   Integer saveShipmentType(ShipmentType st);
+
+3. Service Impl
+  *) Implement method using Repository save()
+
+  public Integer saveShipmentType(ShipmentType st) {
+	st = repo.save(st);
+	return st.getId(); //return PK(ID)
+  }
+
+4. Controller
+
+    //2. on click submit
+	@PostMapping("/save")
+	public String saveShipmentType(
+			//Read Form Data
+			@ModelAttribute ShipmentType shipmentType,
+			Model model
+			) 
+	{
+		//call service
+		Integer id = service.saveShipmentType(shipmentType);
+
+		//success message
+		String msg = "Shipment Type '"+id+"' is created";
+		
+		//send to UI (key,val)
+		model.addAttribute("message", msg);
+		
+		//goto UI Page
+		return "ShipmentTypeRegister";
+	}
+
+5. Register UI (ShipmentTypeRegister.html)
+
+** Modified Footer code:
+
+<div class="card-footer text-center" th:if="${message!=null}">
+       <span class="text-success" th:text="${message}"></span>
+ </div>
+
+*)Note:
+a.  th:text => print data at webpage
+b.  th:if(condition) => execute task if condition is true
+c.  ${key}  => Read data from Model memory (exist in Controller)
+
+=> th:if="${message!=null}" and th:text="${message}"
+   equal java code is:
+ if(message!=null) {
+     print(message);
+ }
+==============================================
+12PM-1PM -- same link (login)
+for setup problems

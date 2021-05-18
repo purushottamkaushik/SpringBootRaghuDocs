@@ -1,0 +1,224 @@
+                               Date: 13-May-21
+			       Spring Boot 6:30AM
+			         Mr. RAGHU
+                     ----------------------------------
+StopWatch(C):-
+=> This class is given by Spring F/w. 
+=> It is used to calculate time taken by a process/block/code/..etc
+
+=> It has 2 main methods:
+  a. start()  : it will start counting time
+  b. stop()   : it will finish couting time.
+
+=> To print time calculated use methods:
+getTotalTimeSeconds()
+getTotalTimeMillis()
+
+--Example--
+Name: SpringBoot2StopWatchEx
+
+*)Runner class:
+package in.nareshit.raghu.runner;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
+
+@Component
+public class MyTestRunner implements CommandLineRunner {
+
+	public void run(String... args) throws Exception {
+		StopWatch st = new StopWatch();
+		
+		st.start();
+		//st.start();
+		
+		System.out.println("Hello");
+		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			Math.pow(i+1, i*i*i);
+		}
+		
+		System.out.println("Hi");
+		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			Math.pow(i+1, i*i*i);
+		}
+		
+		System.out.println("Bye");
+		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			Math.pow(i+1, i*i*i);
+		}
+		
+		st.stop();
+		//st.stop();
+		
+		System.out.println("SEC=>" + st.getTotalTimeSeconds());
+		System.out.println("Milli SEC=>" + st.getTotalTimeMillis());
+		System.out.println("Nano Sec=>" + st.getTotalTimeNanos());
+	}
+
+}
+
+*)Note:
+*) If we try to call start() 2 times (or more) then 
+    IllegalStateException: Can't start StopWatch: it's already running
+*) If we try to call stop() 2 times (or more )then
+   IllegalStateException: Can't stop StopWatch: it's not running
+
+
+*) We can print time couting based on task/block even using prettyPrint.
+  But it needs additional information as Title(id) from StopWatch
+  and taskName using start() method.
+
+
+----Example#2--------------------
+package in.nareshit.raghu.runner;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
+
+@Component
+public class MyTestRunner implements CommandLineRunner {
+
+	public void run(String... args) throws Exception {
+		StopWatch st = new StopWatch("My Runner Data");  //id(or) title
+		
+		st.start("My Loop#1"); //taskName
+		
+		System.out.println("Hello");
+		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			Math.pow(i+1, i*i*i);
+		}
+		
+		st.stop();
+		
+		
+		st.start("My Loop#2"); //taskName
+		
+		System.out.println("Hi");
+		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			Math.pow(i+1, i*i*i);
+		}
+		
+		st.stop();
+		
+		
+		st.start("My Loop#3");
+		
+		System.out.println("Bye");
+		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			Math.pow(i+1, i*i*i);
+		}
+		
+		st.stop();
+		
+		System.out.println(st.prettyPrint());
+		
+	}
+
+}
+
+
+---------------------------------
+*)TimeUnit [ java.util.concurrent]
+Java 1.5 has provided on enum TimeUnit todo Time Conversions.
+Given as :  Base  => NANO
+   1 MICRO   = 1000 * NANO ;
+   1 MILLI   = 1000 * MICRO ;
+   1 SECOND  = 1000 * MILLI ;
+   1 MINUTE  = 60   * SECOND ;
+   1 HOUR    = 60   * MINUTE ;
+   1 DAY     = 24   * HOUR ;
+
+*) by using this enum we can convert time between Nano to Days.
+
+---Example code------------------
+package in.nareshit.raghu.runner;
+
+import java.sql.Time;
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+@Component
+public class TestTimeUnitRunner implements CommandLineRunner {
+
+	public void run(String... args) throws Exception {
+		// hrs to mins
+		long c1 = TimeUnit.HOURS.toMinutes(3);
+		System.out.println(c1);
+		//min to mill sec
+		long c2 = TimeUnit.MINUTES.toMillis(50);
+		System.out.println(c2);
+		//days to sec
+		long c3 = TimeUnit.DAYS.toSeconds(1);
+		System.out.println(c3);
+		
+		System.out.println(TimeUnit.SECONDS.toNanos(12));
+		System.out.println(TimeUnit.NANOSECONDS.toMicros(1000000000));
+	
+		System.out.println("Current Time :" + System.currentTimeMillis());
+		System.out.println(TimeUnit.MILLISECONDS.toNanos(System.currentTimeMillis()));
+		
+		System.out.println(TimeUnit.HOURS.toDays(48));
+	}
+
+}
+------------------------------------------------------------
+Q) How many types of Spring container exist in Spring F/w (or) Boot?
+A) 2.
+  a. BeanFactory(I)
+  b. ApplicationContext(I)
+
+*) Spring Boot internally uses ApplicationContext(I) impl classes only.
+For non-web applications (Standalone) : AnnotationConfigApplicationContext(C)
+For Web based applications : AnnotationConfigServletWebServerApplicationContext(C)
+*) we can not modify Impl classes.
+
+Q) Is customization possible in container setup?
+A) YES. But 100% not recomanded using code.
+
+--Turn Off Banner(modified Main class-------
+package in.nareshit.raghu;
+
+import org.springframework.boot.Banner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class SpringBoot2StopWatchExApplication {
+
+	public static void main(String[] args) {
+		/*ApplicationContext ac = SpringApplication.run(SpringBoot2StopWatchExApplication.class, args);
+		System.out.println(ac.getClass().getName());
+		*/
+		SpringApplication sa = new SpringApplication(SpringBoot2StopWatchExApplication.class);
+		sa.setBannerMode(Banner.Mode.OFF);
+		ApplicationContext ac = sa.run(args);
+		System.out.println(ac.getClass().getName());
+	}
+
+}
+
+Online banner Generator
+https://springhow.com/spring-boot-banner-generator/
+
+*) we can customize our own banner using file banner.txt which is 
+  placed under 'src/main/resource' folder.
+
+ Project
+  |--src/main/resources
+      |-banner.txt
+
+--banner.txt-------
+ooooooooo.         .o.         .oooooo.    ooooo   ooooo ooooo     ooo 
+`888   `Y88.      .888.       d8P'  `Y8b   `888'   `888' `888'     `8' 
+ 888   .d88'     .8"888.     888            888     888   888       8  
+ 888ooo88P'     .8' `888.    888            888ooooo888   888       8  
+ 888`88b.      .88ooo8888.   888     ooooo  888     888   888       8  
+ 888  `88b.   .8'     `888.  `88.    .88'   888     888   `88.    .8'  
+o888o  o888o o88o     o8888o  `Y8bood8P'   o888o   o888o    `YbodP'    
+                                                                       
+----------------------------------------------------------------------

@@ -1,0 +1,218 @@
+                              Date : 12-May-21
+			      Project 7:30AM
+			        Mr. RAGHU
+			-----------------------------
+Code Link:
+https://www.mediafire.com/file/6zcqtcm66qv1987/Warehouse12052021_RAGHU-730AM.zip/file
+
+Maven Videos
+https://www.youtube.com/watch?v=9eJAvApRAI0
+https://www.youtube.com/watch?v=jOykBjSl1X0
+https://www.youtube.com/watch?v=iLwuhbnFPqo
+
+
+JUnit:
+https://www.youtube.com/watch?v=PT9WQ_Rz1ew
+https://www.youtube.com/watch?v=Rue28g3reRI
+
+
+Mockito Overview:
+https://youtu.be/6hmx--O8PYE
+https://youtu.be/pFLFKrCknB0
+https://youtu.be/GgWuE-k1_nI
+http://youtu.be/tWdqtEXE47A
+
+
+Spring Boot UnitTest code
+https://github.com/javabyraghu/SpringBoot2UnitTestApp
+
+
+Git:
+https://www.youtube.com/watch?v=T2UHpsxJ-2o
+https://www.youtube.com/watch?v=38UGVeXuj3Q
+
+
+AGILE
+https://www.youtube.com/watch?v=MoxspPivr_Q
+
+
+Debug:
+https://www.youtube.com/watch?v=HwwF4pvYWws
+
+
+Log4J
+https://www.youtube.com/watch?v=mblGoKU1aKo
+https://www.youtube.com/watch?v=5oLfHiP_iJc
+
+
+ELK
+https://www.youtube.com/watch?v=uSYExRWbC9Y
+
+
+Docker:
+https://www.youtube.com/watch?v=LmoLFcoaeQw
+https://www.youtube.com/watch?v=6_6MoohzdEI
+
+
+Redis Cache:
+https://www.youtube.com/watch?v=HBmlNMGh9O0
+https://www.youtube.com/watch?v=IwYEdZOmY6g
+
+
+Spring Boot Captcha#1
+https://www.youtube.com/watch?v=P_zqWKvOi54
+Spring Boot Captcha#2
+https://www.youtube.com/watch?v=fcRs5pgtJYQ
+
+
+Cloud Deploy:
+https://www.youtube.com/watch?v=QOwgiJWmZ9k
+   ================================================================
+Custom Exception :
+> For Delete and Edit Process.
+
+a. Define one custom exception class 
+
+package in.nareshit.raghu.exception;
+
+public class ShipmentTypeNotFoundException extends RuntimeException {
+
+	private static final long serialVersionUID = 1L;
+
+	public ShipmentTypeNotFoundException() {
+		super();
+	}
+	
+	public ShipmentTypeNotFoundException(String message) {
+		super(message);
+	}
+}
+
+b. Convert service getOne() and delete() methods code using Exception checking
+
+--old format--
+public ShipmentType getShipmentType(Integer id) {
+	Optional<ShipmentType> opt = repo.findById(id);
+	if(opt.isEmpty()) {
+	  throw new ShipmentTypeNotFoundException(
+	     "ShipmentType '"+id+"' Not Exist");
+	} else {
+		return opt.get();
+	}
+}
+--new format--
+public void deleteShipmentType(Integer id) {
+	repo.delete(getShipmentType(id));
+}
+
+public ShipmentType getShipmentType(Integer id) {
+	return repo.findById(id)
+		.orElseThrow(
+			()->new ShipmentTypeNotFoundException(
+					"ShipmentType '"+id+"' Not Exist")
+			);
+}
+
+
+c. Controller (modified delete and edit)
+
+	//4. delete by id
+	@GetMapping("/delete")
+	public String deleteShipmentType(
+			@RequestParam Integer id,
+			Model model
+			) 
+	{
+		try {
+			//call service
+			service.deleteShipmentType(id);
+			//create msg
+			String msg = "Shipment Type '"+id+"' Deleted!";
+			model.addAttribute("message", msg);
+			
+		} catch (ShipmentTypeNotFoundException e) {
+			e.printStackTrace();
+			model.addAttribute("message", e.getMessage());
+		}
+		
+		//load new data
+		List<ShipmentType> list = service.getAllShipmentTypes();
+		//send data to UI
+		model.addAttribute("list", list);
+		
+		//goto UI page
+		return "ShipmentTypeData";
+	}
+	
+	//5. show edit page
+	@GetMapping("/edit")
+	public String showShipmentTypeEdit(
+			@RequestParam Integer id,
+			Model model) 
+	{
+		String page = null;
+		try {
+			//fetch from DB using service
+			ShipmentType st = service.getShipmentType(id);
+			
+			//send object to UI as FORM DATA
+			model.addAttribute("shipmentType", st);
+			
+			//show edit if record exist
+			page = "ShipmentTypeEdit";
+			
+		} catch (ShipmentTypeNotFoundException e) {
+			e.printStackTrace();
+			//if row not exist
+			page = "ShipmentTypeData";
+			model.addAttribute("message", e.getMessage());
+
+			//load new data
+			List<ShipmentType> list = service.getAllShipmentTypes();
+			//send data to UI
+			model.addAttribute("list", list);
+			
+		}
+		//GOTO UI
+		return page;
+	}
+---FAQs---------------------------------------
+Q) How can we create custom exception in java?
+Q) What are checked and unchecked exceptions?
+Q) What is serialVersionUID?
+Q) How can we set custom error message for Custom Exception?
+Q) What is the default super class for all Exceptions?
+------------------------------------------
+
+*)Define one custome exception class
+*)Modify code at Service methods for delete and getOne
+   use orElseThrow
+
+*) Modify Controller methods delete and edit with try catch
+  send custom error message to UI.
+
+DRY = Do not Repeate Yourself - Dont write duplicate code.
+
+URLs:
+http://localhost:9696/st/delete?id=101
+http://localhost:9696/st/edit?id=101
+
+===========================================================
+Q) Which code required thread safety in case of web/multi-threaded env?
+I.
+class A{
+  void m1(Employee e) { }
+}
+II.
+class A{
+  Employee e;   //shared data for multiple threads
+  void m1(){ }
+}
+
+A) II
+
+Q) Did you write instace variables for user data sharing
+   inside Servlets/ Controllers/Service/Repository?
+
+A)
+-----------------------------------------------------------------

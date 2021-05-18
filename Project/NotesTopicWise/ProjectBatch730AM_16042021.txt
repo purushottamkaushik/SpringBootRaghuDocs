@@ -1,0 +1,124 @@
+                     Date : 16/04/2021
+		     Project Batch 7:30AM
+		       Mr. RAGHU
+	----------------------------------------
+@Autowired:
+https://www.youtube.com/watch?v=-FlszP92JVM&list=PLVlQHNRLflP9XSWeY4x4FLwnL3UOIxnTr&index=13
+
+                 Module : Employee
+1. Model
+package in.nit.model;
+//ctrl+shift+O (imports)
+@Data
+@Entity
+@Table(name="emptab")
+public class Employee {
+  @Id
+  @Column(name="id")
+  @GeneratedValue
+  private Integer eid;
+  @Column(name="ename")
+  private String ename;
+  @Column(name="sal")
+  private Double esal;
+  @Column(name="dept")
+  private String edept;
+}
+
+
+
+2. Repository
+package in.nit.repo;
+//ctrl+shift+O (imports)
+public interface EmployeeRepository 
+   extends JpaRepository<Employee,Integer>
+{
+
+}
+
+3. Service Interface
+package in.nit.service;
+//ctrl+shift+O (imports)
+public interface IEmployeeService {
+
+}
+
+4. Service Impl
+package in.nit.service.impl;
+//ctrl+shift+O (imports)
+@Service
+public class EmployeeServiceImpl
+  implements IEmployeeService
+{
+    @Autowired
+    private EmployeeRepository repo; //HAS-A
+}
+
+5. Controller
+package in.nit.controller;
+//ctrl+shift+O (imports)
+@Controller
+public class EmployeeController {
+   @Autowired
+   private IEmployeeService service; //HAS-A
+}
+
+
+6. Register Page
+--EmployeeRegister.html---
+<html>
+ <head> </head>
+ <body>
+   <h1> EMPLOYEE REGISTER PAGE</h1>
+   <form action="#" method="POST">
+     <pre>
+       NAME : <input type="text" name="ename"/>
+       SAL  : <input type="text" name="esal"/>
+       DEPT : <select name="edept">
+                <option value="">-SELECT-</option>
+		<option value="DEV">DEV</option>
+		<option value="QA">QA</option>
+		<option value="BA">BA</option>
+              </select>
+           <input type="submit" value="Add"/>
+     </pre>
+   </form>
+ </body>
+</html>
+==========================================================
+Softwares setup:
+1. JDK 11 / JDK 8
+https://www.oracle.com/in/java/technologies/javase-jdk11-downloads.html
+
+2. Spring Tool Suite
+Goto https://spring.io/tools
+Click on option  
+Downloaded as JAR File 
+Double click on JAR file to extract
+
+3. MySQL 8 /Oracle Database ..
+https://dev.mysql.com/downloads/installer/
+click on 2nd option
+skip register
+download and install
+
+GUI: SQLYog  (MySQL)
+https://webyog.com/product/sqlyog/
+
+GUI: Oracle SQL Develoepr Tool
+https://www.oracle.com/in/database/technologies/appdev/sqldeveloper-landing.html
+
+4. Visual Studio Code
+https://code.visualstudio.com/download
+> Download and Install
+
+=======================================
+1. Goto Gmail Account
+  click on NareshIT invitation for Class Drive
+2. Click on JOIN option
+3. Then enter URL:
+  https://classroom.google.com/h
+
+Whatsup Message to Admin at 11AM class Drive
+                   Admin at 2PM for new link
+(Srikanth) +91- 630 296 8665

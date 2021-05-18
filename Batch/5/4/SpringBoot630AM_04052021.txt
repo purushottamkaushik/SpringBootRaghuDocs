@@ -1,0 +1,192 @@
+                           Date: 04-May-21
+			   Spring Boot 6:30AM
+			      Mr. RAGHU
+  --------------------------------------------------------------------
+   @ConfigurationProperties (PART-2) Working with Complex Types
+
+1. List/Set/Array
+
+ prefix.variable[index]=<value>
+
+=> If we do not provide any value using propeties, 
+   then default value is null.
+
+=> If we use List interface then container create object to 'ArrayList'(C).
+  In same way for Set(I), container uses 'LinkedHashSet'(C).
+
+2. Map
+
+ prefix.variable.mapKey=mapValue
+
+=> If we do not provide any value using propeties, 
+   then default value is null.
+
+=> If we use Map interface then container create object to 'LinkedHashMap'(C).
+-------------------------------------------------------------------------------
+____Ex#2________________________________________________________________________
+Name: SpringBoot2ConfigPropsComplexTypes
+Dep : Lombok
+
+1. application.properties
+my.app.prjs[0]=NIT
+my.app.prjs[1]=HTC
+my.app.prjs[2]=XYZ
+
+my.app.clients.C1=ORCL
+my.app.clients.C2=TNC
+my.app.clients.C3=GKJ
+
+2. Runner class
+package in.nareshit.raghu.runner;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+import lombok.Data;
+
+@Component
+@Data
+@ConfigurationProperties(prefix = "my.app")
+public class DataReader implements CommandLineRunner {
+
+	private List<String> prjs;
+	//private Set<String> prjs;
+	//private String[] prjs;
+	private Map<String,String> clients;
+	
+	public void run(String... args) throws Exception {
+		System.out.println(clients.getClass().getName()); //core java 
+		System.out.println(this);
+	}
+}
+---------------------------------------------------------------------
+3. Class Type
+
+=> We can convert all key=val data into one class-object.
+   We should create one class variable(HAS-A variable) and use
+   same variable to define key.
+
+Syntax:
+   prefix.hasAVariable.variable=value
+
+*) Do not use @Component at class and @Autowired at variable, as object is
+   not created at everycase. Object is created if keys are present
+   (at least one key).
+
+-------------------------------------------------------------------------------
+____Ex#3________________________________________________________________________
+Name: SpringBoot2ConfigPropsComplexTypes
+Dep : Lombok
+
+1. application.properties
+my.app.pob.pid=10
+my.app.pob.model=NEW
+my.app.pob.vendor=NIT
+
+2. Model class
+package in.nareshit.raghu.model;
+
+import lombok.Data;
+
+@Data
+public class Product {
+
+	private int pid;
+	private String model;
+	private String vendor;
+	
+}
+
+3. Runner class
+package in.nareshit.raghu.runner;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+import in.nareshit.raghu.model.Product;
+import lombok.Data;
+
+@Component
+@Data
+@ConfigurationProperties(prefix = "my.app")
+public class MyDataRunner implements CommandLineRunner {
+
+	private Product pob;//HAS-A
+	
+	public void run(String... args) throws Exception {
+		System.out.println(this);
+	}
+}
+
+-------------------------------------------------------------------------
+
+*) Spring F/w recomands to use interfaces only. Do not use Impls for
+   Collection types. Spring container only chooses best impl for data
+   and creates objects to it.
+
+
+------Ex#4 ------------------------------------------------
+1. Model
+package in.nareshit.raghu.model;
+
+import lombok.Data;
+
+@Data
+public class Product {
+
+	private int pid;
+	private String model;
+	private String vendor;
+	
+}
+2. application.properties
+my.app.title=WELCOME
+my.app.version=3.3
+
+my.app.grades[0]=A
+my.app.grades[1]=B
+my.app.grades[2]=C
+
+my.app.info.active=true
+my.app.info.process=FINISH
+
+my.app.pob.pid=10
+my.app.pob.model=NEW
+my.app.pob.vendor=NIT
+
+3. Runner class
+package in.nareshit.raghu.runner;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+import in.nareshit.raghu.model.Product;
+import lombok.Data;
+
+@Component
+@Data
+@ConfigurationProperties(prefix = "my.app")
+public class MyDataRunner implements CommandLineRunner {
+	
+	private String title;
+	private double version;
+	
+	private List<String> grades;
+	
+	private Map<String,String> info;
+	
+	private Product pob;//HAS-A
+	
+	public void run(String... args) throws Exception {
+		System.out.println(this);
+	}
+}

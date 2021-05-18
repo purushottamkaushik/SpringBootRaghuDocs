@@ -1,0 +1,94 @@
+		      Date : 20/04/2021
+		      Spring Boot 6:30AM
+		         Mr. RAGHU
+	------------------------------------------
+	FB: https://www.facebook.com/groups/thejavatemple
+	       email: javabyraghu@gmail.com
+*) Duration 3m 15 days
+*) 1hr session : 6:30AM-7:30AM
+*) class drive
+*) Payment : +91-630 296 8665 (whatsapp) [5000/- INR]
+-----------------------------------------------
+youtube.com/nareshit
+Demo#1 https://www.youtube.com/watch?v=E3Ten5bOBcM
+Demo#2 https://www.youtube.com/watch?v=A8300iBA70k
+R#1  https://www.youtube.com/watch?v=iyylaEK79nE
+R#2 (Current)
+=============================================================
+*) Spring Configuration (3)
+ a. XML Configuration
+ b. Java Configuration
+ c. Annotation Configuration**
+----------------------------------
+Annotation Configuration:-
+a. @Component : Create object to our class
+b. @Value     : Provide data to variables
+     -> HardCoded data (direct value)      
+           @Value("data")
+     ->*** Data from Properties/YAML/CLA/VM
+           @Value("${key}")
+     -> SpEL (Spring Expression Language)
+
+c. @Autowired : Linking of two objects done by Spring container
+             based on HAS-A Relation provided between classes.
+
+Ex#1
+@Component
+class Address {
+  @Value("9-44/A")
+  String hno;
+  @Value("HYD")
+  String loc;
+}
+
+@Component
+class Employee {
+  @Value("96")
+  int eid;
+  @Value("SAM")
+  String ename;
+  @Autowired
+  Address addr; //HAS-A
+}
+
+--Association(HAS-A)-----------------------------
+Using one class(Child class) as a DataType 
+and creating variable in another class(Parent class).
+
+IS-A, HAS-A 
+1. Employee IS-A Person
+2. Employee HAS-A Address
+3. Customer HAS-A BusTicket
+--------------------------------------------------
+Ex#2  JdbcTemplate ---<> MyConn
+@Component
+class MyConn {
+  @Value("oracle")
+  String driver;
+  @Value("jdbc-orcl")
+  String url;
+}
+@Component
+class JdbcTemplate {
+  @Autowired
+  MyConn con;
+}
+*) your class- @Component
+*) pre-defined - @Bean
+
+Q) What are  stereotype annotations?
+A) An annotation that indicates to container create object to 
+   our class.
+ @Component, @Service, @Repository, @Controller, @RestController
+
+
+
+FB: https://www.facebook.com/groups/thejavatemple
+Email: javabyraghu@gmail.com
+(Free)
+Angular11 (Building SPA and PWA) 
+ @ 7:00 PM (IST) by 
+   Mr.Sudhakar Sharma from 22nd April
+Link: zoom.us/j/96161073517
+Pwd: 112233
+-----------------------------------

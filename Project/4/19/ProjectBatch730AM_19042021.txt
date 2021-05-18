@@ -1,0 +1,220 @@
+		      Date : 19/04/2021
+		      Project batch 7:30AM
+		        Mr. RAGHU
+	------------------------------------------
+	   email : javabyraghu@gmail.com
+	     Bootstrap : CSS API (Twitter)
+
+a) Card:-
+   This is used to design our UI with multiple Components
+   like head section, body section and footer section.
+
+   card = card- header + card-body + card-footer
+
+<div class="card">
+  <div class="card-header">
+
+  </div>
+  <div class="card-body">
+
+  </div>
+  <div class="card-footer">
+
+  </div>
+</div>
+
+--test.html-------
+<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+	</head>
+	<body>
+	   <div class="card">
+		  <div class="card-header">
+			 <h2>WELCOME TO EMPLOYEE DATA</h2>
+		  </div>
+		  <div class="card-body">
+				<p>Hello Data Page!</p>
+		  </div>
+		  <div class="card-footer">
+				<span>Employee Created!</span>
+		  </div>
+	   </div>
+	</body>
+</html>
+_____________________________________________________________
+ex#2
+
+<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+	</head>
+	<body>
+	<div class="container">
+	   <div class="card">
+		  <div class="card-header bg-primary text-white text-center">
+              <h2>WELCOME TO EMPLOYEE DATA</h2>
+		  </div>
+		  <!--card header end-->
+
+		  <div class="card-body">
+				<table class="table table-hover">
+					<tr>
+						<th>SlNo</th>
+						<th>Name</th>
+						<th>Salary</th>
+						<th>Operations</th>
+					</tr>
+					<tr>
+						<td>10</td>
+						<td>AJAY</td>
+						<td>200.0</td>
+						<td>
+                           <a class="btn btn-danger" href="#">DELETE</a> | 
+						   <a class="btn btn-info" href="#"> EDIT </a>
+						</td>
+					</tr>
+					<tr>
+						<td>11</td>
+						<td>SAM</td>
+						<td>300.0</td>
+						<td>
+                           <a class="btn btn-danger" href="#">DELETE</a> | 
+						   <a class="btn btn-info" href="#"> EDIT </a>
+						</td>
+					</tr>
+					<tr>
+						<td>12</td>
+						<td>SYED</td>
+						<td>400.0</td>
+						<td>
+                           <a class="btn btn-danger" href="#">DELETE</a> | 
+						   <a class="btn btn-info" href="#"> EDIT </a>
+						</td>
+					</tr>
+				</table>
+		  </div>
+		  <!-- card body end -->
+
+		  <div class="card-footer bg-success text-white text-center">
+				<span>Employee Created!</span>
+		  </div>
+		  <!-- card foter end -->
+
+	   </div>
+	   <!-- card end -->
+	 </div>
+	   <!--container-->
+	</body>
+</html>
+=======================================================
+*) HTML Comment:
+  <!--   comment -->
+=> Recomanded to keep your complete body section content
+  inside container-div that gives padding(margin space)
+  at left and right side of webpages
+
+<html>
+ <head> .. </head>
+ <body>
+   <div class="container">
+     ... write all here..
+   </div>
+ </body>
+</html>
+
+Q) Why <div> tag?   
+A) div-division/area. without any margings/borders.
+
+Q) what is class="" in HTML/CSS?
+A) class is a attribute used to apply some designes
+   created before. 
+
+<style>
+.myd1{
+ color:red;
+}
+</style>
+
+<h1 class="myd1">Hello</h1>
+
+CSS class container UI design details
+  space, color, font, style, size, border,..etc
+======================================================
+Grid System:-
+=> WebPage is converted into Rows. 
+=> Every row is converte into 12 columns.
+=> Define row with <div> section.
+
+<div class="row">
+  <div class="col-4"> Hello</div>
+  <div class="col-5">OK</div>
+  <div class="col-3">bye</div>
+</div>
+--ex#1---------------
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+	<style>
+		.a{ background-color:red }
+		.b{ background-color:pink}
+		.c{ background-color:yellow}
+		.d{ background-color:grey}
+	</style>
+</head>
+<body>
+<div class="row">
+	<div class="col-6 a">
+	  OK
+    </div>
+	<div class="col-6 b">
+	 BYE
+	</div>
+</div>
+<div class="row">
+	<div class="col-4 c">
+	  OK
+    </div>
+	<div class="col-4 d">
+	 BYE
+	</div>
+	<div class="col-4 a">
+	 BYE
+	</div>
+</div>
+<div class="row">
+	<div class="col-2 a">
+	  OK
+    </div>
+	<div class="col-8 b">
+	 BYE
+	</div>
+	<div class="col-2 c">
+	 BYE
+	</div>
+</div>
+<div class="row">
+	<div class="col-1 c">
+	  OK
+    </div>
+	<div class="col-1 b">
+	 BYE
+	</div>
+	<div class="col-10 a">
+	 BYE
+	</div>
+</div>
+<div class="row">
+	<div class="col-10 a">
+	  OK
+    </div>
+	<div class="col-10 b">
+	 BYE
+	</div>
+	<div class="col-10 c">
+	 BYE
+	</div>
+</div>
+</body>
+</html>
+==============================================

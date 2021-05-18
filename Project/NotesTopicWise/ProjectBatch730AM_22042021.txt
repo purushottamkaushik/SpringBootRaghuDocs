@@ -1,0 +1,317 @@
+                     Date: 22/04/2021
+		    Project Batch 7:30
+		       Mr. RAGHU
+ ---------------------------------------------------------
+Java Real-Time Project @ 7.30 AM by Mr. Raghu
+JRTP Day-1: https://youtu.be/_5BNKad9du0
+JRTP Day-2: https://youtu.be/ZJi_-8prRNo
+JRTP Day-3: https://youtu.be/FfsAFxiUhK4
+JRTP Day-4: https://youtu.be/nK-vB9y7tSg
+JRTP Day-5: https://youtu.be/ulAKf8v9huU
+JRTP Day-6: https://youtu.be/5hjoocH3Nj0
+
+                 JQuery Examples
+
+---------------------------------------------
+JQuery Input Based Events
+
+keydown: when we press any key on keyboard
+$("<selector>").keydown(function(){
+
+});
+
+keyup: when we leav a key which was pressed
+$("<selector>").keyup(function(){
+
+});
+--------------------------------------------
+focus: place text-cursor inside Text input
+
+$("<selector>").focus(function () {
+                
+});
+
+blur : come outof Text input.
+$("<selector>").blur(function () {
+                
+});
+====JQueryInputEvent1.html========================
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    Name : <input type="text" name="ename" id="ename" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ename").keyup(function () {
+                $(this).css('background-color', 'red');
+            });
+            $("#ename").keydown(function () {
+                $(this).css('background-color', 'pink');
+            });
+
+            $("#ename").focus(function () {
+                $(this).css('background-color', 'green');
+            });
+            $("#ename").blur(function () {
+                $(this).css('background-color', 'yellow');
+            });
+        });
+    </script>
+</body>
+
+</html>
+===============================================
+*) button/tag click:-
+$("<____>").click(function(){
+
+})
+=> if we click using mouse pointer then this function
+  is caleld.
+
+----JQueryButton.html-------------------
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>WELCOME TO jquery</h1>
+    <input type="submit" value="Test" id="mybtn"/>
+    <script type="text/javascript">
+      $(document).ready(function(){
+         $("#mybtn").click(function(){
+            alert('welcome to click!')
+         });
+      });
+    </script>
+</body>
+</html>
+===============================================
+*) hide/show and toggle events
+
+show() : selected element will be shown at UI if it is hidden
+hide() :  selected element will be hidden if it is showing
+
+toggle() :  selected element will be 
+                     shown at UI if it is hidden
+		     hidden if it is showing
+================================================
+Task#1 Login Page Design
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="card">
+            <div class="card-header bg-primary text-white text-center">
+                <h3>Login Page</h3>
+            </div>
+            <div class="card-body">
+                <form action="#" method="POST">
+                    <!-- row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Username</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="username" id="username" class="form-control" />
+                        </div>
+                        <div class="col-5">
+                            <span id="usernameError"></span>
+                        </div>
+                    </div>
+                    <!-- row#2 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Password</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="password" name="password" id="password" class="form-control"/>
+                        </div>
+                        <div class="col-5">
+                            <span id="passwordError"></span>
+                        </div>
+                    </div>
+                   
+                    <input type="submit" value="Login" class="btn btn-success" />
+                </form>
+
+            </div>
+
+        </div>
+    </div> <!-- container end -->
+</body>
+
+</html>
+--------Validation Steps--------------------------
+--UI--
+a. Define id for Form input 
+   <input  ---- id="___"/>
+b. Define Error Section to display error message 
+   after Form input
+   
+   <span id="___Error">
+--JQuery--
+c. hide error section by default
+    $("#___Error").hide();
+
+d. Define one error variale with default false
+[
+  false - error exist
+  true  - no error exist
+]
+
+e. Define one validate function for one input
+   function  validate_<___> () { ... }
+
+f. Link with Action-Event
+    keyup, focus, change, blur...etc
+    call validate_function()
+
+h. Call all functions on click submit option.
+  I. Give one id="" for <Form> tag
+  II. define submit function inside Jquery 
+  III. call all validate functions
+  IV. If all returns true then submit form else not
+
+  <form id="___" >
+
+  $("#___").submit(function(){
+     validate_<___>();
+
+     if(____Error) return true;
+     else return false;
+  });
+
+-----------------------------------------------
+Task#2 Login Page Design + Validation
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="card">
+            <div class="card-header bg-primary text-white text-center">
+                <h3>Login Page</h3>
+            </div>
+            <div class="card-body">
+                <form id="myLoginForm" action="#" method="POST">
+                    <!-- row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Username</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="username" id="username" class="form-control" />
+                        </div>
+                        <div class="col-5">
+                            <span id="usernameError"></span>
+                        </div>
+                    </div>
+                    <!-- row#2 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Password</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="password" name="password" id="password" class="form-control" />
+                        </div>
+                        <div class="col-5">
+                            <span id="passwordError"></span>
+                        </div>
+                    </div>
+
+                    <input type="submit" value="Login" class="btn btn-success" />
+                </form>
+            </div>
+            <!-- card body end -->
+        </div>
+    </div> <!-- container end -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //1. Hide Error section
+            $("#usernameError").hide();
+            $("#passwordError").hide();
+
+            //2. Define Error variable
+            var usernameError = false;
+            var passwordError = false;
+
+            //3. define validate function
+            function validate_username() {
+                //read form value
+                var val = $("#username").val();
+                if (val == '') { //not valid
+                    $("#usernameError").show();
+                    $("#usernameError").html("*Please Enter <b> Username<b>");
+                    $("#usernameError").css('color', 'red');
+                    usernameError = false;
+                } else { //valid
+                    $("#usernameError").hide();
+                    usernameError = true;
+                }
+
+                return usernameError;
+            }
+
+            function validate_password() {
+                //1. read form input
+                var val = $("#password").val();
+                //2. check empty or not
+                if (val == '') {
+                    $("#passwordError").show();
+                    $("#passwordError").html("*Please Enter <b>Password</b>");
+                    $("#passwordError").css('color', 'red');
+                    passwordError = false;
+                } else {
+                    $("#passwordError").hide();
+                    passwordError = true;
+                }
+                return passwordError;
+            }
+
+            //4. link with action-event
+            $("#username").keyup(function () {
+                validate_username();
+            });
+            $("#password").keyup(function () {
+                validate_password();
+            })
+
+            //on form submit
+            $("#myLoginForm").submit(function () {
+                validate_username();
+                validate_password();
+
+                if (usernameError && passwordError)
+                    return true; //submit form
+                else
+                    return false; //do not submit form
+            });
+        });
+    </script>
+</body>
+</html>
+=====================================
+Task:(a)
+Employee Name : [----------]  *Name can not be empty
+Employee Sal  : [----------]  *Sal can not be empty
+(basic empty check validation)
+
+Task:(b)
+Student Name : [----------]  *Name can not be empty
+Student Fee  : [----------]  *Fee can not be empty
+(basic empty check validation)
+====================================

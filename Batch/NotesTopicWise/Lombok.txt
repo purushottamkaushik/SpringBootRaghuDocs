@@ -1,0 +1,119 @@
+                     Date: 27/04/2021
+		     Spring Boot 6:30AM
+		      Mr. RAGHU
+ -----------------------------------------------------------
+Day-1: https://youtu.be/E3Ten5bOBcM
+Day-2: https://youtu.be/A8300iBA70k
+Day-3: https://youtu.be/iyylaEK79nE
+Day-4: https://youtu.be/qKJzxw1yYeA
+Day-5: https://youtu.be/WY1MnfXiQL8
+Day-6: https://youtu.be/n_kZilhMqSQ
+Day-7: https://youtu.be/w-BM7aVqbKE
+Day-8: https://youtu.be/5eIZjzXyo2U
+
+
+                     Lombok API
+                 [https://projectlombok.org/]
+
+=> This is open source JAVA API.
+=> This API is used to generate code, like
+    set/get methods
+    toString method override
+    equals & hashCode
+    constrcutors(default/param)
+=> This process is done by using anntation.
+    @Settet, @Getter, @ToString..etc
+
+=>*** Lombok works at compilation time only. 
+      Not required while running application.
+
+=>*** In Developer machine, Lombok must be activated with IDE
+      By using lombok jar only.
+
+*) Spring Boot Version 2.3.10 insted of using 2.4.5
+
+*) When we are writing any param constructor in code
+   it is good approch to define even default constructor also.
+
+===========(ontime process) LOMBOK ACTIVATION STEPS==============
+a. Open STS and create Spring Starter Project
+> File > new > Spring Starter Project
+> Enter name : SpringBoot2LombokTest
+> Next > search and select
+         [v] Lombok
+> Finish
+
+b. Create one dummy class with any one lombok annotation
+
+package in.nareshit.raghu;
+//ctrl+shift+O
+import lombok.Data;
+@Data
+public class Employee {
+	private Integer empId;
+}
+
+c. Close STS IDE
+d.** Goto Lombok JAR location
+  C:\Users\nareshit\.m2\repository\org\projectlombok\lombok\1.18.20
+
+e. Double click on JAR File : lombok-1.18.20.jar
+                (or)
+   Open cmd> type cd<space> above location
+        cmd>java -jar lombok-1.18.20.jar
+
+   [wait few minutes/max 3 mins/to autodetect STS IDE by Lombok installer]
+  If unable to detect your IDE, then click on specify location
+  and select STS location.
+    ex:  E:/sts-4.10.0.RELEASE
+
+f. click on install/update button > Quit Installer
+g. Now Open STS and start coding
+===================================================
+https://www.youtube.com/watch?v=U_6Na31fhsE
+Lombok Annotations:-
+
+1. @NoArgsConstructor : This annotation generated a default
+      constrcutor before going to java compiler.
+      While compile file, this annotation is removed
+      and .class is genetaed.
+
+2. @AllArgsConstructor : This annotation is used to generate
+            one parameterized constructor with all variables
+	    inside class.
+
+3. @RequiredArgsConstructor + @NonNull
+    To generated selected variables constrcutor.
+    Here, we need to select variables using @NonNull
+
+
+4. @Getter  : It will generate get methods for variables
+   @Setter  : It will generate set methods for variables
+
+5. @ToString : To override methods toString() use this
+
+6. @EqualsAndHashCode: To generate equals() and hashCode()
+                           methods use this.
+
+7. @Data : It is a simplified annotation
+      it is a combination of
+           @Getter + @Setter + @ToString +
+	   @EqualsAndHashCode + @RequiredArgsConstructor
+         
+-------------------------------------------------------
+Q) When Java compiler provides default constrcutor?
+A) If there is no constrcutor given by programmer or lombok.
+
+   If any constrcutor exist in code then java compiler
+   never provides default constrcutor.
+
+
+Q) How many constrcutor can we generated using Lombok at max?
+A) Only 3 constrcutor at max.
+   a. Default/zero param const
+   b. All Param constrcutor
+   c. Selected Params constrcutor.
+
+   If you want any additional constrcutor then define code
+   manually.
+==========================================================

@@ -1,0 +1,117 @@
+                     Date: 30/04/2021
+		     Spring Boot 6:30AM
+		       Mr. RAGHU
+  -------------------------------------------------------
+*) Runners:-
+https://www.youtube.com/watch?v=8P5x4DH2WHA
+Playlist:
+https://www.youtube.com/watch?v=EA43S5R8LSc&list=PLVlQHNRLflP9XSWeY4x4FLwnL3UOIxnTr
+Nareshit videos link
+https://www.youtube.com/c/NareshIT/search?query=raghu
+
+=> To execute any logic only one time, on application startup.
+=> Runner are classes which are created by implementing interfaces
+   a. CommandLineRunner (I)
+   b. ApplicationRunner (I)
+
+=> Very less used in realtime, used generally for testing purpose.
+=> These runners are called by Spring container(Main/Starter class).
+
+  ctrl+shift+T   == Open pre-defined file
+-----------------------------------------------------------
+                    CommandLineRunner(I)
+
+=> This is a pre-defined function interface having (one abstract
+   method) run() method.
+
+=> Define one class,
+  Implement CommandLineRunner(I)
+  Override abstract method run()
+  Give some logic/code
+  Add @Component
+  Run main class
+
+--sample code-----------------------
+package in.nareshit.raghu.runner;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyMessageRunner implements CommandLineRunner {
+
+	public void run(String... args) throws Exception {
+		System.out.println("FROM RUNNER CLASS!");
+	}
+}
+---------------------------------
+*) Incase of Web based/Webservices App, we dont use these
+   runners for testing.
+
+*) To add lombok, open pom.xml and add 
+<dependency>
+  <groupId>org.projectlombok</groupId>
+  <artifactId>lombok</artifactId>
+  <optional>true</optional>
+</dependency>
+
+========================Practice Example===================
+1. Create starter project with lombok
+Name : SpringBootRunnersTest
+Dep  : Lombok
+
+2. Model
+package in.nareshit.raghu.model;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
+@ToString
+@Component
+public class Product {
+	
+    @Value("${my.app.id}")
+    private Integer prodId;
+    @Value("${my.app.code}")
+    private String prodCode;
+    @Value("${my.app.cost}")
+    private Double prodCost;
+	
+}
+
+2. Runner class
+package in.nareshit.raghu.runner;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import in.nareshit.raghu.model.Product;
+
+@Component
+public class MyMessageRunner implements CommandLineRunner {
+	
+	@Autowired //read object from container
+	private Product pob; 
+
+	public void run(String... args) throws Exception {
+		System.out.println("FROM RUNNER CLASS!");
+		System.out.println(pob); //toString
+	}
+}
+
+3. application.properties
+my.app.id=8850
+my.app.code=NIT-STD
+my.app.cost=3000.0
+

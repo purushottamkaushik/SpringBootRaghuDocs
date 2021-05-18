@@ -1,0 +1,139 @@
+		    Date : 15/04/2021
+		    Spring Boot 6:30AM
+		       Demo - I
+		       Mr. RAGHU
+	---------------------------------------
+   	  email :  javabyraghu@gmail.com
+	 FB: https://www.facebook.com/groups/thejavatemple
+             Admin : Srikanth +91-630 296 8665 (W)
+	     Spring Boot and Microservices
+
+*) Amount - 5000/-INR
+
+Basic: Core Java, Adv Java(Servlets)
+We will cover: (required) Spring , Hibernate
+
+Duration : 3Months + 15 days, 1hr session
+             6:30 AM to 7:30 AM
+class drive : Softcopies
+
+=> I'll over Spring Basics and Hibernate Basics
+=> No Recordings.
+=> Angular/ReactJS (any one -- FREE for this batch only)
+==========================================================
+Spring Framework :-
+
+=> Spring Container :
+ a. Scan your classes(Spring Bean)
+ b. Create object to them
+ c. Provide data to variables
+ d. Link one object with another object
+ e. Finally (while Stopping) Destroy the objects
+      and Container.
+ 
+Online Shopping App (LOC)
+Line#1
+...
+Line#n
+
+1. Spring Bean (class + Rules given Spring F/w)
+2. Spring Configuration (XML/Java/Annotation)
+
+--Example--------------------------------
+1. Spring Bean
+package in.nit.raghu;
+public class MyDBConnection {
+  private String driver;
+  private String url;
+  private String un;
+  private String pwd;
+  //set,get..toString...
+}
+2. Spring Config (XML Configuration)
+<bean class="in.nit.raghu.MyDBConnection" id="con">
+   <property name="driver" value="OracleDriver"/>
+   <property name="url" value="jdbc:oracle:...."/>
+   <property name="un" value="nit"/>
+   <property name="pwd" value="raghu"/>
+</bean>
+
+*) <bean> it indicates to container 'create object'
+*) <proeprty> it indicates to container 'provide data'
+=======================================================
+		   Spring Boot
+
+Spring Boot is a Framework created using Spring F/w only.
+It behaves like Parent Project to our project(child project)
+that provides commons code
+Ex:
+ Database Connection
+ Curd Operation
+ Security
+ Transaction Management
+ Email Alert
+ Scheduled Task
+ ..etc
+*) Above common things are handled by Spring Boot Parent
+   Project. So, work reduced to Programmer.
+
+a) Auto-Configuration:-
+  Providing common setup for a task/module in application
+  that gives common classes, config files, JARS, server,
+  Database and plugins..etc
+
+*) Spring F/w Code
+Configuration:-
+<bean class="in.nit.raghu.MyDBConnection" id="con">
+   <property name="driver" value="OracleDriver"/>
+   <property name="url" value="jdbc:oracle:...."/>
+   <property name="un" value="nit"/>
+   <property name="pwd" value="raghu"/>
+</bean>
+JARS:
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-orm</artifactId>
+    <version>5.3.6</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>5.3.6</version>
+</dependency>
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.22</version>
+</dependency>
+=================================================
+Spring Boot Coding:-
+ Inside you child Project just add: 
+   spring-boot-starter-jdbc (Maven/Gradle)
+
+Then all required setup for JDBC is given by Parent Project
+to your project.
+=> But Provide Inputs to Application.
+--application.properties--
+driver=OracleDriver
+url=jdbc:mysql:..
+un=nit
+pwd=raghu
+-------------------------
+
+Q) What is starter? spring-boot-starter-___?
+A) It is a JAR file that contains ready made code
+   which is common for every project
+
+Ex:
+  spring-boot-starter-jdbc , will do by Spring Boot
+    Database Connection
+    Connection Pooling
+    Enable Support For Tx Management
+    JdbcTemplate Object creation..etc
+
+  spring-boot-starter-mail
+  spring-boot-starter-web
+  spring-boot-starter-security
+  spring-boot-starter-scheduling
+  spring-boot-starter-aop
+  ..etc

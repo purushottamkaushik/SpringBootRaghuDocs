@@ -1,0 +1,156 @@
+                     Date: 26/04/2021
+		     Project Batch 7:30AM
+		      Mr. RAGHU
+   ------------------------------------------------------
+Spring Boot Application setup:
+a. JDK 1.8/8 | JDK 11
+https://www.oracle.com/in/java/technologies/javase-downloads.html
+
+b. STS (Spring Tool Suite)
+  > Download https://spring.io/tools
+  > Double click to Extract
+
+c. MySQL Server
+   https://dev.mysql.com/downloads/windows/installer/8.0.html
+   If you have any DB You can continue..
+
+d. SQL Yog GUI for MySQL
+   https://github.com/webyog/sqlyog-community/wiki/Downloads
+   Link: SQLyog Community Edition - 13.1.7 (64-Bit)
+------setup-------------------------------------------------
+1. Install JDK and set path
+2. Open STS and enter Workspace
+   Folder : E:/MyPROJECT_730AM_APRIL_2021
+3. JDK Setup in STS/Eclipse
+  > Window > Preferences > Search with 'Installed'
+  > Select  Installed JRE
+  > Click on JRE option > Remove Button
+
+  > Add button > select 'Standard VM' > Next
+  > Click on Directory > select JDK Location
+   ex: C:\Program Files\Java\jdk1.8.0_281
+  > Apply > Close.
+
+4. Create New Project
+> File > New  > Spring Starter Project
+
+ Enter details (Look at sample screen)
+  Name     : Warehouse
+  Packaging: WAR
+  GroupId  : in.nareshit.raghu
+  Version  : 1.0
+  Package  : in.nareshit.raghu
+
+ > Next 
+  Spring Boot Version : 2.3.10
+  Choose dependencies : Data Jpa, thymeleaf, Web, Lombok,  
+                  devtools, mysql
+
+ > Finish
+
+
+5. open application.properties
+# server
+server.port=9696
+
+# DataSource (Connection)
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/boot730am
+spring.datasource.username=root
+spring.datasource.password=root
+
+# JPA Properties
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=create
+spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+
+*) driver-class-name, database-platform are optional.
+
+6. MySQL Commands
+> show databases;
+> create database boot730am;
+> use boot730am;
+> show tables;
+
+7. Activate Lombok API
+> create one dummy class
+
+package in.nareshit.raghu;
+import lombok.Data;
+//ctrl+shift+O (imports)
+
+@Data
+public class Student {
+
+	private Integer stdId;
+}
+
+> Close STS/Eclipse
+> Goto : 
+  C:\Users\nareshit\.m2\repository\org\projectlombok\lombok\1.18.20
+
+> Double click on 'lombok-1.18.20.jar'
+         (or)
+  > open cmd with this location 
+  > enter cmd
+             java -jar lombok-1.18.20.jar
+
+> Specify location if unable to detect
+  Ex: E:\sts-4.10.0.RELEASE
+> Click on 'Install/Update'
+> Then Quit Installer
+> Now Open STS again
+
+8. Define sample code for test
+
+package in.nareshit.raghu.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class StudentController {
+
+	@GetMapping("/home")
+	public String showHome()  {
+		return "Home";
+	}
+}
+
+*) Right click on 'templates' folder > new > other
+   > Search using 'HTML File" > select same > next 
+   > Enter name Home.html > Finish
+
+--Home.html--
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>SETUP SUCCESS</h1>
+</body>
+</html>
+
+9. Run main class (ctrl+F11, Run > Run > Choose Spring Boot)
+10. Enter URL : 
+  http://localhost:9696/home
+ 
+11. Come back to STS and stop application
+  > Console > Click on red color button.
+========================================================
+Module:
+1. Model class
+2. Repository
+3. Service Interface
+4. Service Impl class
+5. Controller
+6. UI:
+   __Register.html
+   __Data.html
+   __Edit.html
+   + Bootstrap
+   + validation
+   + AJAX
+..etc

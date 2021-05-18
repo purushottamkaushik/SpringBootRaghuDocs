@@ -1,0 +1,421 @@
+				Date: 06-May-21
+			      Project Batch 7:30AM
+			         Mr. RAGHU
+     -----------------------------------------------------------------
+                  AJAX VALIDATION FOR DUPLICATE DATA
+
+STAGE#1 AJAX VALIDATION FOR REGISTER
+STAGE#2 AJAX VALIDATION FOR EDIT
+
+AJAX: is Generallay used for partial page submittion.
+ It can be implemented using HTTP Protocol concept with 
+ <div>/Component/Section based.
+
+Ajax syntax:-
+$.ajax({
+  url  : '___',
+  data : {key:val},
+  success:function(resTxt) {
+     // on response received
+  }
+});
+
+=> To make Request URL?data is required.
+   Ex:  /validate?code=JETAIR
+
+=> Once Server sends response back to AJAX code, 
+   then success:function is executed.
+   We can use any parameter name ex: resTxt 
+==========================================================
+Use count concept, to find given data exist or not.
+Example SQL:
+select count(ship_code_col) from shipment_type_tab where ship_code_col='JETAIR';
+
+HQL/JPQL:
+columnName --> variableName
+table Name --> className
+
+select count(shipCode) from ShipmentType where shipCode='JETAIR';
+
+If count=0  ? not exist
+if count=1  ? data exist
+
+-----------------------------------------------------
+Expression#1
+   a>b? true:false
+
+Expression#2 
+   a>b
+
+Below expression also similier to above one in short format.
+=======code order=============================================
+1. Repository (custom query)
+
+@Query("SELECT count(shipCode) from ShipmentType where shipCode=:code")
+Integer getShipmentTypeCodeCount(String code);
+
+2. Service Interface
+
+  boolean isShipmentTypeCodeExist(String code);
+
+3. Service Impl
+
+  public boolean isShipmentTypeCodeExist(String code) {
+		/*
+		Integer count = repo.getShipmentTypeCodeCount(code);
+		boolean isExist = count > 0 ? true: false;
+		return isExist;*/
+		//return repo.getShipmentTypeCodeCount(code) > 0 ? true: false;
+		return repo.getShipmentTypeCodeCount(code) > 0 ;
+  }
+
+4. Controller
+=> By default controller method return type 'String' is taken as UI Page name.
+  But this time, we want to return this as Response as text, not as a page.
+  So, add annotation @ResponseBody.
+
+	//7. AJAX Validation
+	@GetMapping("/validate")
+	@ResponseBody
+	public String validateShipmentTypeCode(
+			@RequestParam String code
+			) 
+	{
+		String message="";
+		if(service.isShipmentTypeCodeExist(code)) {
+			message = code + ", already exist";
+		}
+		
+		return message; 
+	}
+
+5. UI : ShipmentTypeRegister.html
+
+$.ajax({
+   url : 'where code exist',
+   data: {key:val},
+   success:function(abcd){
+      if(abcd!='') { //error exist 
+         show error section with message and red color
+      } else { //no error
+         hide error section, return true
+      }
+   }
+});
+
+--full function code--------
+function validate_shipCode(){
+        var val = $("#shipCode").val();
+        var exp = /^[A-Z\-\s]{4,8}$/;
+        if(val==''){
+            $("#shipCodeError").show();
+            $("#shipCodeError").html("*Please enter <b>Code</b>");
+            $("#shipCodeError").css('color','red');
+            shipCodeError = false;
+        } else if (!exp.test(val)) {
+             $("#shipCodeError").show();
+             $("#shipCodeError").html("*<b>Code</b> must be 4-8 uppercase letters");
+             $("#shipCodeError").css('color', 'red');
+             shipCodeError = false;
+        } else {
+        	//ajax call start    
+        	$.ajax({
+				url : 'validate',
+				data: { "code": val},
+				success:function(resTxt) {
+					if(resTxt!='') { //error, duplicate exist
+						$("#shipCodeError").show();
+            			$("#shipCodeError").html(resTxt);
+             			$("#shipCodeError").css('color', 'red');
+             		    shipCodeError = false;
+					} else { //valid, no duplicate
+						$("#shipCodeError").hide();
+             		    shipCodeError = true;
+					}
+				}
+			});
+        	//ajax call end    
+        }
+        return shipCodeError;
+    }
+
+
+=======================only AJAX code=======================
+//ajax call start    
+        	$.ajax({
+				url : 'validate',
+				data: { "code": val},
+				success:function(resTxt) {
+					if(resTxt!='') { //error, duplicate exist
+						$("#shipCodeError").show();
+            			$("#shipCodeError").html(resTxt);
+             			$("#shipCodeError").css('color', 'red');
+             		    shipCodeError = false;
+					} else { //valid, no duplicate
+						$("#shipCodeError").hide();
+             		    shipCodeError = true;
+					}
+				}
+			});
+        	//ajax call end    
+
+===========Full HTML File : ShipmentTypeRegister.html===============
+<html xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary text-white text-center">
+                <h3>SHIPMENT TYPE REGISTER PAGE!</h3>
+            </div>
+            <div class="card-body">
+                <form id="shipmentTypeRegister" th:action="@{/st/save}" method="POST">
+                    <!-- Row#1 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Mode</label>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control" name="shipMode" id="shipMode">
+                                <option value="">-SELECT-</option>
+                                <option value="Air">Air</option>
+                                <option value="Truck">Truck</option>
+                                <option value="Ship">Ship</option>
+                                <option value="Train">Train</option>
+                            </select>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipModeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#2 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Code</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="shipCode" id="shipCode" class="form-control"/>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipCodeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#3 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Enable Shipment</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" name="enbleShip" id="enbleShip1" value="Yes"/> Yes
+                            <input type="radio" name="enbleShip" id="enbleShip2" value="No"/> No
+                        </div>
+                        <div class="col-5">
+                            <span id="enbleShipError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#4 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Shipment Grade</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" name="shipGrade" id="shipGrade1" value="A"/> A
+                            <input type="radio" name="shipGrade" id="shipGrade2" value="B"/> B
+                            <input type="radio" name="shipGrade" id="shipGrade3" value="C"/> C
+                        </div>
+                        <div class="col-5">
+                            <span id="shipGradeError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row#5 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Description</label>
+                        </div>
+                        <div class="col-4">
+                            <textarea name="shipDesc" id="shipDesc" class="form-control"></textarea>
+                        </div>
+                        <div class="col-5">
+                            <span id="shipDescError"></span>
+                        </div>
+                    </div>
+                    <input type="submit" value="Create" class="btn btn-success"/>
+                </form>
+            </div>
+            <!-- card body end -->
+            <div class="card-footer text-center" th:if="${message!=null}">
+                <span class="text-success" th:text="${message}"></span>
+            </div>
+            <!-- card footer end -->
+        </div>
+        <!-- card end -->
+    </div>
+    <!-- container end -->
+<script type="text/javascript">
+$(document).ready(function(){
+    //1. hide error sections
+    $("#shipModeError").hide();
+    $("#shipCodeError").hide();
+    $("#enbleShipError").hide();
+    $("#shipGradeError").hide();
+    $("#shipDescError").hide();
+
+    //2. define error variables
+    var shipModeError = false;
+    var shipCodeError = false;
+    var enbleShipError = false;
+    var shipGradeError = false;
+    var shipDescError = false;
+
+    //3. define validate function
+    function validate_shipMode(){
+        var val = $("#shipMode").val();
+        if(val==''){
+            $("#shipModeError").show();
+            $("#shipModeError").html("*Please select <b>Mode</b>");
+            $("#shipModeError").css('color','red');
+            shipModeError = false;
+        } else {
+            $("#shipModeError").hide();
+            shipModeError = true;
+        }
+        return shipModeError;
+    }
+    function validate_shipCode(){
+        var val = $("#shipCode").val();
+        var exp = /^[A-Z\-\s]{4,8}$/;
+        if(val==''){
+            $("#shipCodeError").show();
+            $("#shipCodeError").html("*Please enter <b>Code</b>");
+            $("#shipCodeError").css('color','red');
+            shipCodeError = false;
+        } else if (!exp.test(val)) {
+             $("#shipCodeError").show();
+             $("#shipCodeError").html("*<b>Code</b> must be 4-8 uppercase letters");
+             $("#shipCodeError").css('color', 'red');
+             shipCodeError = false;
+        } else {
+        	//ajax call start    
+        	$.ajax({
+				url : 'validate',
+				data: { "code": val},
+				success:function(resTxt) {
+					if(resTxt!='') { //error, duplicate exist
+						$("#shipCodeError").show();
+            			$("#shipCodeError").html(resTxt);
+             			$("#shipCodeError").css('color', 'red');
+             		    shipCodeError = false;
+					} else { //valid, no duplicate
+						$("#shipCodeError").hide();
+             		    shipCodeError = true;
+					}
+				}
+			});
+        	//ajax call end    
+        }
+        return shipCodeError;
+    }
+    function validate_enbleShip(){
+        var len = $('[name="enbleShip"]:checked').length;
+        if(len==0){
+            $("#enbleShipError").show();
+            $("#enbleShipError").html("*Select one<b>Enable Shipment</b>");
+            $("#enbleShipError").css('color','red');
+            enbleShipError = false;
+        } else {
+            $("#enbleShipError").hide();
+            enbleShipError = true;
+        }
+        return enbleShipError;
+    }
+    function validate_shipGrade(){
+        var len = $('[name="shipGrade"]:checked').length;
+        if(len==0){
+            $("#shipGradeError").show();
+            $("#shipGradeError").html("*Select one<b>Shipment Grade</b>");
+            $("#shipGradeError").css('color','red');
+            shipGradeError = false;
+        } else {
+            $("#shipGradeError").hide();
+            shipGradeError = true;
+        }
+        return shipGradeError;
+    }
+    function validate_shipDesc(){
+        var val = $("#shipDesc").val();
+        if(val==''){
+            $("#shipDescError").show();
+            $("#shipDescError").html("*Please Enter <b>Description</b>");
+            $("#shipDescError").css('color','red');
+            shipDescError = false;
+        } else {
+            $("#shipDescError").hide();
+            shipDescError = true;
+        }
+        return shipDescError;
+    }
+
+    //4. link with action event
+    $("#shipMode").change(function(){
+        validate_shipMode();
+    })
+    $("#shipCode").keyup(function(){
+		//to uppercase
+		 $(this).val(
+     		$(this).val().toUpperCase()
+  		 );
+        validate_shipCode();
+    })
+    $('[name="enbleShip"]').change(function(){
+        validate_enbleShip();
+    })
+    $('[name="shipGrade"]').change(function(){
+        validate_shipGrade();
+    })
+    $("#shipDesc").keyup(function(){
+        validate_shipDesc();
+    })
+
+    //5. on click form submit
+    $("#shipmentTypeRegister").submit(function(){
+        validate_shipMode();
+        validate_shipCode();
+        validate_enbleShip();
+        validate_shipGrade();
+        validate_shipDesc();
+
+        if(shipModeError && shipCodeError && enbleShipError
+            && shipGradeError && shipDescError)
+            return true;
+        else return false;
+    })
+});
+</script>    
+</body>
+
+</html>
+=============================================================
+--ex---
+@Controller
+class HomeController {
+   @GetMapping("/a")
+   String m1(){
+     return "Home";
+   }
+   @GetMapping("/b")
+   @ResponseBody
+   String m2(){
+     return "Hello";
+   }
+}
+URL: /a ==> output: Home.html is loaded
+URL: /b ==> output: Hello text is loaded in browser
